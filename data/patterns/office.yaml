@@ -1,0 +1,234 @@
+office:
+  xml : > 
+    <object label="&lt;div style=&quot;font-size: 1px&quot;&gt;&lt;font style=&quot;font-size:16.93px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;{{label}}&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:11.29px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;{address}&lt;br/&gt;&lt;/font&gt;&lt;font style=&quot;font-size:8.47px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;
+    &lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:16.93px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="verticalAlign=middle;align=center;vsdxID=13090;fillColor=#ffffff;gradientColor=none;shape=stencil(vZTbDsIgDIafhssRBObh2sN7EGUbEcfSoc63l6VbdLiZmJjd9fBB+ZtSIrZ1oSpNOKs9uLO+m5MviNgRzk1ZaDA+WETsidhmDnQO7lqe0K9US7bWxd3aGxo8t2DtEc4evYv+AVlryjd28zdWwTHkoGfpZok0dLiUlEsMNcML+gvTlKarjkhUY+oEnFfeuBLzHW0V5DoJ5ZLMqnyQqu9aVx/hUTFx8fA8Kb7pWctIj6ArPtAT9YfNJWW07oTof5C/d2aq1TM0Z2rERrUsGGXpx9gu47Ed/QazzOy3DxiM10bIjLW4UN7z8QYJIdw+Yv8E);strokeColor=#000000;strokeWidth=0;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="001">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry"  />
+      </mxCell>
+    </object>
+  schema : 'seaf.ta.services.office'
+  x: -130
+  y: -20
+  h: 59
+  w: 265
+  offset: 0
+  algo: 'none'
+
+segment_dmz:
+  xml : >
+    <object label="{title}" id="{{id}}">
+        <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#000000;fillColor=#DDD7E6;verticalAlign=top;fontStyle=1;strokeColor=none;" parent="001" vertex="1">
+          <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+        </mxCell>
+    </object>
+  schema: 'seaf.ta.services.network_segment'
+  parent_id: 'location'
+  type: "zone:DMZ"
+  x: 195
+  y: 0
+  w: 440
+  h: 899
+  algo: 'none'
+
+segment_inet_edge:
+  xml : >
+    <object label="{title}" id="{{id}}">
+        <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#BFBFBF;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontColor=#FFFFFF;fontStyle=1;strokeColor=none;" vertex="1" parent="001">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+        </mxCell>
+    </object>
+  schema: 'seaf.ta.services.network_segment'
+  parent_id: 'location'
+  type: "zone:INET-EDGE"
+  x: 0
+  y: 210
+  w: 195
+  h: 600
+  algo: 'none'
+
+segment_int_wan-edge:
+    xml: >
+      <object label="{title}" id="{{id}}">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#FFFFFF;fillColor=#BFBFBF;verticalAlign=top;strokeColor=none;" vertex="1" parent="001">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+      </object>
+    schema: 'seaf.ta.services.network_segment'
+    parent_id: 'location'
+    type: "zone:INT-WAN-EDGE"
+    x: 195
+    y: 899
+    w: 440
+    h: 161
+    algo: 'none'
+
+segment_int_net:
+  xml : >
+    <object label="{title}" id="{{id}}">
+      <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#000000;fillColor=#FFCE9F;fontStyle=1;verticalAlign=top;strokeColor=none;" vertex="1" parent="001">
+          <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+  schema: 'seaf.ta.services.network_segment'
+  parent_id: 'location'
+  type: "zone:INT-NET"
+  x: 635
+  y: 0
+  w: 750
+  h: 1060
+  algo: 'none'
+
+segment_internet:
+  xml : >
+    <object label="{title}" id="{{id}}" >
+      <mxCell style="verticalAlign=middle;align=center;vsdxID=5629;rotation=270;fillColor=#FDEBDD;gradientColor=none;shape=stencil(nZBLDsIwEENPM1sUMoILlHIBThCRQEaEpErD9/SkNUhVFyy6G9vPGsnETe9N50irvuR0cQ+xxRPvSGuJ3mUp9SJuiZtTyu6c0y1a6M5UUqvRcRad9UBrZfLxIG8Hb7viDWz0ruk+/HsiVYhe376C3gMNEifoL1wE/0EXgrP39RgXwVYSAgad5vMFq4X1uf0A);strokeColor=#9c4a09;spacingTop=-2;spacingBottom=-2;spacingLeft=-2;spacingRight=-2;labelBackgroundColor=none;rounded=1;html=1;whiteSpace=wrap;" parent="003" vertex="1">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+  schema: 'seaf.ta.services.network_segment'
+  parent_id: 'location'
+  type: "zone:INTERNET"
+  x: -480
+  y: 525
+  w: 1015
+  h: 27
+  algo: 'none'
+
+segment_transport_wan:
+  xml : >
+    <object label="{title}" id="{{id}}" >
+      <mxCell style="verticalAlign=middle;align=center;vsdxID=5629;rotation=270;fillColor=#ffcc66;gradientColor=none;shape=stencil(nZBLDsIwEENPM1sUMoILlHIBThCRQEaEpErD9/SkNUhVFyy6G9vPGsnETe9N50irvuR0cQ+xxRPvSGuJ3mUp9SJuiZtTyu6c0y1a6M5UUqvRcRad9UBrZfLxIG8Hb7viDWz0ruk+/HsiVYhe376C3gMNEifoL1wE/0EXgrP39RgXwVYSAgad5vMFq4X1uf0A);strokeColor=#6a5628;spacingTop=-2;spacingBottom=-2;spacingLeft=-2;spacingRight=-2;labelBackgroundColor=none;rounded=1;html=1;whiteSpace=wrap;" parent="004" vertex="1">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+  schema: 'seaf.ta.services.network_segment'
+  parent_id: 'location'
+  type: "zone:TRANSPORT-WAN"
+  x: -480
+  y: 525
+  w: 1015
+  h: 27
+  algo: 'none'
+
+isp:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group;noLabel=1;" parent="{segment}" vertex="1">
+        <mxGeometry  x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />            
+    </mxCell>
+    <mxCell id="{{id}}" value="&lt;div style=&quot;font-size: 9px;&quot;&gt;&lt;font style=&quot;font-size: 9px; font-family: Calibri; color: rgb(255, 255, 255); direction: ltr; letter-spacing: 0px; line-height: 120%; opacity: 1;&quot;&gt;ISP&lt;br style=&quot;font-size: 9px;&quot;&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 9px; font-family: Calibri; color: rgb(255, 255, 255); direction: ltr; letter-spacing: 0px; line-height: 120%; opacity: 1;&quot;&gt;{title}&lt;/font&gt;&lt;font style=&quot;font-size: 9px; font-family: Calibri; color: rgb(255, 255, 255); direction: ltr; letter-spacing: 0px; line-height: 120%; opacity: 1;&quot;&gt;&lt;br style=&quot;font-size: 9px;&quot;&gt;&lt;/font&gt;&lt;/div&gt;" style="verticalAlign=middle;align=center;vsdxID=5657;fillColor=#612621;gradientColor=none;shape=stencil(nZBLDsIwEENPM1sUMoILlHIBThCRQEaEpErD9/SkNUhVFyy6G9vPGsnETe9N50irvuR0cQ+xxRPvSGuJ3mUp9SJuiZtTyu6c0y1a6M5UUqvRcRad9UBrZfLxIG8Hb7viDWz0ruk+/HsiVYhe376C3gMNEifoL1wE/0EXgrP39RgXwVYSAgad5vMFq4X1uf0A);strokeColor=#6a5628;spacingTop=-2;spacingBottom=-2;spacingLeft=-2;spacingRight=-2;labelBackgroundColor=none;rounded=1;html=1;whiteSpace=wrap;horizontal=1;fontSize=9;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="0" y="5" width="66" height="40" as="geometry" />
+    </mxCell>
+    <object label="" id="{{id}}">
+        <mxCell style="shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" vertex="1" parent="{Group_ID}">
+          <mxGeometry x="60" y="25" width="28" height="22" as="geometry" />
+        </mxCell>
+    </object>
+    <mxCell id="{{id}}" value="&lt;div style=&quot;font-size: 1px&quot;&gt;&lt;p style=&quot;align:center;margin-left:0;margin-right:0;margin-top:0px;margin-bottom:0px;text-indent:0;valign:middle;direction:ltr;&quot;&gt;&lt;font style=&quot;font-size: 7.06px; font-family: Calibri; color: rgb(0, 0, 0); direction: ltr; letter-spacing: 0px; line-height: 100%; opacity: 1;&quot;&gt;&lt;b&gt;{title} Router&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 7.06px; font-family: Calibri; color: rgb(0, 0, 0); direction: ltr; letter-spacing: 0px; line-height: 100%; opacity: 1;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;" style="verticalAlign=middle;align=center;vsdxID=12895;fillColor=#ffff00;gradientColor=none;fillOpacity=40;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=none;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="70" y="45" width="39" height="18" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.services.network'
+  parent_id: 'segment'
+  type: "type:WAN"
+  deep: 15
+  offset: 30
+  x: 510
+  y: -450
+  w: 110
+  h: 60
+  algo: 'Y+'
+
+lan:
+  xml : >
+    <object label="&lt;div style=&quot;font-size: 1px&quot;&gt;&lt;p style=&quot;align:center;margin-left:0;margin-right:0;margin-top:0px;margin-bottom:0px;text-indent:0;valign:middle;direction:ltr;&quot;&gt;&lt;font style=&quot;font-size:9.88px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;&lt;b&gt;{title}&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:9.88px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;  &lt;/font&gt;&lt;font style=&quot;font-size:8.47px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;{ipnetwork}&lt;/font&gt;&lt;font style=&quot;font-size:11.29px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;&lt;b&gt;&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="verticalAlign=middle;align=center;vsdxID=35397;rotation=270;fillColor=#c0cfe2;gradientColor=none;shape=stencil(nZFLDsIwDERP4y0KyQKxLuUCnCAihliEpEpL+ZyetANS6YJFs7JnXmxpTKZqvW2YtGq7nC58F9d5MjvSWqLnLF2pyNRkqlPKfM7pFh36xhZSq1Fhhz/rgdbK5uNBXgxts9r+PjAYck39sPwBVMF6foYp9HugQeIE/ZqL4D/oQnC2vhRjPAhOQkC6U38eZ5FwClO/AQ==);strokeColor=#000000;labelBackgroundColor=none;rounded=1;html=1;whiteSpace=wrap;" vertex="1" parent="{segment}">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+  schema: 'seaf.ta.services.network'
+  parent_id: 'segment'
+  type: "type:LAN"
+  deep: 4
+  offset: 220
+  x: -10
+  y: 140
+  w: 200
+  h: 20
+  algo: 'Y+'
+
+router:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+          <mxCell style="shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{segment_id}" vertex="1">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'segment_id'
+  type: "type:ROUTER"
+  deep: 7
+  offset: 30
+  x: 20
+  y: 40
+  w: 40
+  h: 30
+  algo: 'Y+'
+
+wireless_controller:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+          <mxCell style="shape=mxgraph.cisco.wireless.wlan_controller;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=none;fontSize=9;fontColor=default;fontStyle=1;" parent="{segment_id}" vertex="1">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'segment_id'
+  type: "type:Wireless Controller"
+  deep: 7
+  offset: 30
+  x: 120
+  y: 40
+  w: 38
+  h: 19
+  algo: 'Y+'
+
+firewall:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+      <mxCell style="shape=mxgraph.cisco.security.firewall;html=1;pointerEvents=1;dashed=0;fillColor=#FF0000;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;flipH=1;" parent="{segment_id}" vertex="1">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'segment_id'
+  type: "type:FIREWALL"
+  deep: 9
+  offset: 30
+  x: 30
+  y: 30
+  w: 20
+  h: 60
+  algo: 'Y+'
+
+#--------------------------------------#
+network_links:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#FF0000;"
+  schema: 'seaf.ta.components.network'
+  targets: 'network_connection'
+  type: 'type:ROUTER'
+
+network_links_1:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.components.network'
+  targets: 'network_connection'

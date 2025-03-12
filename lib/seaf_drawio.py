@@ -2,10 +2,12 @@ import sys
 import yaml
 import json
 import re
+import os
+import argparse
 from copy import deepcopy
 import xml.etree.ElementTree as ET
 
-class Seaf_Drawio:
+class SeafDrawio:
 
     def __init__(self, default_config):
         """
@@ -194,3 +196,22 @@ class Seaf_Drawio:
             return r
         else:
             return x
+
+    @staticmethod
+    def create_validator(pattern):
+        def validate_file_format(value):
+            # Проверяем, соответствует ли значение заданному шаблону
+            if not re.match(pattern, value):
+                raise argparse.ArgumentTypeError(
+                    f"Неверный формат: {value}. Ожидается соответствие шаблону '{pattern}'.")
+            return value
+
+        return validate_file_format
+
+class ValidateFile(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        if not os.path.isfile(values):
+            raise argparse.ArgumentTypeError(f"Файл не найден: {values}")
+        if not os.access(values, os.R_OK):
+            raise argparse.ArgumentTypeError(f"Файл недоступен для чтения: {values}")
+        setattr(namespace, self.dest, values)

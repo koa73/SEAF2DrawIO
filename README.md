@@ -41,7 +41,7 @@
 ###### Описание объектов необходимо осуществлять в следующей последовательности, сначало создается родительский (parent) объект, затем дочерние (child) ссылающийся на родителя
     -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
     |- Регион                                   - seaf.ta.services.dc_region
-    |  |- Зона домтупности                      - seaf.ta.services.dc_az
+    |  |- Зона доступности                      - seaf.ta.services.dc_az
     |  |  |- Офис/ЦОД                           - seaf.ta.services.office / seaf.ta.services.dc
     |  |  |  |- Зоны безопасности               - seaf.ta.services.network_segment (type : см. модель SEAF)
     |  |  |  |  |- Сети                         - seaf.ta.services.network (type: 'LAN')

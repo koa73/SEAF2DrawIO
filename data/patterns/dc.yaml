@@ -1,4 +1,4 @@
-dc:
+dc_label:
   xml : > 
     <object label="&lt;div style=&quot;font-size: 1px&quot;&gt;&lt;font style=&quot;font-size:16.93px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;{{label}}&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:11.29px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;{description}&lt;br/&gt;&lt;/font&gt;&lt;font style=&quot;font-size:8.47px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;
     &lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:16.93px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -12,6 +12,7 @@ dc:
   h: 59
   w: 265
   offset: 0
+  deep: 0
   algo: 'none'
 
 segment_dmz:
@@ -28,6 +29,8 @@ segment_dmz:
   y: 0
   w: 440
   h: 1238
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_int_wan-edge:
@@ -44,6 +47,8 @@ segment_int_wan-edge:
     y: 1238
     w: 440
     h: 161
+    offset: 0
+    deep: 0
     algo: 'none'
 
 segment_int_net:
@@ -60,6 +65,8 @@ segment_int_net:
   y: 0
   w: 750
   h: 1400
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_int_security_net:
@@ -76,6 +83,8 @@ segment_int_security_net:
   y: 0
   w: 436
   h: 1400
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_inet_edge:
@@ -92,6 +101,8 @@ segment_inet_edge:
   y: 210
   w: 195
   h: 297
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_ext_wan_edge:
@@ -108,6 +119,8 @@ segment_ext_wan_edge:
   y: 650
   w: 195
   h: 297
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_internet:
@@ -124,6 +137,8 @@ segment_internet:
   y: 690
   w: 1345
   h: 27
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_transport_wan:
@@ -140,6 +155,8 @@ segment_transport_wan:
   y: 690
   w: 1345
   h: 27
+  offset: 0
+  deep: 0
   algo: 'none'
 
 isp:
@@ -169,7 +186,7 @@ isp:
   h: 60
   algo: 'Y+'
 
-lan:
+EXT-WAN-EDGE:
   xml : >
     <object label="&lt;div style=&quot;font-size: 1px&quot;&gt;&lt;p style=&quot;align:center;margin-left:0;margin-right:0;margin-top:0px;margin-bottom:0px;text-indent:0;valign:middle;direction:ltr;&quot;&gt;&lt;font style=&quot;font-size:9.88px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;&lt;b&gt;{title}&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:9.88px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;  &lt;/font&gt;&lt;font style=&quot;font-size:8.47px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;{ipnetwork}&lt;/font&gt;&lt;font style=&quot;font-size:11.29px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;&lt;b&gt;&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;" id="{{id}}">
       <mxCell style="verticalAlign=middle;align=center;vsdxID=35397;rotation=270;fillColor=#c0cfe2;gradientColor=none;shape=stencil(nZFLDsIwDERP4y0KyQKxLuUCnCAihliEpEpL+ZyetANS6YJFs7JnXmxpTKZqvW2YtGq7nC58F9d5MjvSWqLnLF2pyNRkqlPKfM7pFh36xhZSq1Fhhz/rgdbK5uNBXgxts9r+PjAYck39sPwBVMF6foYp9HugQeIE/ZqL4D/oQnC2vhRjPAhOQkC6U38eZ5FwClO/AQ==);strokeColor=#000000;labelBackgroundColor=none;rounded=1;html=1;whiteSpace=wrap;" vertex="1" parent="{segment}">

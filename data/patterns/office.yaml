@@ -1,4 +1,4 @@
-office:
+office_label:
   xml : > 
     <object label="&lt;div style=&quot;font-size: 1px&quot;&gt;&lt;font style=&quot;font-size:16.93px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;{{label}}&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:11.29px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;{address}&lt;br/&gt;&lt;/font&gt;&lt;font style=&quot;font-size:8.47px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;
     &lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:16.93px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:120%;opacity:1&quot;&gt;&lt;b&gt;&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -12,6 +12,7 @@ office:
   h: 59
   w: 265
   offset: 0
+  deep: 0
   algo: 'none'
 
 segment_dmz:
@@ -28,6 +29,8 @@ segment_dmz:
   y: 0
   w: 440
   h: 899
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_inet_edge:
@@ -44,6 +47,8 @@ segment_inet_edge:
   y: 210
   w: 195
   h: 600
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_int_wan-edge:
@@ -60,6 +65,8 @@ segment_int_wan-edge:
     y: 899
     w: 440
     h: 161
+    offset: 0
+    deep: 0
     algo: 'none'
 
 segment_int_net:
@@ -76,6 +83,8 @@ segment_int_net:
   y: 0
   w: 750
   h: 1060
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_internet:
@@ -92,6 +101,8 @@ segment_internet:
   y: 525
   w: 1015
   h: 27
+  offset: 0
+  deep: 0
   algo: 'none'
 
 segment_transport_wan:
@@ -108,6 +119,8 @@ segment_transport_wan:
   y: 525
   w: 1015
   h: 27
+  offset: 0
+  deep: 0
   algo: 'none'
 
 isp:

@@ -1,0 +1,73 @@
+#### Базовые свойства Технологического сервиса. Включается описание из классификатора выше ####
+  seaf.ta.services.entity:
+    title: Базовая сущность сервиса
+    schema:
+      $defs:
+        seaf.ta.services.base.entity:
+          type: object
+          properties:
+            title:
+              title: Наименование
+              type: string
+            description:
+              title: Описание
+              type: string
+            app_components:
+              title: Перечисление связанных прикладных компонентов с технологичесим сервисом в виде массива
+              type: array
+              items:
+                $ref: "#/$rels/components.component"
+            requirements:
+              title: Требования
+              type: array
+              items:
+                $ref: "#/$rels/seaf.change.requirements.requirement"
+            integrations:
+              title: Перечисление связанных интеграций с технологичесим сервисом в виде массива
+              type: array
+              items:
+                $ref: "#/$rels/seaf.app.integrations.integrations"
+            stand_id:
+              title: Имя стенда внутри окружения
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.stand.stand"
+
+  #### Базовые свойства Технологического компонента ####
+  seaf.ta.components.entity:
+    title: Базовая сущность компонента
+    schema:
+      $defs:
+        seaf.ta.components.base.entity:
+            type: object
+            properties:
+              title:
+                title: Наименование
+                type: string
+              description:
+                title: Описание
+                type: string
+              stand_id:
+                title: Имя стенда внутри окружения
+                type: array
+                items:
+                  $ref: "#/$rels/seaf.ta.services.stand.stand"
+
+#### Описания технологических сервисов. Добавляются все необходимые поля и устанавливаются правила их наполнения ####
+  seaf.ta.services.dc_region:
+    title: Region for DCs
+    objects:
+      dc_region:
+        route: "/"
+        title: Имя региона
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            region_id:
+              title: Region ID
+              type: string
+          required:
+            - region_id

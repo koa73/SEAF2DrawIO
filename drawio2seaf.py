@@ -4,7 +4,6 @@ import sys
 import json
 import html
 import argparse
-import xml.etree.ElementTree as ET
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
@@ -64,6 +63,20 @@ if __name__ == '__main__':
         diagram.go_to_diagram(diagram_index=i)
         for object_id in list(set(value) - {'0101', '0103'}):
             objects_data.update(get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
+    #print(f' -------\n {json.dumps(objects_data)} --------------\n')
 
-    print(f' -------\n {json.dumps(objects_data)} --------------\n')
+    # Извлекаем схемы объектов SEAF
+    schemas = d.read_object_file(schema_file)
+    # Выделить базовые компоненты для services/components
+    entity = schemas.pop('seaf.ta.services.entity')['schema']['$defs'] | schemas.pop('seaf.ta.components.entity')['schema']['$defs']
+
+    # Формируем JSON-схемы объектов SEAF
+    for i, schema in schemas.items():
+        target_schema = schema['schema']
+        for pattern, value in target_schema['patternProperties'].items():
+            if '$ref' in value:
+                value.update(entity[value.pop("$ref").rsplit('/', 1)[-1]])
+                print(f'==== >>>> {value}')
+        print(json.dumps({i:target_schema}, ensure_ascii=False, indent=4))
+
 

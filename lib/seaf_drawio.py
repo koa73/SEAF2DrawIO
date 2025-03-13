@@ -210,28 +210,6 @@ class SeafDrawio:
 
         return validate_file_format
 
-    @staticmethod
-    def dict_list_merging(nodes_ids):
-        """
-            Объединяет все элементы из словаря, содержащего списки, удаляет дубликаты и возвращает отсортированный список уникальных элементов.
-
-            :param nodes_ids: dict
-                Словарь, где ключи — строки (идентификаторы или названия), а значения — списки строк.
-                Пример:
-                    {
-                        'group1': ['item1', 'item2'],
-                        'group2': ['item2', 'item3']
-                    }
-            :return: list
-                Отсортированный список уникальных элементов, объединённых из всех списков в словаре.
-                Пример:
-                    ['item1', 'item2', 'item3']
-        """
-        all_items = list(chain.from_iterable(nodes_ids.values()))
-        unique_items = list(set(all_items) - {'0101', '0103'})
-        sorted_unique_items = sorted(unique_items)
-        return sorted_unique_items
-
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not os.path.isfile(values):

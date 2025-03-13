@@ -59,9 +59,9 @@ if __name__ == '__main__':
 
     # Формируем dict из объектов диаграмм
     for i, (key, value) in enumerate(diagram.nodes_ids.items()):
-        #value = value if i > 0 else list(set(value) - {"0101", "0103"})
+        value = value if i > 0 else list(set(value) - {"0101", "0103"})
         diagram.go_to_diagram(diagram_index=i)
-        for object_id in list(set(value) - {'0101', '0103'}):
+        for object_id in value:
             objects_data.update(get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
     #print(f' -------\n {json.dumps(objects_data)} --------------\n')
 
@@ -76,7 +76,6 @@ if __name__ == '__main__':
         for pattern, value in target_schema['patternProperties'].items():
             if '$ref' in value:
                 value.update(entity[value.pop("$ref").rsplit('/', 1)[-1]])
-                print(f'==== >>>> {value}')
-        print(json.dumps({i:target_schema}, ensure_ascii=False, indent=4))
+        #print(json.dumps({i:target_schema}, ensure_ascii=False, indent=4))
 
 

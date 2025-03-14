@@ -135,7 +135,7 @@
               type: string
             availabilityzone:
               title: В какие зоны доступности входит DC
-              type: array
+              type: string
               items:
                 $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
           required:

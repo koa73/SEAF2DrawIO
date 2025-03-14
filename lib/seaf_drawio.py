@@ -7,6 +7,7 @@ import argparse
 from copy import deepcopy
 from N2G import drawio_diagram
 import html
+from jsonschema import validate, ValidationError
 import xml.etree.ElementTree as ET
 
 class SeafDrawio:
@@ -360,22 +361,23 @@ class SeafDrawio:
             pattern = ''
             for pattern, value in target_schema.items():
                 if '$ref' in value:
-                    value['properties'].update(entity[value.pop("$ref").rsplit("/", 1)[-1]]['properties'])
+                    value['properties'] = entity[value.pop("$ref").rsplit("/", 1)[-1]]['properties'] | value['properties']
+                    #value['properties'].update(entity[value.pop("$ref").rsplit("/", 1)[-1]]['properties'])
             result.update({i: self._create_json_from_schema(target_schema[pattern])})
 
         return result
 
     @staticmethod
-    def write_to_yaml_file(file, data):
+    def write_to_yaml_file(file_name, data):
         try:
             # Попытка записи словаря в YAML-файл
-            with open(file, "w", encoding="utf-8") as file:
+            with open(file_name, "w", encoding="utf-8") as file:
                 for i, (key, value) in enumerate(data.items()):
                     if i > 0:
                         file.write("\n")  # Добавляем пустую строку перед каждым ключом, кроме первого
                     yaml.dump({key: value}, file, allow_unicode=True, sort_keys=False, indent=4)
 
-            print(f"Данные успешно записаны в файл '{file}' с пустыми строками.")
+            print(f'Данные успешно записаны в файл {file_name}')
 
         except IOError as e:
 
@@ -389,6 +391,63 @@ class SeafDrawio:
         except Exception as e:
             # Обработка всех остальных исключений
             print(f"Произошла непредвиденная ошибка: {e}")
+
+
+    def remove_empty_fields(self, data):
+        """
+        Рекурсивно удаляет пустые поля из словаря.
+        Удаляются:
+        - Пустые строки ('')
+        - Пустые списки ([])
+        - Пустые словари ({})
+        - Значения None
+        """
+        if isinstance(data, dict):
+            # Создаем новый словарь, исключая пустые значения
+            return {
+                key: self.remove_empty_fields(value)
+                for key, value in data.items()
+                if value or isinstance(value, bool)  # Оставляем только непустые значения
+            }
+        elif isinstance(data, list):
+            # Если значение — список, рекурсивно очищаем каждый элемент
+            return [self.remove_empty_fields(item) for item in data if item]
+        else:
+            # Возвращаем значение, если оно не является словарем или списком
+            return data
+
+    @staticmethod
+    def validate_json(json_obj, schema, i):
+        """
+        Проверяет JSON-объект на соответствие заданной JSON-схеме.
+
+        Эта функция использует метод `jsonschema.validate` для проверки, соответствует ли предоставленный
+        JSON-объект указанной схеме. Если валидация не проходит, функция перехватывает исключение
+        ValidationError и выводит сообщение об ошибке с деталями о проблеме.
+
+        Параметры:
+        ----------
+        json_obj : dict
+            JSON-объект, который нужно проверить. Должен быть представлен в виде словаря Python.
+
+        schema : dict
+            JSON-схема, по которой выполняется проверка. Должна быть представлена в виде словаря Python,
+            описывающего структуру, типы данных и ограничения для JSON-объекта.
+
+        i : int или str
+            Идентификатор JSON-объекта, используемый для идентификации объекта в сообщениях об ошибках.
+            Может быть числом (например, индексом) или строкой (например, именем).
+
+        Примечания:
+        ------------
+        - Убедитесь, что библиотека `jsonschema` установлена (`pip install jsonschema`).
+        - Схема должна соответствовать стандарту JSON Schema (https://json-schema.org/).
+        """
+        try:
+            validate(instance=json_obj, schema=schema)
+        except ValidationError as e:
+            print(f"Object {i} Validation error: {e}")
+
 
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):

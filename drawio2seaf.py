@@ -1,10 +1,9 @@
 from copy import deepcopy
-
+import ast
 from lib import seaf_drawio
 from N2G import drawio_diagram
 import sys
 import argparse
-from jsonschema import validate, ValidationError
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
@@ -46,42 +45,15 @@ def populate_json(json_schema, data):
             if isinstance(value, dict) and isinstance(json_obj[key], dict):
                 # Recursively populate nested objects
                 populate_json(json_obj[key], value)
+
             else:
-                # Assign values directly
-                json_obj[key] = value
+                if isinstance(json_obj[key], list):
+                    json_obj[key] = ast.literal_eval(value)
+                else:
+                    # Assign values directly
+                    json_obj[key] = value
 
     return json_obj
-
-def remove_empty_fields(data):
-    """
-    Рекурсивно удаляет пустые поля из словаря.
-    Удаляются:
-    - Пустые строки ('')
-    - Пустые списки ([])
-    - Пустые словари ({})
-    - Значения None
-    """
-    if isinstance(data, dict):
-        # Создаем новый словарь, исключая пустые значения
-        return {
-            key: remove_empty_fields(value)
-            for key, value in data.items()
-            if value or isinstance(value, bool)  # Оставляем только непустые значения
-        }
-    elif isinstance(data, list):
-        # Если значение — список, рекурсивно очищаем каждый элемент
-        return [remove_empty_fields(item) for item in data if item]
-    else:
-        # Возвращаем значение, если оно не является словарем или списком
-        return data
-
-def validate_json(json_obj, schema, i):
-    try:
-        validate(instance=json_obj, schema=schema)
-    except ValidationError as e:
-        print(f"Object {i} Validation error: {e}")
-
-
 
 if __name__ == '__main__':
 
@@ -97,9 +69,9 @@ if __name__ == '__main__':
     for schema_key, schema in json_schemas.items():
         for d_key, d_val in objects_data[schema_key].items():
             #json_object = populate_json(schema, d_val)
-            #validate_json(remove_empty_fields(json_object), schema, d_key)
+            #d.validate_json(d.remove_empty_fields(json_object), schema, d_key)
             #yaml_dict.update({schema_key:{d_key:remove_empty_fields(json_object)}})
-            yaml_dict.update({schema_key: {d_key: remove_empty_fields(populate_json(schema, d_val))}})
+            yaml_dict.update({schema_key: {d_key: d.remove_empty_fields(populate_json(schema, d_val))}})
 
     #print(yaml_dict)
     d.write_to_yaml_file(conf['output_file'], yaml_dict)

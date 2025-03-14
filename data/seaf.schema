@@ -33,7 +33,7 @@
               items:
                 $ref: "#/$rels/seaf.ta.services.stand.stand"
 
-  #### Базовые свойства Технологического компонента ####
+#### Базовые свойства Технологического компонента ####
   seaf.ta.components.entity:
     title: Базовая сущность компонента
     schema:
@@ -98,3 +98,79 @@
             - availabilityzone_id
             - az_vendor
             - region
+
+################## ЦОД ################################################
+  seaf.ta.services.dc:
+    title: Datacenter
+    objects:
+      dc:
+        route: "/"
+        title: Центр обработки данных
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            dc_id:
+              title: Datacenter ID
+              type: string
+            dc_ownership:
+              title: Тип владения ЦОД
+              type: string
+            dc_type:
+              title: Тип ЦОД
+              type: string
+            dc_vendor:
+              title: Поставщик
+              type: string
+            dc_address:
+              title: Адрес ЦОД
+              type: string
+            dc_rack_qty:
+              title: Количество стоек (аренда или владение)
+              type: integer
+            dc_tier:
+              title: Уровень сертификации ЦОД
+              type: string
+            availabilityzone:
+              title: В какие зоны доступности входит DC
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+          required:
+            - dc_id
+            - dc_ownership
+            - dc_type
+            - dc_vendor
+            - dc_address
+            - dc_rack_qty
+            - dc_tier
+            - availabilityzone
+
+################ Офис ####################################################
+  seaf.ta.services.office:
+    title: Офис или иное место присутствия
+    objects:
+      office:
+        route: "/"
+        title: Офис или иное место присутствия
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          type: object
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            office_id:
+              title: Office ID
+              type: string
+            address:
+              title: Адрес офиса или местоположения
+              type: string
+            region:
+              title: В какой регион входит офис
+              $ref: "#/$rels/seaf.ta.services.dc_region.dc_region"
+          required:
+            - office_id
+            - address

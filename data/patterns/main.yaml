@@ -88,12 +88,12 @@ office:
 dc:
   xml : > 
     <object id="{{id}}" label="{{label}}">
-      <mxCell style="shape=mxgraph.cisco.buildings.branch_office;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="{availabilityzone_id}">
+      <mxCell style="shape=mxgraph.cisco.buildings.branch_office;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="{availabilityzone}">
         <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
       </mxCell>
     </object>
   schema : 'seaf.ta.services.dc'
-  parent_id: 'availabilityzone_id'
+  parent_id: 'availabilityzone'
   x : 230
   y : 30
   h : 60

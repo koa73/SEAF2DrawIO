@@ -51,9 +51,6 @@ def populate_json(json_schema, data):
 
     return json_obj
 
-
-
-
 if __name__ == '__main__':
 
     if sys.version_info < (3, 9):

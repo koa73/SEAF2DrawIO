@@ -101,7 +101,7 @@ if __name__ == '__main__':
             #yaml_dict.update({schema_key:{d_key:remove_empty_fields(json_object)}})
             yaml_dict.update({schema_key: {d_key: remove_empty_fields(populate_json(schema, d_val))}})
 
-    print(yaml_dict)
+    #print(yaml_dict)
     d.write_to_yaml_file(conf['output_file'], yaml_dict)
 
 

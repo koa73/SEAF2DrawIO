@@ -366,14 +366,19 @@ class SeafDrawio:
         return result
 
     @staticmethod
-    def write_to_yaml_file(file_name, data):
+    def write_to_yaml_file(file, data):
         try:
             # Попытка записи словаря в YAML-файл
-            with open(file_name, "w", encoding="utf-8") as file:
-                yaml.dump(data, file, allow_unicode=True, sort_keys=False)
-            print(f"Словарь успешно записан в файл '{file_name}'")
+            with open(file, "w", encoding="utf-8") as file:
+                for i, (key, value) in enumerate(data.items()):
+                    if i > 0:
+                        file.write("\n")  # Добавляем пустую строку перед каждым ключом, кроме первого
+                    yaml.dump({key: value}, file, allow_unicode=True, sort_keys=False, indent=4)
+
+            print(f"Данные успешно записаны в файл '{file}' с пустыми строками.")
 
         except IOError as e:
+
             # Обработка ошибок ввода-вывода (например, отсутствие прав доступа к файлу)
             print(f"Ошибка записи в файл: {e}")
 

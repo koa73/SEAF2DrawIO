@@ -375,7 +375,7 @@ class SeafDrawio:
                 for i, (key, value) in enumerate(data.items()):
                     if i > 0:
                         file.write("\n")  # Добавляем пустую строку перед каждым ключом, кроме первого
-                    yaml.dump({key: value}, file, allow_unicode=True, sort_keys=False, indent=4)
+                    yaml.dump({key: value}, file, allow_unicode=True, sort_keys=False)
 
             print(f'Данные успешно записаны в файл {file_name}')
 
@@ -391,7 +391,6 @@ class SeafDrawio:
         except Exception as e:
             # Обработка всех остальных исключений
             print(f"Произошла непредвиденная ошибка: {e}")
-
 
     def remove_empty_fields(self, data):
         """

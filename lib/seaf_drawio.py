@@ -5,7 +5,8 @@ import re
 import os
 import argparse
 from copy import deepcopy
-from itertools import chain
+from N2G import drawio_diagram
+import html
 import xml.etree.ElementTree as ET
 
 class SeafDrawio:
@@ -209,6 +210,160 @@ class SeafDrawio:
             return value
 
         return validate_file_format
+
+    @staticmethod
+    def _get_tag_attr(root):
+        """
+                    Извлекает атрибуты XML-тега <object>, исключая определённые атрибуты, и формирует структурированный словарь.
+                    :param root: xml.etree.ElementTree.Element
+                        XML-элемент (тег), из которого извлекаются атрибуты. Ожидается, что это тег <object>.
+
+                    :return: dict
+                        Вложенный словарь со структурой:
+                            {
+                                'schema_value': {
+                                    'OID_value': {
+                                        'attribute_key_1': 'decoded_attribute_value_1',
+                                        'attribute_key_2': 'decoded_attribute_value_2'
+                                    }
+                                }
+                            }
+
+                    Примечания:
+                        - Атрибуты 'id', 'label', 'OID' и 'schema' не включаются в результирующий словарь на третьем уровне.
+                        - Значения атрибутов декодируются с помощью `html.unescape` для преобразования HTML-сущностей в читаемый текст.
+        """
+        # Извлечение всех атрибутов тега <object>
+        attributes = root.attrib
+
+        # Исключение атрибутов 'id' и 'label'
+        return {
+            attributes['schema']: {attributes['OID']: {key: html.unescape(value) for key, value in attributes.items()
+                                                       if key not in ['id', 'label', 'OID', 'schema']}}}
+
+    def get_data_from_diagram(self, file_name):
+        """
+            Извлекает данные из диаграммы, представленной в файле, и формирует словарь с атрибутами объектов.
+
+            Функция выполняет следующие шаги:
+            1. Загружает диаграмму из указанного файла.
+            2. Проходит по всем объектам диаграммы (по каждому листу и каждому объекту на листе).
+            3. Извлекает атрибуты объектов с помощью функции `get_tag_attr`.
+            4. Возвращает словарь, содержащий все собранные данные.
+
+            :param file_name: str
+                Путь к файлу диаграммы (например, .drawio файл).
+
+            :return: dict
+                Словарь, где ключи — это идентификаторы объектов, а значения — их атрибуты.
+                Пример структуры:
+                    {
+                        'object_id_1': {'attr1': 'value1', 'attr2': 'value2'},
+                        'object_id_2': {'attr1': 'value3', 'attr2': 'value4'}
+                    }
+
+            Примечания:
+                - Первый лист диаграммы обрабатывается с исключением объектов с ID "0101" и "0103".
+                - Для каждого объекта используется функция `get_tag_attr`, которая извлекает атрибуты из XML-тега.
+            """
+        diagram = drawio_diagram()
+        diagram.from_file(filename=file_name)
+        objects_data = {}
+
+        # Формируем dict из объектов диаграмм
+        for i, (key, value) in enumerate(diagram.nodes_ids.items()):
+            value = value if i > 0 else list(set(value) - {"0101", "0103"})
+            diagram.go_to_diagram(diagram_index=i)
+            for object_id in value:
+                objects_data.update(self._get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
+        return objects_data
+
+    def _create_json_from_schema(self, schema):
+        """
+        Создает JSON-объект на основе переданной JSON-схемы.
+
+        Функция рекурсивно обрабатывает схему и формирует пустой JSON-объект,
+        соответствующий структуре и типам данных, описанным в схеме.
+
+        :param schema: dict
+            JSON-схема, описывающая структуру объекта. Схема должна содержать ключ "properties",
+            где каждый ключ соответствует имени поля, а значение — его типу и дополнительным свойствам.
+
+        :return: dict
+
+        Примечания:
+            - Поддерживаются типы данных: string, integer, boolean, array, object.
+            - Для вложенных объектов ("object") функция вызывается рекурсивно.
+            - Если тип данных не указан или не поддерживается, используется пустая строка ("").
+        """
+        # Initialize an empty JSON object
+        json_obj = {}
+
+        # Populate the JSON object based on the schema's properties
+        if "properties" in schema:
+            for key, prop in schema["properties"].items():
+                if prop.get("type") and prop["type"] == "object" and "properties" in prop:
+                    # Recursively create nested objects
+                    json_obj[key] = self._create_json_from_schema(prop)
+                elif prop.get("type"):
+                    # Initialize basic types (e.g., string, integer, etc.)
+                    if prop["type"] == "string":
+                        json_obj[key] = ""
+                    elif prop["type"] == "integer":
+                        json_obj[key] = 0
+                    elif prop["type"] == "boolean":
+                        json_obj[key] = False
+                    elif prop["type"] == "array":
+                        json_obj[key] = []
+                    # elif prop["type"] == "object":
+                    #    json_obj[key] = {}
+                    # Add more types as needed
+                else:
+                    json_obj[key] = ""
+
+        return json_obj
+
+    def get_json_schemas(self, schema_file):
+        """
+            Извлекает и преобразует JSON-схемы объектов SEAF из файла схем.
+
+            Функция выполняет следующие шаги:
+            1. Загружает схемы объектов SEAF из указанного файла.
+            2. Выделяет базовые компоненты для services/components из соответствующих схем.
+            3. Обрабатывает каждую схему, заменяя ссылки ($ref) на соответствующие определения свойств.
+            4. Формирует итоговый словарь JSON-схем объектов SEAF.
+
+            :param schema_file: str
+                Путь к файлу, содержащему схемы объектов SEAF (например, YAML или JSON).
+
+            :return: dict
+                Словарь JSON-схем объектов SEAF, где:
+                - Ключи — это имена схем (например, 'seaf.ta.services.dc_region').
+                - Значения — это JSON-схемы, преобразованные в формат Python-словаря.
+
+            Примечания:
+                - Базовые компоненты объединяются из схем 'seaf.ta.services.entity' и 'seaf.ta.components.entity'.
+                - Ссылки ($ref) в схемах заменяются на соответствующие определения свойств.
+                - Для создания JSON-схем используется функция `create_json_from_schema`.
+            """
+
+        # Извлекаем схемы объектов SEAF
+        schemas = self.read_object_file(schema_file)
+        # Выделить базовые компоненты для services/components
+        entity = schemas.pop('seaf.ta.services.entity')['schema']['$defs'] | \
+                 schemas.pop('seaf.ta.components.entity')['schema']['$defs']
+
+        # Формируем JSON-схемы объектов SEAF
+        result = {}
+        for i, schema in schemas.items():
+            target_schema = schema['schema']['patternProperties']
+            pattern = ''
+            for pattern, value in target_schema.items():
+                if '$ref' in value:
+                    value['properties'].update(entity[value.pop("$ref").rsplit("/", 1)[-1]]['properties'])
+            result.update({i: self._create_json_from_schema(target_schema[pattern])})
+
+        return result
 
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):

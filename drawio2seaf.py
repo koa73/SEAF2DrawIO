@@ -1,8 +1,8 @@
+from copy import deepcopy
+
 from lib import seaf_drawio
 from N2G import drawio_diagram
 import sys
-import json
-import html
 import argparse
 
 # Переменные по умолчанию
@@ -38,13 +38,20 @@ def __cli_vars(config):
         print(e)
         sys.exit(1)
 
-def get_tag_attr(root):
-    # Извлечение всех атрибутов тега <object>
-    attributes = root.attrib
+def populate_json(json_schema, data):
+    json_obj = deepcopy(json_schema)
+    for key, value in data.items():
+        if key in json_obj:
+            if isinstance(value, dict) and isinstance(json_obj[key], dict):
+                # Recursively populate nested objects
+                populate_json(json_obj[key], value)
+            else:
+                # Assign values directly
+                json_obj[key] = value
 
-    # Исключение атрибутов 'id' и 'label'
-    return {attributes['schema']:{attributes['OID']:{key: html.unescape(value) for key, value in attributes.items()
-                               if key not in ['id', 'label', 'OID', 'schema']}}}
+    return json_obj
+
+
 
 
 if __name__ == '__main__':
@@ -54,28 +61,16 @@ if __name__ == '__main__':
         sys.exit(1)
 
     conf = __cli_vars(d.load_config("config.yaml")['drawio2seaf'])
-    diagram.from_file(filename=conf['drawio_file'])
-    objects_data = {}
+    objects_data = d.get_data_from_diagram(conf['drawio_file'])
+    json_schemas = d.get_json_schemas(schema_file)
 
-    # Формируем dict из объектов диаграмм
-    for i, (key, value) in enumerate(diagram.nodes_ids.items()):
-        value = value if i > 0 else list(set(value) - {"0101", "0103"})
-        diagram.go_to_diagram(diagram_index=i)
-        for object_id in value:
-            objects_data.update(get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
-    #print(f' -------\n {json.dumps(objects_data)} --------------\n')
+    yaml_dict = {}
+    for schema_key, schema in json_schemas.items():
+        for d_key, d_val in objects_data[schema_key].items():
+            yaml_dict.update({schema_key:{d_key:populate_json(schema, d_val)}})
 
-    # Извлекаем схемы объектов SEAF
-    schemas = d.read_object_file(schema_file)
-    # Выделить базовые компоненты для services/components
-    entity = schemas.pop('seaf.ta.services.entity')['schema']['$defs'] | schemas.pop('seaf.ta.components.entity')['schema']['$defs']
+    print(yaml_dict)
 
-    # Формируем JSON-схемы объектов SEAF
-    for i, schema in schemas.items():
-        target_schema = schema['schema']
-        for pattern, value in target_schema['patternProperties'].items():
-            if '$ref' in value:
-                value.update(entity[value.pop("$ref").rsplit('/', 1)[-1]])
-        #print(json.dumps({i:target_schema}, ensure_ascii=False, indent=4))
+
 
 

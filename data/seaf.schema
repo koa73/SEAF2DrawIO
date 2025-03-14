@@ -71,3 +71,30 @@
               type: string
           required:
             - region_id
+
+#### Описания зоны доступности.
+  seaf.ta.services.dc_az:
+    title: Availability Zone
+    objects:
+      dc_az:
+        route: "/"
+        title: Имя зоны доступности
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            availabilityzone_id:
+              title: Availability Zone ID
+              type: string
+            az_vendor:
+              title: Поставщик
+              type: string
+            region:
+              title: В какой регион входит зона доступности
+              $ref: "#/$rels/seaf.ta.services.dc_region.dc_region"
+          required:
+            - availabilityzone_id
+            - az_vendor
+            - region

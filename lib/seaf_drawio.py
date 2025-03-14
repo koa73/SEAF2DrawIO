@@ -365,6 +365,26 @@ class SeafDrawio:
 
         return result
 
+    @staticmethod
+    def write_to_yaml_file(file_name, data):
+        try:
+            # Попытка записи словаря в YAML-файл
+            with open(file_name, "w", encoding="utf-8") as file:
+                yaml.dump(data, file, allow_unicode=True, sort_keys=False)
+            print(f"Словарь успешно записан в файл '{file_name}'")
+
+        except IOError as e:
+            # Обработка ошибок ввода-вывода (например, отсутствие прав доступа к файлу)
+            print(f"Ошибка записи в файл: {e}")
+
+        except yaml.YAMLError as e:
+            # Обработка ошибок, связанных с форматированием YAML
+            print(f"Ошибка при сериализации данных в YAML: {e}")
+
+        except Exception as e:
+            # Обработка всех остальных исключений
+            print(f"Произошла непредвиденная ошибка: {e}")
+
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not os.path.isfile(values):

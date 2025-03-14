@@ -4,6 +4,7 @@ from lib import seaf_drawio
 from N2G import drawio_diagram
 import sys
 import argparse
+from jsonschema import validate, ValidationError
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
@@ -51,6 +52,37 @@ def populate_json(json_schema, data):
 
     return json_obj
 
+def remove_empty_fields(data):
+    """
+    Рекурсивно удаляет пустые поля из словаря.
+    Удаляются:
+    - Пустые строки ('')
+    - Пустые списки ([])
+    - Пустые словари ({})
+    - Значения None
+    """
+    if isinstance(data, dict):
+        # Создаем новый словарь, исключая пустые значения
+        return {
+            key: remove_empty_fields(value)
+            for key, value in data.items()
+            if value or isinstance(value, bool)  # Оставляем только непустые значения
+        }
+    elif isinstance(data, list):
+        # Если значение — список, рекурсивно очищаем каждый элемент
+        return [remove_empty_fields(item) for item in data if item]
+    else:
+        # Возвращаем значение, если оно не является словарем или списком
+        return data
+
+def validate_json(json_obj, schema, i):
+    try:
+        validate(instance=json_obj, schema=schema)
+    except ValidationError as e:
+        print(f"Object {i} Validation error: {e}")
+
+
+
 if __name__ == '__main__':
 
     if sys.version_info < (3, 9):
@@ -64,9 +96,13 @@ if __name__ == '__main__':
     yaml_dict = {}
     for schema_key, schema in json_schemas.items():
         for d_key, d_val in objects_data[schema_key].items():
-            yaml_dict.update({schema_key:{d_key:populate_json(schema, d_val)}})
+            #json_object = populate_json(schema, d_val)
+            #validate_json(remove_empty_fields(json_object), schema, d_key)
+            #yaml_dict.update({schema_key:{d_key:remove_empty_fields(json_object)}})
+            yaml_dict.update({schema_key: {d_key: remove_empty_fields(populate_json(schema, d_val))}})
 
     print(yaml_dict)
+    d.write_to_yaml_file(conf['output_file'], yaml_dict)
 
 
 

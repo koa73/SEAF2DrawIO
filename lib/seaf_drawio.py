@@ -357,13 +357,15 @@ class SeafDrawio:
         # Формируем JSON-схемы объектов SEAF
         result = {}
         for i, schema in schemas.items():
-            target_schema = schema['schema']['patternProperties']
-            pattern = ''
-            for pattern, value in target_schema.items():
-                if '$ref' in value:
-                    value['properties'] = entity[value.pop("$ref").rsplit("/", 1)[-1]]['properties'] | value['properties']
-                    #value['properties'].update(entity[value.pop("$ref").rsplit("/", 1)[-1]]['properties'])
-            result.update({i: self._create_json_from_schema(target_schema[pattern])})
+            p = list(filter(lambda item: any(allowed_item in item for allowed_item in list(entity.keys())),
+                            self.find_key_value(schema, '$ref')))
+            r = self.find_value_by_key(schema,'properties')
+
+            if len(p) > 0:
+                for parent_schema in p:
+                    r.update(entity[parent_schema.rsplit("/", 1)[-1]]['properties'])
+
+            result.update({i: self._create_json_from_schema({'properties':r})})
 
         return result
 

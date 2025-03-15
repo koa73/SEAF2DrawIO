@@ -67,6 +67,7 @@ if __name__ == '__main__':
 
     yaml_dict = {}
     for schema_key, schema in json_schemas.items():
+        print(json_schemas)
         for d_key, d_val in objects_data[schema_key].items():
             #json_object = populate_json(schema, d_val)
             #d.validate_json(d.remove_empty_fields(json_object), schema, d_key)

@@ -1,4 +1,5 @@
 import sys
+import ast
 import yaml
 import json
 import re
@@ -314,6 +315,8 @@ class SeafDrawio:
         # Populate the JSON object based on the schema's properties
         if "properties" in schema:
             for key, prop in schema["properties"].items():
+               # if (key == 'sber'):
+               #     print(f'--- {key} type: {prop.get("type")}')
                 if prop.get("type") and prop["type"] == "object" and "properties" in prop:
                     # Recursively create nested objects
                     json_obj[key] = self._create_json_from_schema(prop)
@@ -427,6 +430,21 @@ class SeafDrawio:
         else:
             # Возвращаем значение, если оно не является словарем или списком
             return data
+
+    @staticmethod
+    def is_dict_like_string(s):
+        # Сначала пробуем JSON
+        try:
+            return json.loads(s)
+        except (ValueError, json.JSONDecodeError):
+            pass
+
+        # Затем пробуем Python-подобный словарь
+        try:
+            s = s.replace("'", '"')  # Заменяем одинарные кавычки на двойные
+            return ast.literal_eval(s)
+        except (ValueError, SyntaxError):
+            return s
 
     @staticmethod
     def validate_json(json_obj, schema, i):

@@ -51,7 +51,7 @@ def populate_json(json_schema, data):
                     json_obj[key] = ast.literal_eval(value)
                 else:
                     # Assign values directly
-                    json_obj[key] = value
+                    json_obj[key] = d.is_dict_like_string(value)
 
     return json_obj
 

@@ -175,6 +175,43 @@
             - office_id
             - address
 
+################ Зоны безопасности ###########################################################
+  seaf.ta.services.network_segment:
+    title: Network Segment
+    objects:
+      network_segment:
+        route: "/"
+        title: Сетевой сегмент
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            network_segment_id:
+              title: Network Segment ID
+              type: string
+            sber:
+              location:
+                title: ID ЦОД или Офиса
+                type: string
+                items:
+                    anyOf:
+                    - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                    - $ref: "#/$rels/seaf.ta.services.office.office"
+              zone:
+                title: Сетевая зона
+                enum:
+                    - EXTERNAL-NET
+                    - INTERNET
+                    - TRANSPORT-WAN
+                    - INET-EDGE
+                    - EXT-WAN-EDGE
+                    - INT-WAN-EDGE
+                    - DMZ
+                    - INT-NET
+                    - INT-SECURITY-NET
+
 ################ Сетевое устройство ##########################################################
 
   seaf.ta.components.network:

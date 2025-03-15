@@ -389,6 +389,7 @@ class SeafDrawio:
             # Попытка записи словаря в YAML-файл
             with open(file_name, "w", encoding="utf-8") as file:
                 for i, (key, value) in enumerate(data.items()):
+                    print(f'---> Key :   {key}')
                     if i > 0:
                         file.write("\n")  # Добавляем пустую строку перед каждым ключом, кроме первого
                     yaml.dump({key: value}, file, allow_unicode=True, sort_keys=False)
@@ -445,6 +446,7 @@ class SeafDrawio:
             return ast.literal_eval(s)
         except (ValueError, SyntaxError):
             return s
+
 
     @staticmethod
     def validate_json(json_obj, schema, i):

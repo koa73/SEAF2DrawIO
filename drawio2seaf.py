@@ -4,6 +4,7 @@ from lib import seaf_drawio
 from N2G import drawio_diagram
 import sys
 import argparse
+from bs4 import BeautifulSoup
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {

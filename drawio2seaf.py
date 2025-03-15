@@ -74,7 +74,7 @@ if __name__ == '__main__':
             #json_object = populate_json(schema, d_val)
             #d.validate_json(d.remove_empty_fields(json_object), schema, d_key)
             #yaml_dict.update({schema_key:{d_key:remove_empty_fields(json_object)}})
-            yaml_dict.update({schema_key: {d_key: d.remove_empty_fields(populate_json(schema, d_val))}})
+            yaml_dict = d.merge_dicts(yaml_dict,{schema_key: {d_key: d.remove_empty_fields(populate_json(schema, d_val))}})
 
     #print(yaml_dict)
     d.write_to_yaml_file(conf['output_file'], yaml_dict)

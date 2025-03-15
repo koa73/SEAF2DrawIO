@@ -34,6 +34,16 @@ class SeafDrawio:
 
         return self._merge_configs(deepcopy(self.default_config), user_config)
 
+    def _merge_dicts(self, dict1, dict2):
+        for key, value in dict2.items():
+            if key in dict1 and isinstance(dict1[key], dict) and isinstance(value, dict):
+                # Если ключ существует и оба значения — словари, рекурсивно сливаем их
+                self._merge_dicts(dict1[key], value)
+            else:
+                # Иначе просто добавляем/заменяем значение
+                dict1[key] = value
+        return dict1
+
     def _merge_configs(self, default, user):
         """
         Рекурсивно объединяет две конфигурации.
@@ -276,7 +286,8 @@ class SeafDrawio:
             value = value if i > 0 else list(set(value) - {"0101", "0103"})
             diagram.go_to_diagram(diagram_index=i)
             for object_id in value:
-                objects_data.update(self._get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
+                objects_data = self._merge_dicts(objects_data,
+                                    self._get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
         return objects_data
 
     def _create_json_from_schema(self, schema):

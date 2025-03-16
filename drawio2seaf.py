@@ -1,21 +1,19 @@
-from copy import deepcopy
-import ast
 from lib import seaf_drawio
 from N2G import drawio_diagram
 import sys
 import argparse
-from bs4 import BeautifulSoup
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
     "drawio2seaf": {
         "drawio_file": "result/Sample_graph.drawio",
+        "schema_file" : 'data/seaf_schema.yaml',
         "output_file": "result/seaf.yaml"
     }
 }
 d = seaf_drawio.SeafDrawio(DEFAULT_CONFIG)
 diagram = drawio_diagram()
-schema_file = 'data/seaf.schema'
+
 
 def __cli_vars(config):
     try:
@@ -28,33 +26,22 @@ def __cli_vars(config):
                             required=False)
         parser.add_argument("-d", "--dst", type=dst_validator, help="путь и имя файла вывода результатов",
                             required=False)
+        parser.add_argument("-p", "--pattern", type=dst_validator, action=seaf_drawio.ValidateFile,
+                            help="шаблон схемы yaml",
+                            required=False)
         args = parser.parse_args()
         if args.src:
             config['drawio_file'] = args.src
         if args.dst:
             config['output_file'] = args.dst
+        if args.pattern:
+            config['drawio_pattern'] = args.pattern
         return config
 
     except argparse.ArgumentTypeError as e:
         print(e)
         sys.exit(1)
 
-def populate_json(json_schema, data):
-    json_obj = deepcopy(json_schema)
-    for key, value in data.items():
-        if key in json_obj:
-            if isinstance(value, dict) and isinstance(json_obj[key], dict):
-                # Recursively populate nested objects
-                populate_json(json_obj[key], value)
-
-            else:
-                if isinstance(json_obj[key], list):
-                    json_obj[key] = ast.literal_eval(value)
-                else:
-                    # Assign values directly
-                    json_obj[key] = d.is_dict_like_string(value)
-
-    return json_obj
 
 if __name__ == '__main__':
 
@@ -64,12 +51,12 @@ if __name__ == '__main__':
 
     conf = __cli_vars(d.load_config("config.yaml")['drawio2seaf'])
     objects_data = d.get_data_from_diagram(conf['drawio_file'])
-    json_schemas = d.get_json_schemas(schema_file)
+    json_schemas = d.get_json_schemas(conf['schema_file'])
 
     yaml_dict = {}
     for schema_key, schema in json_schemas.items():
         for d_key, d_val in objects_data[schema_key].items():
-            yaml_dict = d.merge_dicts(yaml_dict,{schema_key: {d_key: d.remove_empty_fields(populate_json(schema, d_val))}})
+            yaml_dict = d.merge_dicts(yaml_dict,{schema_key: {d_key: d.remove_empty_fields(d.populate_json(schema, d_val))}})
 
     d.write_to_yaml_file(conf['output_file'], yaml_dict)
 

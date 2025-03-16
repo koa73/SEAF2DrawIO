@@ -6,5 +6,6 @@ seaf2drawio:
   output_file: result/Sample_graph.drawio
 
 drawio2seaf:
+  schema_file: data/seaf_schema.yaml
   drawio_file: result/Sample_graph.drawio
   output_file: result/seaf.yaml

@@ -7,7 +7,7 @@
     |  |- office.yaml                      - Шаблон объектов Draw IO для формирования диаграммы Офис 
     |  |- dc.yaml                          - Шаблон объектов Draw IO для формирования диаграммы ЦОД
     |  |- base.drawio                      - Шаблон Draw IO файла для формирования диаграммы Р41
-    |  |- seaf.schema                      - Схема объектов SEAF для трансформации Draw IO диаграммы в SEAF yaml
+    |  |- seaf_schema.yaml                 - Схема объектов SEAF для трансформации Draw IO диаграммы в SEAF yaml
 
 #### Структура файла base.drawio
 

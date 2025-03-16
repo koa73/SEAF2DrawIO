@@ -479,6 +479,23 @@ class SeafDrawio:
         except ValidationError as e:
             print(f"Object {i} Validation error: {e}")
 
+    def populate_json(self, json_schema, data):
+        json_obj = deepcopy(json_schema)
+        for key, value in data.items():
+            if key in json_obj:
+                if isinstance(value, dict) and isinstance(json_obj[key], dict):
+                    # Recursively populate nested objects
+                    self.populate_json(json_obj[key], value)
+
+                else:
+                    if isinstance(json_obj[key], list):
+                        json_obj[key] = ast.literal_eval(value)
+                    else:
+                        # Assign values directly
+                        json_obj[key] = self.is_dict_like_string(value)
+
+        return json_obj
+
 
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):

@@ -373,7 +373,8 @@ class SeafDrawio:
         for i, schema in schemas.items():
             p = list(filter(lambda item: any(allowed_item in item for allowed_item in list(entity.keys())),
                             self.find_key_value(schema, '$ref')))
-            r = self.find_value_by_key(schema,'properties')
+            #r = self.find_value_by_key(schema,'properties')
+            r= {key: value for d in self.find_key_value(schema,'properties') for key, value in d.items()}
 
             if len(p) > 0:
                 for parent_schema in p:
@@ -445,7 +446,6 @@ class SeafDrawio:
             return ast.literal_eval(s)
         except (ValueError, SyntaxError):
             return s
-
 
     @staticmethod
     def validate_json(json_obj, schema, i):

@@ -1,5 +1,8 @@
 
 ##### Структура каталога
     -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-    |- Sample_graph.drawio              - Файл сформированный скриптом *seaf2drawio из тестовых данных test_seaf_ta_P41_v0.5.yaml (без ручного редактирования позиционирования объектов)                            
-    |- seaf.yaml                        - Файл объектов SEAF сформированный скриптом *drawio2seaf из файла Sample_graph.drawio и схемы seaf_schema.yaml
+    |- Sample_graph.drawio              - Файл сформированный скриптом *seaf2drawio из тестовых данных 
+    |                                      test_seaf_ta_P41_v0.5.yaml (без ручного редактирования)                            
+    |
+    |- seaf.yaml                        - Файл объектов SEAF сформированный скриптом *drawio2seaf из файла 
+    |                                      Sample_graph.drawio и схемы seaf_schema.yaml

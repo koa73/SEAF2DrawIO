@@ -171,18 +171,22 @@ def add_node_object(pattern, data, key_id):
 def add_links(pattern):
 
     diagram.drawio_link_object_xml = pattern['xml']
+    try :
+        for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'],
+                                               type=object_pattern.get('type')).items():  # source_id - ID объекта
+            if source_id in diagram_ids[page_name]:  # Объект присутствует на текущей диаграмме
+                if pattern.get('parent_id'):
+                    targets = {pattern['targets']: [get_parent_value(pattern, targets[pattern['parent_id']])]}
+                for target_id in targets[pattern['targets']]:
+                    if target_id in diagram_ids[page_name]:  # Объект для связи присутствует на диаграмме
+                        diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
 
-    for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'], type=object_pattern.get('type')).items():  # source_id - ID объекта
-        if source_id in diagram_ids[page_name]:  # Объект присутствует на текущей диаграмме
-            if pattern.get('parent_id'):
-                targets = {pattern['targets']: [get_parent_value(pattern, targets[pattern['parent_id']])]}
-            for target_id in targets[pattern['targets']]:
-                if target_id in diagram_ids[page_name]:  # Объект для связи присутствует на диаграмме
-                    diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
-
-                else:
-                    print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
-                          f'{page_name}')
+                    else:
+                        print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
+                              f'{page_name}')
+    except KeyError:
+        pass
+        print(f" INFO : Не найдены объекты '{pattern['schema']}' для добавление связей на диаграмму {page_name}.")
 
 if __name__ == '__main__':
 
@@ -220,9 +224,8 @@ if __name__ == '__main__':
                             add_node_object(object_pattern, object_data[i], i)
 
                 except KeyError as e:
-                    print("Object: {k} Page: {page} Key: {key} not found in data file".format(k=k,page=page_name,
-                                                                                        key=object_pattern['schema']))
-                    #break
+                    pass
+                    print(f' INFO : В файле данных отсутствуют объекты {object_pattern['schema']} для добавления на диаграмму {page_name}')
 
                 if bool(re.match(r'^network_links(_\d+)*',k)):
                     add_links(object_pattern)  # Связывание объектов на текущей диаграмме

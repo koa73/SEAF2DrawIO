@@ -24,7 +24,7 @@ seaf.ta.services.office:
     address: Берёзовый бульвар, д.14
     region: flix.dc_region.russia
 
-#### Создаем  ЦОД #
+#### Создаем ЦОД #
 
 seaf.ta.services.dc:
   flix.dc.01:
@@ -36,7 +36,7 @@ seaf.ta.services.dc:
     dc_rack_qty: 5
     dc_tier: '3'
     dc_ownership: Аренда
-    availabilityzone_id: flix.dc_az.moscow
+    availabilityzone: flix.dc_az.moscow
 
 #### Создаём сегменты сети офиса
 ## Internet

@@ -1,10 +1,14 @@
 import sys
+import ast
 import yaml
 import json
 import re
 import os
 import argparse
 from copy import deepcopy
+from N2G import drawio_diagram
+import html
+from jsonschema import validate, ValidationError
 import xml.etree.ElementTree as ET
 
 class SeafDrawio:
@@ -30,6 +34,16 @@ class SeafDrawio:
             user_config = {}
 
         return self._merge_configs(deepcopy(self.default_config), user_config)
+
+    def merge_dicts(self, dict1, dict2):
+        for key, value in dict2.items():
+            if key in dict1 and isinstance(dict1[key], dict) and isinstance(value, dict):
+                # Если ключ существует и оба значения — словари, рекурсивно сливаем их
+                self.merge_dicts(dict1[key], value)
+            else:
+                # Иначе просто добавляем/заменяем значение
+                dict1[key] = value
+        return dict1
 
     def _merge_configs(self, default, user):
         """
@@ -203,10 +217,285 @@ class SeafDrawio:
             # Проверяем, соответствует ли значение заданному шаблону
             if not re.match(pattern, value):
                 raise argparse.ArgumentTypeError(
-                    f"Неверный формат: {value}. Ожидается соответствие шаблону '{pattern}'.")
+                    f'Неверный формат: {value}. Ожидается соответствие шаблону {pattern}.')
+
             return value
 
         return validate_file_format
+
+    @staticmethod
+    def _get_tag_attr(root):
+        """
+                    Извлекает атрибуты XML-тега <object>, исключая определённые атрибуты, и формирует структурированный словарь.
+                    :param root: xml.etree.ElementTree.Element
+                        XML-элемент (тег), из которого извлекаются атрибуты. Ожидается, что это тег <object>.
+
+                    :return: dict
+                        Вложенный словарь со структурой:
+                            {
+                                'schema_value': {
+                                    'OID_value': {
+                                        'attribute_key_1': 'decoded_attribute_value_1',
+                                        'attribute_key_2': 'decoded_attribute_value_2'
+                                    }
+                                }
+                            }
+
+                    Примечания:
+                        - Атрибуты 'id', 'label', 'OID' и 'schema' не включаются в результирующий словарь на третьем уровне.
+                        - Значения атрибутов декодируются с помощью `html.unescape` для преобразования HTML-сущностей в читаемый текст.
+        """
+        # Извлечение всех атрибутов тега <object>
+        attributes = root.attrib
+
+        # Исключение атрибутов 'id' и 'label'
+        return {
+            attributes['schema']: {attributes['OID']: {key: html.unescape(value) for key, value in attributes.items()
+                                                       if key not in ['id', 'label', 'OID', 'schema']}}}
+
+    def get_data_from_diagram(self, file_name):
+        """
+            Извлекает данные из диаграммы, представленной в файле, и формирует словарь с атрибутами объектов.
+
+            Функция выполняет следующие шаги:
+            1. Загружает диаграмму из указанного файла.
+            2. Проходит по всем объектам диаграммы (по каждому листу и каждому объекту на листе).
+            3. Извлекает атрибуты объектов с помощью функции `get_tag_attr`.
+            4. Возвращает словарь, содержащий все собранные данные.
+
+            :param file_name: str
+                Путь к файлу диаграммы (например, .drawio файл).
+
+            :return: dict
+                Словарь, где ключи — это идентификаторы объектов, а значения — их атрибуты.
+                Пример структуры:
+                    {
+                        'object_id_1': {'attr1': 'value1', 'attr2': 'value2'},
+                        'object_id_2': {'attr1': 'value3', 'attr2': 'value4'}
+                    }
+
+            Примечания:
+                - Первый лист диаграммы обрабатывается с исключением объектов с ID "0101" и "0103".
+                - Для каждого объекта используется функция `get_tag_attr`, которая извлекает атрибуты из XML-тега.
+            """
+        diagram = drawio_diagram()
+        diagram.from_file(filename=file_name)
+        objects_data = {}
+
+        # Формируем dict из объектов диаграмм
+        for i, (key, value) in enumerate(diagram.nodes_ids.items()):
+            value = value if i > 0 else list(set(value) - {"0101", "0103"})
+            diagram.go_to_diagram(diagram_index=i)
+            for object_id in value:
+                objects_data = self.merge_dicts(objects_data,
+                                                self._get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
+        return objects_data
+
+    def _create_json_from_schema(self, schema):
+        """
+        Создает JSON-объект на основе переданной JSON-схемы.
+
+        Функция рекурсивно обрабатывает схему и формирует пустой JSON-объект,
+        соответствующий структуре и типам данных, описанным в схеме.
+
+        :param schema: dict
+            JSON-схема, описывающая структуру объекта. Схема должна содержать ключ "properties",
+            где каждый ключ соответствует имени поля, а значение — его типу и дополнительным свойствам.
+
+        :return: dict
+
+        Примечания:
+            - Поддерживаются типы данных: string, integer, boolean, array, object.
+            - Для вложенных объектов ("object") функция вызывается рекурсивно.
+            - Если тип данных не указан или не поддерживается, используется пустая строка ("").
+        """
+        # Initialize an empty JSON object
+        json_obj = {}
+
+        # Populate the JSON object based on the schema's properties
+        if "properties" in schema:
+            for key, prop in schema["properties"].items():
+               # if (key == 'sber'):
+               #     print(f'--- {key} type: {prop.get("type")}')
+                if prop.get("type") and prop["type"] == "object" and "properties" in prop:
+                    # Recursively create nested objects
+                    json_obj[key] = self._create_json_from_schema(prop)
+                elif prop.get("type"):
+                    # Initialize basic types (e.g., string, integer, etc.)
+                    if prop["type"] == "string":
+                        json_obj[key] = ""
+                    elif prop["type"] == "integer":
+                        json_obj[key] = 0
+                    elif prop["type"] == "boolean":
+                        json_obj[key] = False
+                    elif prop["type"] == "array":
+                        json_obj[key] = []
+                    # elif prop["type"] == "object":
+                    #    json_obj[key] = {}
+                    # Add more types as needed
+                else:
+                    json_obj[key] = ""
+
+        return json_obj
+
+    def get_json_schemas(self, schema_file):
+        """
+            Извлекает и преобразует JSON-схемы объектов SEAF из файла схем.
+
+            Функция выполняет следующие шаги:
+            1. Загружает схемы объектов SEAF из указанного файла.
+            2. Выделяет базовые компоненты для services/components из соответствующих схем.
+            3. Обрабатывает каждую схему, заменяя ссылки ($ref) на соответствующие определения свойств.
+            4. Формирует итоговый словарь JSON-схем объектов SEAF.
+
+            :param schema_file: str
+                Путь к файлу, содержащему схемы объектов SEAF (например, YAML или JSON).
+
+            :return: dict
+                Словарь JSON-схем объектов SEAF, где:
+                - Ключи — это имена схем (например, 'seaf.ta.services.dc_region').
+                - Значения — это JSON-схемы, преобразованные в формат Python-словаря.
+
+            Примечания:
+                - Базовые компоненты объединяются из схем 'seaf.ta.services.entity' и 'seaf.ta.components.entity'.
+                - Ссылки ($ref) в схемах заменяются на соответствующие определения свойств.
+                - Для создания JSON-схем используется функция `create_json_from_schema`.
+            """
+
+        # Извлекаем схемы объектов SEAF
+        schemas = self.read_object_file(schema_file)
+        # Выделить базовые компоненты для services/components
+        entity = schemas.pop('seaf.ta.services.entity')['schema']['$defs'] | \
+                 schemas.pop('seaf.ta.components.entity')['schema']['$defs']
+
+        # Формируем JSON-схемы объектов SEAF
+        result = {}
+        for i, schema in schemas.items():
+            p = list(filter(lambda item: any(allowed_item in item for allowed_item in list(entity.keys())),
+                            self.find_key_value(schema, '$ref')))
+            #r = self.find_value_by_key(schema,'properties')
+            r= {key: value for d in self.find_key_value(schema,'properties') for key, value in d.items()}
+
+            if len(p) > 0:
+                for parent_schema in p:
+                    r.update(entity[parent_schema.rsplit("/", 1)[-1]]['properties'])
+
+            result.update({i: self._create_json_from_schema({'properties':r})})
+
+        return result
+
+    @staticmethod
+    def write_to_yaml_file(file_name, data):
+        try:
+            # Попытка записи словаря в YAML-файл
+            with open(file_name, "w", encoding="utf-8") as file:
+                for i, (key, value) in enumerate(data.items()):
+                    if i > 0:
+                        file.write("\n")  # Добавляем пустую строку перед каждым ключом, кроме первого
+                    yaml.dump({key: value}, file, allow_unicode=True, sort_keys=False)
+
+            print(f'Данные успешно записаны в файл {file_name}')
+
+        except IOError as e:
+
+            # Обработка ошибок ввода-вывода (например, отсутствие прав доступа к файлу)
+            print(f"Ошибка записи в файл: {e}")
+
+        except yaml.YAMLError as e:
+            # Обработка ошибок, связанных с форматированием YAML
+            print(f"Ошибка при сериализации данных в YAML: {e}")
+
+        except Exception as e:
+            # Обработка всех остальных исключений
+            print(f"Произошла непредвиденная ошибка: {e}")
+
+    def remove_empty_fields(self, data):
+        """
+        Рекурсивно удаляет пустые поля из словаря.
+        Удаляются:
+        - Пустые строки ('')
+        - Пустые списки ([])
+        - Пустые словари ({})
+        - Значения None
+        """
+        if isinstance(data, dict):
+            # Создаем новый словарь, исключая пустые значения
+            return {
+                key: self.remove_empty_fields(value)
+                for key, value in data.items()
+                if value or isinstance(value, bool)  # Оставляем только непустые значения
+            }
+        elif isinstance(data, list):
+            # Если значение — список, рекурсивно очищаем каждый элемент
+            return [self.remove_empty_fields(item) for item in data if item]
+        else:
+            # Возвращаем значение, если оно не является словарем или списком
+            return data
+
+    @staticmethod
+    def is_dict_like_string(s):
+        # Сначала пробуем JSON
+        try:
+            return json.loads(s)
+        except (ValueError, json.JSONDecodeError):
+            pass
+
+        # Затем пробуем Python-подобный словарь
+        try:
+            s = s.replace("'", '"')  # Заменяем одинарные кавычки на двойные
+            return ast.literal_eval(s)
+        except (ValueError, SyntaxError):
+            return s
+
+    @staticmethod
+    def validate_json(json_obj, schema, i):
+        """
+        Проверяет JSON-объект на соответствие заданной JSON-схеме.
+
+        Эта функция использует метод `jsonschema.validate` для проверки, соответствует ли предоставленный
+        JSON-объект указанной схеме. Если валидация не проходит, функция перехватывает исключение
+        ValidationError и выводит сообщение об ошибке с деталями о проблеме.
+
+        Параметры:
+        ----------
+        json_obj : dict
+            JSON-объект, который нужно проверить. Должен быть представлен в виде словаря Python.
+
+        schema : dict
+            JSON-схема, по которой выполняется проверка. Должна быть представлена в виде словаря Python,
+            описывающего структуру, типы данных и ограничения для JSON-объекта.
+
+        i : int или str
+            Идентификатор JSON-объекта, используемый для идентификации объекта в сообщениях об ошибках.
+            Может быть числом (например, индексом) или строкой (например, именем).
+
+        Примечания:
+        ------------
+        - Убедитесь, что библиотека `jsonschema` установлена (`pip install jsonschema`).
+        - Схема должна соответствовать стандарту JSON Schema (https://json-schema.org/).
+        """
+        try:
+            validate(instance=json_obj, schema=schema)
+        except ValidationError as e:
+            print(f"Object {i} Validation error: {e}")
+
+    def populate_json(self, json_schema, data):
+        json_obj = deepcopy(json_schema)
+        for key, value in data.items():
+            if key in json_obj:
+                if isinstance(value, dict) and isinstance(json_obj[key], dict):
+                    # Recursively populate nested objects
+                    self.populate_json(json_obj[key], value)
+
+                else:
+                    if isinstance(json_obj[key], list):
+                        json_obj[key] = ast.literal_eval(value)
+                    else:
+                        # Assign values directly
+                        json_obj[key] = self.is_dict_like_string(value)
+
+        return json_obj
+
 
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):

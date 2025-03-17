@@ -59,7 +59,7 @@ class SeafDrawio:
         return default
 
     @staticmethod
-    def read_object_file(file, **kwargs):
+    def read_yaml_file(file, **kwargs):
         try:
             with open(file, 'r', encoding='utf-8') as file:
                 try:
@@ -193,7 +193,7 @@ class SeafDrawio:
             :param kwargs['type'] find json which contain value in key, kwargs['sort'] sorting by key
             :return: json object.
         """
-        x = json.loads(json.dumps(self.read_object_file(file)[key]))
+        x = json.loads(json.dumps(self.read_yaml_file(file)[key]))
         if kwargs.get('type'):
 
             if kwargs['type'].find(":") != -1:
@@ -362,7 +362,7 @@ class SeafDrawio:
             """
 
         # Извлекаем схемы объектов SEAF
-        schemas = self.read_object_file(schema_file)
+        schemas = self.read_yaml_file(schema_file)
         # Выделить базовые компоненты для services/components
         entity = schemas.pop('seaf.ta.services.entity')['schema']['$defs'] | \
                  schemas.pop('seaf.ta.components.entity')['schema']['$defs']

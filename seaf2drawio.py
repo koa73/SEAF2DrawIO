@@ -91,8 +91,8 @@ def return_ready(pattern):
 def get_parent_value(pattern, current_parent):
     r = ''
     if pattern.get('parent_key'):
-        r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_object_file(conf['data_yaml_file']))),
-                                                current_parent), pattern['parent_key'])
+        r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_yaml_file(conf['data_yaml_file']))),
+                                                    current_parent), pattern['parent_key'])
     return r
 
 def add_pages(pattern):
@@ -205,7 +205,7 @@ if __name__ == '__main__':
 
             diagram.go_to_diagram(page_name)
 
-            for k, object_pattern in d.read_object_file(patterns_dir + file_name + '.yaml').items():
+            for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():
 
                 try:
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),

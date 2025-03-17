@@ -196,7 +196,6 @@ if __name__ == '__main__':
 
     conf = cli_vars(d.load_config("config.yaml")['seaf2drawio'])
 
-    # Use the wrapper function before calling the library
     diagram.from_xml(d.read_file_with_utf8(conf['drawio_pattern']))
     diagram_ids['Main Schema'] = list(d.get_object(conf['data_yaml_file'], root_object).keys())
 

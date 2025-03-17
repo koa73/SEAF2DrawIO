@@ -61,7 +61,7 @@ class SeafDrawio:
     @staticmethod
     def read_object_file(file, **kwargs):
         try:
-            with open(file, 'r') as file:
+            with open(file, 'r', encoding='utf-8') as file:
                 try:
                     docs = yaml.safe_load_all(file)
                     for doc in docs:

@@ -8,7 +8,6 @@ import argparse
 from copy import deepcopy
 from N2G import drawio_diagram
 import html
-#from jsonschema import validate, ValidationError
 import xml.etree.ElementTree as ET
 
 class SeafDrawio:
@@ -451,40 +450,6 @@ class SeafDrawio:
     def read_file_with_utf8(filename):
         with open(filename, 'r', encoding='utf-8') as f:
             return f.read()
-
-    """
-    @staticmethod
-    def validate_json(json_obj, schema, i):
-        """   """
-        Проверяет JSON-объект на соответствие заданной JSON-схеме.
-
-        Эта функция использует метод `jsonschema.validate` для проверки, соответствует ли предоставленный
-        JSON-объект указанной схеме. Если валидация не проходит, функция перехватывает исключение
-        ValidationError и выводит сообщение об ошибке с деталями о проблеме.
-
-        Параметры:
-        ----------
-        json_obj : dict
-            JSON-объект, который нужно проверить. Должен быть представлен в виде словаря Python.
-
-        schema : dict
-            JSON-схема, по которой выполняется проверка. Должна быть представлена в виде словаря Python,
-            описывающего структуру, типы данных и ограничения для JSON-объекта.
-
-        i : int или str
-            Идентификатор JSON-объекта, используемый для идентификации объекта в сообщениях об ошибках.
-            Может быть числом (например, индексом) или строкой (например, именем).
-
-        Примечания:
-        ------------
-        - Убедитесь, что библиотека `jsonschema` установлена (`pip install jsonschema`).
-        - Схема должна соответствовать стандарту JSON Schema (https://json-schema.org/).
-        """    """
-        try:
-            validate(instance=json_obj, schema=schema)
-        except ValidationError as e:
-            print(f"Object {i} Validation error: {e}")
-       """
 
     def populate_json(self, json_schema, data):
         json_obj = deepcopy(json_schema)

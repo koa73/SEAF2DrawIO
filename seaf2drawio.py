@@ -211,9 +211,11 @@ if __name__ == '__main__':
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),
                                              sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
                     add_pages(object_pattern)
-                    object_pattern['count'] = 0  # Счетчик объектов
-                    object_pattern['last_parent'] = '' # Тригер для отслеживания изменения родительского объекта
-                    object_pattern['parent'] = ''
+                    object_pattern.update({
+                                'count': 0,               # Счетчик объектов
+                                'last_parent': '',        # Триггер для отслеживания изменения родительского объекта
+                                'parent': ''              # Родительский объект
+                    })
                     default_pattern = deepcopy(object_pattern)
 
                     for i in list(object_data.keys()):

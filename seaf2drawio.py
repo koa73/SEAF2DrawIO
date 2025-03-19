@@ -227,7 +227,7 @@ if __name__ == '__main__':
 
                 except KeyError as e:
                     pass
-                    print(f' INFO : В файле данных отсутствуют объекты {object_pattern['schema']} для добавления на диаграмму {page_name}')
+                    print(f' INFO : В файле данных отсутствуют объекты {object_pattern["schema"]} для добавления на диаграмму {page_name}')
 
                 if bool(re.match(r'^network_links(_\d+)*',k)):
                     add_links(object_pattern)  # Связывание объектов на текущей диаграмме

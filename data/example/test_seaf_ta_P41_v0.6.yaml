@@ -620,7 +620,7 @@ seaf.ta.components.network:
       - flix.wan.dc.isp.02
       - flix.lan.dc.wan_edge
 
-  flix.network.вс.fw_1:
+  flix.network.dc.fw_1:
     title: NGFW-IDFW
     description: Пограничный NGFW
     realization_type: Физический
@@ -635,21 +635,42 @@ seaf.ta.components.network:
 
 
 #### Сервисы кибер безопасности
-seaf.ta.services.kb.p41:
-
+seaf.ta.p41.services.kb:
   flix.kb.waf_1:
     usage: Shared
+    title: WAF
+    description: WAF for All-App
     class: Защита веб-приложений WAF
     network_connection:
-      - zzz
+      - flix.wan.dc.isp.02
+      - flix.lan.dc.wan_edge
     segment_id: flix.network_segment.dc.ntwrk.01
 
   flix.kb.firewall_1:
     usage: Shared
-    title: NGFW-IDFW
+    title: NGFW-IDFW_NEW
     description: Пограничный NGFW
     class: Межсетевое экранирование
     segment_id: flix.network_segment.dc.ntwrk.01
     network_connection:
       - flix.lan.dc.inet_guest_edge
       - flix.lan.dc.ext.lan
+
+  flix.kb.fpsu_1:
+    usage: Shared
+    title: FPSU-1
+    description: ФПСУ для ширования канала
+    class: Шифрование канала
+    segment_id: flix.network_segment.dc.ntwrk.05
+    network_connection:
+      - flix.lan.dc.inet_guest_edge
+      - flix.wan.dc.isp.01
+
+  flix.kb.ddos_1:
+    usage: Shared
+    title: DDOS
+    description: Сервис защиты от DDOs от BiZone
+    class: Защита от атака типа "Отказ в обслуживании"
+    segment_id: flix.network_segment.dc.ntwrk.05
+    network_connection:
+      - flix.wan.dc.isp.01

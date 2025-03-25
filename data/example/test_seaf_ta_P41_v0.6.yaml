@@ -443,154 +443,6 @@ seaf.ta.components.network:
     network_connection:
       - flix.lan.office.wifi.arm
 
-  flix.network.ngfw.01:
-    title: NGFW 1
-    description: Пограничный NGFW 1
-    realization_type: Физический
-    model: 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.access
-    purpose: Пограничный NGFW
-    address: 192.168.8.21
-    network_connection:
-      - flix.lan.office.inet_edge
-      - flix.lan.office.ext.lan
-      - flix.network.ngfw.02
-
-  flix.network.ngfw.02:
-    title: NGFW 2
-    description: Пограничный NGFW 2
-    realization_type: Физический
-    model: 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.access
-    purpose: Пограничный NGFW
-    address: 192.168.8.22
-    network_connection:
-      - flix.lan.office.inet_edge
-      - flix.lan.office.ext.lan
-
-  flix.network.ngfw.03:
-    title: NGFW 3
-    description: Пограничный NGFW Guest
-    realization_type: Физический
-    model: 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.access
-    purpose: Пограничный NGFW подклюшения к интернет гостевой
-    address: 192.168.8.23
-    network_connection:
-      - flix.lan.office.inet_guest_edge
-      - flix.lan.office.wifi.guest
-
-  flix.network.ngfw.idfw:
-    title: NGFW-IDFW
-    description: Пограничный NGFW
-    realization_type: Физический
-    model: 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.int
-    purpose: Пограничный NGFW транспортной сети
-    address: 192.168.8.23
-    network_connection:
-      - flix.lan.office.wan_edge
-      - flix.lan.office.int.lan
-
-  flix.network.ngfw.cntxt1:
-    title: CNTXT1-NGFW
-    description: Контекст правил безопасности NGFW
-    realization_type: Виртуальный
-    model: FortiGate 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.int
-    purpose: Контекст NGFW
-    network_connection:
-      - flix.lan.office.ext.lan
-      - flix.lan.office.int.lan
-
-  flix.network.ngfw.cntxt2:
-    title: CNTXT2-NGFW
-    description: Контекст правил безопасности NGFW
-    realization_type: Виртуальный
-    model: FortiGate 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.access
-    purpose: Контекст NGFW
-    network_connection:
-      - flix.lan.office.ext.lan
-      - flix.lan.office.security
-
-  flix.network.ngfw.cntxt3:
-    title: CNTXT3-NGFW
-    description: Контекст правил безопасности NGFW
-    realization_type: Виртуальный
-    model: FortiGate 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.int
-    purpose: Контекст NGFW
-    network_connection:
-      - flix.lan.office.int.lan
-      - flix.lan.office.wifi.arm
-
-  flix.network.ngfw.cntxt4:
-    title: CNTXT4-NGFW
-    description: Контекст правил безопасности NGFW
-    realization_type: Виртуальный
-    model: FortiGate 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.int
-    purpose: Контекст NGFW
-    network_connection:
-      - flix.lan.office.int.lan
-      - flix.lan.office.wired.ARM
-
-  flix.network.ngfw.cntxt5:
-    title: CNTXT5-NGFW
-    description: Контекст правил безопасности NGFW
-    realization_type: Виртуальный
-    model: FortiGate 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.int
-    purpose: Контекст NGFW
-    network_connection:
-      - flix.lan.office.int.lan
-      - flix.lan.office.admin.ARM
-
-  flix.network.ngfw.cntxt6:
-    title: CNTXT6-NGFW
-    description: Контекст правил безопасности NGFW
-    realization_type: Виртуальный
-    model: FortiGate 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.int
-    purpose: Контекст NGFW
-    network_connection:
-      - flix.lan.office.int.lan
-      - flix.lan.office.printers
-
-  flix.network.ngfw.cntxt7:
-    title: CNTXT7-NGFW
-    description: Контекст правил безопасности NGFW
-    realization_type: Виртуальный
-    model: FortiGate 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.int
-    purpose: Контекст NGFW
-    network_connection:
-      - flix.lan.office.int.lan
-      - flix.lan.office.ipphones
-
-  flix.network.ngfw.cntxt8:
-    title: CNTXT8-NGFW
-    description: Контекст правил безопасности NGFW
-    realization_type: Виртуальный
-    model: FortiGate 4800F
-    type: "FIREWALL"
-    segment_id: flix.network_segment.office.int
-    purpose: Контекст NGFW
-    network_connection:
-      - flix.lan.office.int.lan
-      - flix.lan.office.mgmt
 
   #### Создаём описание сетевых устройств ЦОД
 
@@ -625,7 +477,7 @@ seaf.ta.components.network:
     description: Пограничный NGFW
     realization_type: Физический
     model: 4800F
-    type: "FIREWALL"
+    class: 'Межсетевое экранирование'
     segment_id: flix.network_segment.dc.ntwrk.01
     purpose: Пограничный NGFW транспортной сети
     address: 192.168.8.23
@@ -636,8 +488,124 @@ seaf.ta.components.network:
 
 #### Сервисы кибер безопасности
 seaf.ta.p41.services.kb:
+
+  flix.network.ngfw.01:
+    title: NGFW 1
+    description: Пограничный NGFW 1
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.access
+    address: 192.168.8.1
+    network_connection:
+      - flix.lan.office.inet_edge
+      - flix.lan.office.ext.lan
+      - flix.network.ngfw.02
+
+  flix.network.ngfw.02:
+    title: NGFW 2
+    description: Пограничный NGFW 2
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.access
+    address: 192.168.8.22
+    network_connection:
+      - flix.lan.office.inet_edge
+      - flix.lan.office.ext.lan
+
+  flix.network.ngfw.03:
+    title: NGFW 3
+    description: Пограничный NGFW Guest
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.access
+    address: 192.168.8.23
+    network_connection:
+      - flix.lan.office.inet_guest_edge
+      - flix.lan.office.wifi.guest
+
+  flix.network.ngfw.idfw:
+    title: NGFW-IDFW
+    description: Пограничный NGFW
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.int
+    address: 192.168.8.23
+    network_connection:
+      - flix.lan.office.wan_edge
+      - flix.lan.office.int.lan
+
+  flix.network.ngfw.cntxt1:
+    title: CNTXT1-NGFW
+    description: Контекст правил безопасности NGFW
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.int
+    network_connection:
+      - flix.lan.office.ext.lan
+      - flix.lan.office.int.lan
+
+  flix.network.ngfw.cntxt2:
+    title: CNTXT2-NGFW
+    description: Контекст правил безопасности NGFW
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.access
+    network_connection:
+      - flix.lan.office.ext.lan
+      - flix.lan.office.security
+
+  flix.network.ngfw.cntxt3:
+    title: CNTXT3-NGFW
+    description: Контекст правил безопасности NGFW
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.int
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.wifi.arm
+
+  flix.network.ngfw.cntxt4:
+    title: CNTXT4-NGFW
+    description: Контекст правил безопасности NGFW
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.int
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.wired.ARM
+
+  flix.network.ngfw.cntxt5:
+    title: CNTXT5-NGFW
+    description: Контекст правил безопасности NGFW
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.int
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.admin.ARM
+
+  flix.network.ngfw.cntxt6:
+    title: CNTXT6-NGFW
+    description: Контекст правил безопасности NGFW
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.int
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.printers
+
+  flix.network.ngfw.cntxt7:
+    title: CNTXT7-NGFW
+    description: Контекст правил безопасности NGFW
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.int
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.ipphones
+
+  flix.network.ngfw.cntxt8:
+    title: CNTXT8-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    class: 'Межсетевое экранирование'
+    segment_id: flix.network_segment.office.int
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.mgmt
+
   flix.kb.waf_1:
-    usage: Shared
     title: WAF
     description: WAF for All-App
     class: Защита веб-приложений WAF
@@ -647,7 +615,6 @@ seaf.ta.p41.services.kb:
     segment_id: flix.network_segment.dc.ntwrk.01
 
   flix.kb.firewall_1:
-    usage: Shared
     title: NGFW-IDFW_NEW
     description: Пограничный NGFW
     class: Межсетевое экранирование
@@ -657,7 +624,6 @@ seaf.ta.p41.services.kb:
       - flix.lan.dc.ext.lan
 
   flix.kb.fpsu_1:
-    usage: Shared
     title: FPSU-1
     description: ФПСУ для ширования канала
     class: Шифрование канала
@@ -667,10 +633,41 @@ seaf.ta.p41.services.kb:
       - flix.wan.dc.isp.01
 
   flix.kb.ddos_1:
-    usage: Shared
     title: DDOS
     description: Сервис защиты от DDOs от BiZone
     class: Защита от атака типа "Отказ в обслуживании"
     segment_id: flix.network_segment.dc.ntwrk.05
     network_connection:
       - flix.wan.dc.isp.01
+
+  flix.kb.1:
+    title: S1
+    description: Сервис кибер безопасности
+    class: Инструментальный контроль защищенности
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.2:
+    title: S2
+    description: Сервис кибер безопасности
+    class: Управление доступом пользователей
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.3:
+    title: S3
+    description: Сервис кибер безопасности
+    class: Механизмы ААА
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.4:
+    title: S4
+    description: Сервис кибер безопасности
+    class: Межсетевое экранирование
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan

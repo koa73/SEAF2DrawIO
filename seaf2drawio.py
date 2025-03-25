@@ -113,7 +113,7 @@ def add_pages(pattern):
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
 
-def add_node_object(pattern, data, key_id):
+def add_object(pattern, data, key_id):
 
     #print(f'-------- {page_name} ------------------{key_id} --------------------------------')
 
@@ -209,7 +209,7 @@ if __name__ == '__main__':
 
                 try:
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),
-                                             sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
+                        sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
                     add_pages(object_pattern)
                     object_pattern.update({
                                 'count': 0,               # Счетчик объектов
@@ -223,7 +223,7 @@ if __name__ == '__main__':
                         if diagram._node_exists(id=i):
                             diagram.update_node(id=i, data=object_data[i])
                         else:
-                            add_node_object(object_pattern, object_data[i], i)
+                            add_object(object_pattern, object_data[i], i)
 
                 except KeyError as e:
                     pass

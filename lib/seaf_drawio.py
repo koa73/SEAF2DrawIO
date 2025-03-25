@@ -205,7 +205,6 @@ class SeafDrawio:
 
             if kwargs.get('sort'):
                 return dict(sorted(r.items(), key=lambda item: self.find_value_by_key(item[1], kwargs["sort"])))
-
             return r
         else:
             return x

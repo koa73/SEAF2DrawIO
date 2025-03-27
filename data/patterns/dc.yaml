@@ -312,20 +312,65 @@ ddos:
   h: 40
   algo: 'Y+'
 
-kb_services:
+kb_services_aaa:
   xml : >
-    <object label="{{label}}" id="{{id}}">
-      <mxCell style="shape=mxgraph.cisco.misc.ace;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="{segment_id}">
-        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="40" height="40" as="geometry" />
       </mxCell>
     </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="40" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#923931;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.network_access_controllist;fillColor=none;gradientColor=none;container=0;shadow=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="20" y="13" width="15" height="15" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.p41.services.kb'
+  parent_id: 'segment_id'
+  type: 'class:Механизмы ААА'
+  deep: 6
+  offset: 30
+  x: 30
+  y: 1100
+  w: 40
+  h: 40
+  algo: 'X+'
+
+kb_services:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="{{width}}" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#923931;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="13.65853658536588" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15075;fillColor=#923931;gradientColor=none;shape=stencil(pVbZcoJAEPwaXrdmZ/Z8TBnzH1bESMVoCjXRvw+wHHuAYOWF2qMbumdmZ8lodd5vvvMM4XwpT5/5b7G97DN6zRCL4z4vi0s1ymid0Wp3KvOP8nQ9bt38e1Mj69HX6ad+w83xLDKuahbC3a0IwaRuVt4c4VAcfQIw/BceLUPr49+vpVPEewa3CrQRxElTS243OTEu0EjdPJW17tNwQ7evKz9SGYVaSLAGeEtvt6FFk5vKdn4nf7vRBS8j0lAzpwqlsIChNAiVWGaALLZqZKhj0gb15FBZFLVGXRTonrIoL7WTx/jYPDGJVnCuldAgLYAM/TcvGFxZq8KAQBgCoZjx8AOcQniYqin3EHixYqbGIJRuNRuyUT1D4ZPGu2RCVFZebCmETCYvOYYBY+SQKFaLMQapFhcdEohqsV/oJE8YphhOo/EcMTBQ0nSl6gc0nykGfGQXZwqP0uDSaLEvykhyQMJOirzbXtzpasrQq6Icaj8iBEBRUQrWNyLeOe4iYh4HJG57Jg1GLFVJ5nXVqN6mPtf1ZMPSpokzNsnjPtsKfdKiZpjm7mlCkuynCdVguKV3xeHgLnl/P77VqyX3R0DrPw==);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="21.463414634146318" y="16" width="7.804878048780488" height="11" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15076;rotation=90;fillColor=#923931;gradientColor=none;shape=stencil(lVbbbsIwDP2avlqJnevjxNh/oAGjGgNUYGN/v7RpaeOFRvAQBfs4PnZspxUtzrvVaVOhOF+a4+fmp15fdhW9Voj1Ybdp6kvYVbSsaLE9NpuP5ng9rOP/06pFtruv43d7wi3aGQcKWysUv1GiFchO8Bbx+/owi1cGPE4N3q9N9CAjwBlwCqXQaEhq1xv3SkVAk19U3jAqpRA9uheQAiM1OdWtukcTR/cCVEBmZCZeMuRGo0EgQaA2Snar8F6lnKwNh97jwZSfSBlpRkgUyCBCmyLrvLLBSUpMpDxYZh7SphT+RGpYYvK5H9wTjLwVy0q4Y+28VdStjBghSJmSUxakY+TSKpwa9UXmwarHZasl3Csvvfgs3IZwDD8faeZ8C86nBsHjDKHgwaSEbNsJTxkgOJyhpMGmlMx8Z/8LQfPOLho8OTo4Ph1N9+4ZLgzQTNG8XnW2M+VoPW0Pz0aNmSvgUN3CGo/Ureg9mzxmUi7DMDJgbKHB8j6HWVAgnI+2V2KBMB9MLZ53HGer5obTQ4fD4M6+AVgIlSbGz6c371MWrhTnosVCMT1ILyvdzEAr1XrYjC/4tt7v4wfAVM9f/CCKXwu0/AM=);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="27.31707317073176" y="19" width="4.878048780487805" height="10" as="geometry" />
+    </mxCell>
   schema: 'seaf.ta.p41.services.kb'
   parent_id: 'segment_id'
   deep: 6
   offset: 30
   x: 30
   y: 1100
-  w: 45
+  w: 40
   h: 40
   algo: 'X+'
 

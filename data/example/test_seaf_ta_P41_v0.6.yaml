@@ -671,3 +671,59 @@ seaf.ta.p41.services.kb:
     segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
+
+  flix.kb.5:
+    title: S5
+    description: Сервис кибер безопасности
+    class: Потоковый антивирус
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.6:
+    title: S6
+    description: Сервис кибер безопасности
+    class: Контроль подключений к сети
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.7:
+    title: S7
+    description: Сервис кибер безопасности
+    class: Шлюзы безопасности прикладного уровня
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.8:
+    title: S8
+    description: Сервис кибер безопасности
+    class: Контентная фильтрация и разграничение доступа в Интернет
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.9:
+    title: S9
+    description: Сервис кибер безопасности
+    class: Аудит событий КБ
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.10:
+    title: S10
+    description: Сервис кибер безопасности
+    class: Динамический анализ угроз Sandbox
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.11:
+    title: S11
+    description: Сервис кибер безопасности
+    class: Безопасность конфигураций
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan

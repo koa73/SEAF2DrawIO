@@ -184,9 +184,12 @@ def add_links(pattern):
                     else:
                         print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
                               f'{page_name}')
-    except KeyError:
+    except KeyError as e:
         pass
-        print(f" INFO : Не найдены объекты '{pattern['schema']}' для добавление связей на диаграмму {page_name}.")
+        print(f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
+    except TypeError as e:
+        pass
+        print(f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
 
 if __name__ == '__main__':
 

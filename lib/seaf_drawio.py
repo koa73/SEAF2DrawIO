@@ -131,6 +131,7 @@ class SeafDrawio:
                     return result
         return None  # Return None if the key is not found
 
+
     @staticmethod
     def contains_object_tag(input_string, tag):
         """
@@ -204,7 +205,11 @@ class SeafDrawio:
             r = {k2: v2 for k2, v2 in x.items() if self.list_contain(self.find_key_value(v2, k1), v1)}
 
             if kwargs.get('sort'):
-                return dict(sorted(r.items(), key=lambda item: self.find_value_by_key(item[1], kwargs["sort"])))
+                try:
+                    return dict(sorted(r.items(), key=lambda item: self.find_value_by_key(item[1], kwargs["sort"])))
+                except TypeError:
+                    print(f" INFO: При сортировке объектов: '{key}' выявлен не корректный параметр: '{kwargs.get('sort')}'")
+                    pass
             return r
         else:
             return x

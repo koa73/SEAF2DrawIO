@@ -727,3 +727,11 @@ seaf.ta.services.kb:
     segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
+
+  flix.kb.12:
+    title: S12
+    description: Сервис кибер безопасности
+    class: Безопасность конфигураций
+    segment_id: flix.network_segment.office.int
+    network_connection:
+      - flix.lan.office.admin.ARM

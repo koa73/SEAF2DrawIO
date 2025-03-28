@@ -347,7 +347,7 @@ kb_services_aaa:
   deep: 6
   offset: 30
   x: 30
-  y: 1100
+  y: 1000
   w: 40
   h: 40
   algo: 'X+'
@@ -377,7 +377,7 @@ kb_services_ib_tool:
   deep: 6
   offset: 30
   x: 30
-  y: 1150
+  y: 1050
   w: 40
   h: 40
   algo: 'X+'
@@ -407,7 +407,7 @@ kb_services_antivirus:
   deep: 6
   offset: 30
   x: 30
-  y: 1200
+  y: 1100
   w: 40
   h: 40
   algo: 'X+'
@@ -440,7 +440,7 @@ kb_services_user_access:
   deep: 6
   offset: 30
   x: 30
-  y: 1100
+  y: 1150
   w: 40
   h: 40
   algo: 'X+'
@@ -470,7 +470,7 @@ kb_services_app_gateway:
   deep: 6
   offset: 30
   x: 30
-  y: 1100
+  y: 1200
   w: 40
   h: 40
   algo: 'X+'
@@ -499,8 +499,8 @@ kb_services_proxy:
   type: 'class:Контентная фильтрация и разграничение доступа в Интернет'
   deep: 6
   offset: 30
-  x: 80
-  y: 1100
+  x: 30
+  y: 1250
   w: 40
   h: 40
   algo: 'X+'
@@ -529,8 +529,8 @@ kb_services_audit:
   type: 'class:Аудит событий КБ'
   deep: 6
   offset: 30
-  x: 80
-  y: 1100
+  x: 30
+  y: 1300
   w: 40
   h: 40
   algo: 'X+'
@@ -559,8 +559,8 @@ kb_services_sand_box:
   type: 'class:Динамический анализ угроз Sandbox'
   deep: 6
   offset: 30
-  x: 80
-  y: 1100
+  x: 30
+  y: 1350
   w: 40
   h: 40
   algo: 'X+'
@@ -589,8 +589,8 @@ kb_services_config:
   type: 'class:Безопасность конфигураций'
   deep: 6
   offset: 30
-  x: 80
-  y: 1100
+  x: 30
+  y: 1400
   w: 40
   h: 40
   algo: 'X+'
@@ -618,11 +618,11 @@ kb_services:
   parent_id: 'segment_id'
   deep: 6
   offset: 30
-  x: 30
-  y: 1100
+  x: 180
+  y: 1000
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 #-------------------------------------- Network Links -----------------------------------------------------------------
 

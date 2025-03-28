@@ -487,7 +487,7 @@ seaf.ta.components.network:
 
 
 #### Сервисы кибер безопасности
-seaf.ta.p41.services.kb:
+seaf.ta.services.kb:
 
   flix.network.ngfw.01:
     title: NGFW 1

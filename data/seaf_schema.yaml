@@ -399,7 +399,7 @@
 
 ############### Сетевые устройства ИБ #######################################################
 
-  seaf.ta.p41.services.kb:
+  seaf.ta.services.kb:
     title: Сервисы кибербезопасности
     objects:
       service:
@@ -407,7 +407,7 @@
         title: Сервисы КБ
     schema:
       $defs:
-        seaf.ta.p41.services.kb:
+        seaf.ta.services.kb:
           type: object
           properties:
             class:
@@ -478,7 +478,7 @@
                   title: Прикладные сервисы которые используют данный сервис
                   type: array
                   items:
-                    - $ref: "#/$rels/seaf.ta.p41.app.service.service"
+                    - $ref: "#/$rels/seaf.ta.app.service.service"
               required:
                 - usage
                 - service_id
@@ -489,6 +489,6 @@
       patternProperties:
         "[a-zA-Z0-9_]*(\\.[a-zA-Z0-9_]*)*$":
           type: object
-          $ref: "#/$defs/seaf.ta.p41.services.kb"
+          $ref: "#/$defs/seaf.ta.services.kb"
 
 

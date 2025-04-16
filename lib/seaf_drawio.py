@@ -295,7 +295,7 @@ class SeafDrawio:
         return objects_data
 
     @staticmethod
-    def get_links(file_name):
+    def get_network_connections(file_name):
         tree = ET.parse(file_name)
         root = tree.getroot()
 

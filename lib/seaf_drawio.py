@@ -296,6 +296,34 @@ class SeafDrawio:
 
     @staticmethod
     def get_network_connections(file_name):
+        """
+            Извлекает сетевые соединения из файла диаграммы .drawio (в формате XML),
+            исключая диаграмму с именем "Main Schema". Возвращает связи в виде словаря,
+            где каждый узел содержит список связанных с ним узлов (двунаправленные связи).
+
+            Формат результата:
+                {
+                    "node1": ["node2", "node3"],  # node1 соединен с node2 и node3
+                    "node2": ["node1"],          # node2 соединен только с node1
+                    ...
+                }
+
+            :param:
+                file_name (str): Путь к файлу .drawio/.xml с диаграммой.
+
+            :return:
+                dict: Словарь связей между узлами.
+
+            Пример использования:
+                connections = get_network_connections('network.drawio')
+                print(connections)
+                {
+                    "router1": ["switch1", "firewall1"],
+                    "switch1": ["router1", "server2"],
+                    "firewall1": ["router1"],
+                    "server2": ["switch1"]
+                }
+        """
         tree = ET.parse(file_name)
         root = tree.getroot()
 
@@ -324,8 +352,6 @@ class SeafDrawio:
                         connections[target].append(source)
 
         return connections
-
-
 
     def _create_json_from_schema(self, schema):
         """

@@ -57,12 +57,13 @@ if __name__ == '__main__':
     yaml_dict = {}
     for schema_key, schema in json_schemas.items():
         for d_key, d_val in objects_data.get(schema_key, {}).items():
-            #print(f'd_key:   {d_key}')
+            # Добавляем в объект фактические связи между объектами
+            if d_val.get('network_connection'):
+                d_val['network_connection'] = str(network_connections[d_key])
+
             yaml_dict = d.merge_dicts(yaml_dict,{schema_key: {d_key: d.remove_empty_fields(d.populate_json(schema, d_val))}})
 
     d.write_to_yaml_file(conf['output_file'], yaml_dict)
-
-    #print()
 
 
 

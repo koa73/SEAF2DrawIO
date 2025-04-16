@@ -294,6 +294,39 @@ class SeafDrawio:
                                                 self._get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
         return objects_data
 
+    @staticmethod
+    def get_links(file_name):
+        tree = ET.parse(file_name)
+        root = tree.getroot()
+
+        connections = {}  # Формат: {node: [connected_nodes]}
+
+        for diagram in root.findall(".//diagram"):
+            if diagram.get("name") == "Main Schema":
+                continue  # Пропускаем диаграмму "Main Schema"
+
+            for obj in diagram.findall(".//object"):
+                mx_cell = obj.find("./mxCell")
+                if mx_cell is not None and mx_cell.get("edge") == "1":
+                    source = mx_cell.get("source")
+                    target = mx_cell.get("target")
+
+                    # Добавляем target в список связей source
+                    if source not in connections:
+                        connections[source] = []
+                    if target not in connections[source]:
+                        connections[source].append(target)
+
+                    # Добавляем source в список связей target (для двунаправленности)
+                    if target not in connections:
+                        connections[target] = []
+                    if source not in connections[target]:
+                        connections[target].append(source)
+
+        return connections
+
+
+
     def _create_json_from_schema(self, schema):
         """
         Создает JSON-объект на основе переданной JSON-схемы.

@@ -1,5 +1,5 @@
 from lib import seaf_drawio
-from N2G import drawio_diagram
+#from N2G import drawio_diagram
 import sys
 import argparse
 
@@ -12,7 +12,7 @@ DEFAULT_CONFIG = {
     }
 }
 d = seaf_drawio.SeafDrawio(DEFAULT_CONFIG)
-diagram = drawio_diagram()
+#diagram = drawio_diagram()
 
 
 def __cli_vars(config):
@@ -59,6 +59,8 @@ if __name__ == '__main__':
             yaml_dict = d.merge_dicts(yaml_dict,{schema_key: {d_key: d.remove_empty_fields(d.populate_json(schema, d_val))}})
 
     d.write_to_yaml_file(conf['output_file'], yaml_dict)
+
+    #print(d.get_links(conf['drawio_file']))
 
 
 

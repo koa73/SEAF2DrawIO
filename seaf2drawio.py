@@ -115,8 +115,6 @@ def add_pages(pattern):
 
 def add_object(pattern, data, key_id):
 
-    #print(f'-------- {page_name} ------------------{key_id} --------------------------------')
-
     pattern_count, current_parent = 0, ''
     for xml_pattern in d.get_xml_pattern(pattern['xml'], key_id):
 

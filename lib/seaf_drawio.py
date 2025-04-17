@@ -531,7 +531,6 @@ class SeafDrawio:
 
         return json_obj
 
-
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not os.path.isfile(values):

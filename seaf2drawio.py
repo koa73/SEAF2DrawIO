@@ -179,6 +179,7 @@ def add_object(pattern, data, key_id):
 def add_links(pattern):
 
     diagram.drawio_link_object_xml = pattern['xml']
+    source_id = 'Unknown'
     try :
         for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'],
                                                type=object_pattern.get('type')).items():  # source_id - ID объекта
@@ -230,7 +231,7 @@ if __name__ == '__main__':
                     default_pattern = deepcopy(object_pattern)
 
                     for i in list(object_data.keys()):
-                        print(f'i: {i}   ---  {object_data[i]}')
+                        #print(f'i: {i}   ---  {object_data[i]}')
                         if diagram._node_exists(id=i):
                             diagram.update_node(id=i, data=object_data[i])
                         else:

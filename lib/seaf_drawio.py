@@ -9,6 +9,7 @@ from copy import deepcopy
 from N2G import drawio_diagram
 import html
 import xml.etree.ElementTree as ET
+import xml.sax.saxutils as saxutils
 
 class SeafDrawio:
 
@@ -57,6 +58,24 @@ class SeafDrawio:
             else:
                 default[key] = value
         return default
+
+    def escape_xml_recursive(self, data):
+        """
+        Рекурсивно экранирует специальные символы XML в строках.
+        Поддерживает словари, списки и строки.
+        """
+        if isinstance(data, str):
+            # Экранируем строку
+            return saxutils.escape(data)
+        elif isinstance(data, dict):
+            # Обрабатываем каждый ключ-значение в словаре
+            return {k: self.escape_xml_recursive(v) for k, v in data.items()}
+        elif isinstance(data, list):
+            # Обрабатываем каждый элемент в списке
+            return [self.escape_xml_recursive(item) for item in data]
+        else:
+            # Возвращаем как есть, если это не строка, словарь или список
+            return data
 
     @staticmethod
     def read_yaml_file(file, **kwargs):

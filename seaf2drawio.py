@@ -6,6 +6,7 @@ import os
 import argparse
 from copy import deepcopy
 from lib import seaf_drawio
+import xml.etree.ElementTree as ET
 
 patterns_dir = 'data/patterns/'
 diagram = drawio_diagram()
@@ -98,17 +99,20 @@ def get_parent_value(pattern, current_parent):
 def add_pages(pattern):
 
     if pattern.get('ext_page'):
-
         page_data = d.get_object(conf['data_yaml_file'], pattern['schema'])
         diagram_xml_default = diagram.drawio_diagram_xml
 
         for key_id in list( page_data.keys() ):
 
             diagram.drawio_diagram_xml = pattern['ext_page']
-            diagram.add_diagram(key_id + '_page', page_data[key_id]['title'])
+            try:
+                diagram.add_diagram(key_id + '_page', page_data[key_id]['title'])
+                diagram_pages[k].append(page_data[key_id]['title'])
+                d.append_to_dict(diagram_ids, page_data[key_id]['title'], key_id)
+            except ET.ParseError:
+                print(f'WARNING ! Не используйте XML зарезервированные символы <>&\'\" в поле title для объектов dc/office')
+                pass
 
-            diagram_pages[k].append(page_data[key_id]['title'])
-            d.append_to_dict(diagram_ids, page_data[key_id]['title'], key_id)
 
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
@@ -145,6 +149,12 @@ def add_object(pattern, data, key_id):
             return
 
         if key_id in diagram_ids[page_name]:
+
+            """
+                Заменяет ключ 'id' на 'sid' в словаре, если он существует.
+            """
+            if 'id' in data:
+                data['sid'] = data.pop('id')
 
             data['schema'] = pattern['schema']
             diagram.add_node(
@@ -220,7 +230,7 @@ if __name__ == '__main__':
                     default_pattern = deepcopy(object_pattern)
 
                     for i in list(object_data.keys()):
-                        #print(f'i: {i}   ---  {object_data[i]}')
+                        print(f'i: {i}   ---  {object_data[i]}')
                         if diagram._node_exists(id=i):
                             diagram.update_node(id=i, data=object_data[i])
                         else:

@@ -7,7 +7,6 @@ import os
 import argparse
 from copy import deepcopy
 from N2G import drawio_diagram
-import html
 import xml.etree.ElementTree as ET
 import xml.sax.saxutils as saxutils
 
@@ -272,7 +271,7 @@ class SeafDrawio:
 
         # Исключение атрибутов 'id' и 'label'
         return {
-            attributes.get('schema'): {attributes.get('OID'): {key: html.unescape(value) for key, value in attributes.items()
+            attributes.get('schema'): {attributes.get('OID'): {key: value for key, value in attributes.items()
                                                        if key not in ['id', 'label', 'OID', 'schema']}}}
 
     def get_data_from_diagram(self, file_name):

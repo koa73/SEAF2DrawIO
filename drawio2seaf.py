@@ -1,5 +1,4 @@
 from lib import seaf_drawio
-from N2G import drawio_diagram
 import sys
 import argparse
 

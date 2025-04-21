@@ -144,12 +144,15 @@ def add_object(pattern, data, key_id):
 
         except KeyError as e:
 
-            #print("Can't add object: {id} to page: {page}. Key: {key} out of dictionary. Data: {data}"
+            #print("Error: Can't add object: {id} to page: {page}. Key: {key} out of dictionary. Data: {data}"
             #      .format(key=str(e), id=i, page=page_name, data=data))
             return
 
+
         if key_id in diagram_ids[page_name]:
 
+            if i == 'flix.wan.office.isp.guest':
+                print(f' ---> {i} -- {page_name} --- {data}')
             """
                 Заменяет ключ 'id' на 'sid' в словаре, если он существует.
             """

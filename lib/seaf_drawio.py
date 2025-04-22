@@ -263,7 +263,7 @@ class SeafDrawio:
                             }
 
                     Примечания:
-                        - Атрибуты 'id', 'label', 'OID' и 'schema' не включаются в результирующий словарь на третьем уровне.
+                        - Атрибуты  id, 'label', OID, 'schema' не включаются в результирующий словарь на третьем уровне.
                         - Значения атрибутов декодируются с помощью `html.unescape` для преобразования HTML-сущностей в читаемый текст.
         """
         # Извлечение всех атрибутов тега <object>
@@ -272,7 +272,7 @@ class SeafDrawio:
         # Исключение атрибутов 'id' и 'label'
         return {
             attributes.get('schema'): {attributes.get('OID'): {key: value for key, value in attributes.items()
-                                                       if key not in ['id', 'label', 'OID', 'schema']}}}
+                                                       if key not in [ 'id', 'label', 'OID', 'schema']}}}
 
     def get_data_from_diagram(self, file_name):
         """
@@ -308,8 +308,14 @@ class SeafDrawio:
             value = value if i > 0 else list(set(value) - {"0101", "0103"})
             diagram.go_to_diagram(diagram_index=i)
             for object_id in value:
-                objects_data = self.merge_dicts(objects_data,
-                                                self._get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
+                # Изменяем id объекта если оно не равно OID
+                root = diagram.current_root.find("./*[@id='{}']".format(object_id))
+                if root.attrib['id'] != root.attrib['OID']:
+                    root.attrib['id'] = root.attrib['OID']
+
+                objects_data = self.merge_dicts(objects_data, self._get_tag_attr(root))
+
+        diagram.dump_file(filename=os.path.basename(file_name), folder=os.path.dirname(file_name))
         return objects_data
 
     def _process_element(self, element, connections):

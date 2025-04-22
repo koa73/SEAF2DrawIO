@@ -310,7 +310,7 @@ class SeafDrawio:
             for object_id in value:
                 # Изменяем id объекта если оно не равно OID
                 root = diagram.current_root.find("./*[@id='{}']".format(object_id))
-                if root.attrib['id'] != root.attrib['OID']:
+                if root.attrib.get('OID') and root.attrib['id'] != root.attrib['OID']:
                     root.attrib['id'] = root.attrib['OID']
 
                 objects_data = self.merge_dicts(objects_data, self._get_tag_attr(root))

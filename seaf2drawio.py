@@ -151,8 +151,6 @@ def add_object(pattern, data, key_id):
 
         if key_id in diagram_ids[page_name]:
 
-            if i == 'flix.wan.office.isp.guest':
-                print(f' ---> {i} -- {page_name} --- {data}')
             """
                 Заменяет ключ 'id' на 'sid' в словаре, если он существует.
             """

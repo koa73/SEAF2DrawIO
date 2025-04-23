@@ -4,7 +4,7 @@ Part 1 :
 https://rutube.ru/video/private/568d0b7cd0002bfa4b0e1f6af1257dc2/?p=-yuSFwRElw5FiwP8T4C79g
 
 Part 2 :
-https://rutube.ru/video/private/66c6511498fb994ad68fb9d580d7f36d/?p=kHWqLruJzABWPaOL4O_oFA
+https://rutube.ru/video/private/f78067fc75f01a36facbb27053381000/?p=qjARamjzMJiSvxbTmJWVzw
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 

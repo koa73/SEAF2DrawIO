@@ -59,7 +59,7 @@ office:
   h: 60
   w : 120
   offset: 25
-  algo: 'Y+'
+  algo: 'X-'
   deep: 3
   ext_page : >
     <diagram id="{id}" name="{name}">

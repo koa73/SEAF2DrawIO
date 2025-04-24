@@ -397,5 +397,98 @@
         "^[a-zA-Z0-9_\\.]*$":
           $ref: "#/$defs/seaf.ta.components.network"
 
+############### Сетевые устройства ИБ #######################################################
+
+  seaf.ta.services.kb:
+    title: Сервисы кибербезопасности
+    objects:
+      service:
+        route: "/"
+        title: Сервисы КБ
+    schema:
+      $defs:
+        seaf.ta.services.kb:
+          type: object
+          properties:
+            class:
+              title: Класс сервиса
+              type: string
+              enum:
+                - Механизмы ААА
+                - Межсетевое экранирование
+                - Сигнатурный анализ режим обнаружнения вторжений
+                - Сигнатурный анализ режим предотвращения вторжений
+                - Поведенческий анализ сетевого трафика
+                - Динамический анализ угроз Sandbox
+                - Защита от атака типа "Отказ в обслуживании"
+                - Шифрование канала
+                - Потоковый антивирус
+                - Управление доступом пользователей
+                - Контроль подключений к сети
+                - Защита веб-приложений WAF
+                - Контентная фильтрация и разграничение доступа в Интернет
+                - Шлюзы безопасности прикладного уровня
+                - Инструментальный контроль защищенности
+                - Безопасность конфигураций
+                - Аудит событий КБ
+            ka_dzo:
+              title: Классификатор сервисов в КАДЗО (* Определиться с классификатором *)
+              type: string
+              enum:
+                - ИБ-Антивирусное ПО
+                - ИБ-Аутентификация пользователей
+                - ИБ-Аудит действий персонала
+                - ИБ-Биометрия
+                - ИБ-Защита от киберугроз
+                - ИБ-Защита от сетевых атак
+                - ИБ-Защита трафика
+                - ИБ-Защита от утечек информации
+                - ИБ-Криптография и шифрование
+                - ИБ-Предотвращение мошенничества
+                - ИБ-Управление доступом
+                - ИБ-Управление сертификатами
+                - ИБ-Управление событиями инф. безопасности
+          oneOf:
+            - type: object
+              properties:
+                usage:
+                  type: string
+                  enum:
+                    - Shared
+                network_connection:
+                  title: Перечисление сетей к которым подключен сервис
+                  type: array
+                  items:
+                    $ref: "#/$rels/seaf.ta.services.network.network"
+                segment_id:
+                  title: Вхождение в сетевые сегменты сети
+                  $ref: "#/$rels/seaf.ta.services.network_segment.network_segment"
+              required:
+                - usage
+                - network_connection
+                - segment_id
+              additionalProperties: false
+            - type: object
+              properties:
+                usage:
+                  type: string
+                  enum:
+                    - Dedicated
+                service_id:
+                  title: Прикладные сервисы которые используют данный сервис
+                  type: array
+                  items:
+                    - $ref: "#/$rels/seaf.ta.app.service.service"
+              required:
+                - usage
+                - service_id
+              additionalProperties: false
+          required:
+            - class
+      type: object
+      patternProperties:
+        "[a-zA-Z0-9_]*(\\.[a-zA-Z0-9_]*)*$":
+          type: object
+          $ref: "#/$defs/seaf.ta.services.kb"
 
 

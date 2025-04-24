@@ -7,8 +7,8 @@ import os
 import argparse
 from copy import deepcopy
 from N2G import drawio_diagram
-import html
 import xml.etree.ElementTree as ET
+import xml.sax.saxutils as saxutils
 
 class SeafDrawio:
 
@@ -57,6 +57,24 @@ class SeafDrawio:
             else:
                 default[key] = value
         return default
+
+    def escape_xml_recursive(self, data):
+        """
+        Рекурсивно экранирует специальные символы XML в строках.
+        Поддерживает словари, списки и строки.
+        """
+        if isinstance(data, str):
+            # Экранируем строку
+            return saxutils.escape(data)
+        elif isinstance(data, dict):
+            # Обрабатываем каждый ключ-значение в словаре
+            return {k: self.escape_xml_recursive(v) for k, v in data.items()}
+        elif isinstance(data, list):
+            # Обрабатываем каждый элемент в списке
+            return [self.escape_xml_recursive(item) for item in data]
+        else:
+            # Возвращаем как есть, если это не строка, словарь или список
+            return data
 
     @staticmethod
     def read_yaml_file(file, **kwargs):
@@ -131,6 +149,7 @@ class SeafDrawio:
                     return result
         return None  # Return None if the key is not found
 
+
     @staticmethod
     def contains_object_tag(input_string, tag):
         """
@@ -204,8 +223,11 @@ class SeafDrawio:
             r = {k2: v2 for k2, v2 in x.items() if self.list_contain(self.find_key_value(v2, k1), v1)}
 
             if kwargs.get('sort'):
-                return dict(sorted(r.items(), key=lambda item: self.find_value_by_key(item[1], kwargs["sort"])))
-
+                try:
+                    return dict(sorted(r.items(), key=lambda item: self.find_value_by_key(item[1], kwargs["sort"])))
+                except TypeError:
+                    print(f" INFO: При сортировке объектов: '{key}' выявлен не корректный параметр: '{kwargs.get('sort')}'")
+                    pass
             return r
         else:
             return x
@@ -241,7 +263,7 @@ class SeafDrawio:
                             }
 
                     Примечания:
-                        - Атрибуты 'id', 'label', 'OID' и 'schema' не включаются в результирующий словарь на третьем уровне.
+                        - Атрибуты  id, 'label', OID, 'schema' не включаются в результирующий словарь на третьем уровне.
                         - Значения атрибутов декодируются с помощью `html.unescape` для преобразования HTML-сущностей в читаемый текст.
         """
         # Извлечение всех атрибутов тега <object>
@@ -249,8 +271,10 @@ class SeafDrawio:
 
         # Исключение атрибутов 'id' и 'label'
         return {
-            attributes.get('schema'): {attributes.get('OID'): {key: html.unescape(value) for key, value in attributes.items()
-                                                       if key not in ['id', 'label', 'OID', 'schema']}}}
+
+            attributes.get('schema'): {attributes.get('OID'): {key: value for key, value in attributes.items()
+                                                       if key not in [ 'id', 'label', 'OID', 'schema']}}}
+
 
     def get_data_from_diagram(self, file_name):
         """
@@ -286,9 +310,77 @@ class SeafDrawio:
             value = value if i > 0 else list(set(value) - {"0101", "0103"})
             diagram.go_to_diagram(diagram_index=i)
             for object_id in value:
-                objects_data = self.merge_dicts(objects_data,
-                                                self._get_tag_attr(diagram.current_root.find("./*[@id='{}']".format(object_id))))
+                # Изменяем id объекта если оно не равно OID
+                root = diagram.current_root.find("./*[@id='{}']".format(object_id))
+                if root.attrib.get('OID') and root.attrib['id'] != root.attrib['OID']:
+                    root.attrib['id'] = root.attrib['OID']
+
+                objects_data = self.merge_dicts(objects_data, self._get_tag_attr(root))
+
+        diagram.dump_file(filename=os.path.basename(file_name), folder=os.path.dirname(file_name))
         return objects_data
+
+    def _process_element(self, element, connections):
+        """Рекурсивно обрабатывает элементы, ищет соединения (mxCell edge="1")."""
+        # Если элемент — mxCell и это соединение (edge="1")
+        if element.tag == "mxCell" and element.get("edge") == "1":
+            source = element.get("source")
+            target = element.get("target")
+
+            if source and target:  # Добавляем связь, только если есть оба узла
+                connections.setdefault(source, [])
+                if target not in connections[source]:
+                    connections[source].append(target)
+
+                connections.setdefault(target, [])
+                if source not in connections[target]:
+                    connections[target].append(source)
+
+        # Рекурсивно обрабатываем дочерние элементы
+        for child in element:
+            self._process_element(child, connections)
+
+    def get_network_connections(self, file_name):
+        """
+            Извлекает сетевые соединения из файла диаграммы .drawio (в формате XML),
+            исключая диаграмму с именем "Main Schema". Возвращает связи в виде словаря,
+            где каждый узел содержит список связанных с ним узлов (двунаправленные связи).
+
+            Формат результата:
+                {
+                    "node1": ["node2", "node3"],  # node1 соединен с node2 и node3
+                    "node2": ["node1"],          # node2 соединен только с node1
+                    ...
+                }
+
+            :param:
+                file_name (str): Путь к файлу .drawio/.xml с диаграммой.
+
+            :return:
+                dict: Словарь связей между узлами.
+
+            Пример использования:
+                connections = get_network_connections('network.drawio')
+                print(connections)
+                {
+                    "router1": ["switch1", "firewall1"],
+                    "switch1": ["router1", "server2"],
+                    "firewall1": ["router1"],
+                    "server2": ["switch1"]
+                }
+        """
+        tree = ET.parse(file_name)
+        root = tree.getroot()
+
+        connections = {}  # Формат: {node: [connected_nodes]}
+
+        # Обходим все диаграммы, кроме "Main Schema"
+        for diagram in root.findall(".//diagram"):
+            if diagram.get("name") == "Main Schema":
+                continue
+            self._process_element(diagram, connections)  # Запускаем рекурсивный обход
+
+        return connections
 
     def _create_json_from_schema(self, schema):
         """
@@ -467,7 +559,6 @@ class SeafDrawio:
                         json_obj[key] = self.is_dict_like_string(value)
 
         return json_obj
-
 
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):

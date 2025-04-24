@@ -6,6 +6,7 @@ import os
 import argparse
 from copy import deepcopy
 from lib import seaf_drawio
+import xml.etree.ElementTree as ET
 
 patterns_dir = 'data/patterns/'
 diagram = drawio_diagram()
@@ -98,24 +99,25 @@ def get_parent_value(pattern, current_parent):
 def add_pages(pattern):
 
     if pattern.get('ext_page'):
-
         page_data = d.get_object(conf['data_yaml_file'], pattern['schema'])
         diagram_xml_default = diagram.drawio_diagram_xml
 
         for key_id in list( page_data.keys() ):
 
             diagram.drawio_diagram_xml = pattern['ext_page']
-            diagram.add_diagram(key_id + '_page', page_data[key_id]['title'])
+            try:
+                diagram.add_diagram(key_id + '_page', page_data[key_id]['title'])
+                diagram_pages[k].append(page_data[key_id]['title'])
+                d.append_to_dict(diagram_ids, page_data[key_id]['title'], key_id)
+            except ET.ParseError:
+                print(f'WARNING ! Не используйте XML зарезервированные символы <>&\'\" в поле title для объектов dc/office')
+                pass
 
-            diagram_pages[k].append(page_data[key_id]['title'])
-            d.append_to_dict(diagram_ids, page_data[key_id]['title'], key_id)
 
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
 
-def add_node_object(pattern, data, key_id):
-
-    #print(f'-------- {page_name} ------------------{key_id} --------------------------------')
+def add_object(pattern, data, key_id):
 
     pattern_count, current_parent = 0, ''
     for xml_pattern in d.get_xml_pattern(pattern['xml'], key_id):
@@ -142,11 +144,18 @@ def add_node_object(pattern, data, key_id):
 
         except KeyError as e:
 
-            #print("Can't add object: {id} to page: {page}. Key: {key} out of dictionary. Data: {data}"
+            #print("Error: Can't add object: {id} to page: {page}. Key: {key} out of dictionary. Data: {data}"
             #      .format(key=str(e), id=i, page=page_name, data=data))
             return
 
+
         if key_id in diagram_ids[page_name]:
+
+            """
+                Заменяет ключ 'id' на 'sid' в словаре, если он существует.
+            """
+            if 'id' in data:
+                data['sid'] = data.pop('id')
 
             data['schema'] = pattern['schema']
             diagram.add_node(
@@ -171,6 +180,7 @@ def add_node_object(pattern, data, key_id):
 def add_links(pattern):
 
     diagram.drawio_link_object_xml = pattern['xml']
+    source_id = 'Unknown'
     try :
         for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'],
                                                type=object_pattern.get('type')).items():  # source_id - ID объекта
@@ -184,9 +194,12 @@ def add_links(pattern):
                     else:
                         print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
                               f'{page_name}')
-    except KeyError:
+    except KeyError as e:
         pass
-        print(f" INFO : Не найдены объекты '{pattern['schema']}' для добавление связей на диаграмму {page_name}.")
+        print(f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
+    except TypeError as e:
+        pass
+        print(f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
 
 if __name__ == '__main__':
 
@@ -209,7 +222,7 @@ if __name__ == '__main__':
 
                 try:
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),
-                                             sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
+                        sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
                     add_pages(object_pattern)
                     object_pattern.update({
                                 'count': 0,               # Счетчик объектов
@@ -223,7 +236,7 @@ if __name__ == '__main__':
                         if diagram._node_exists(id=i):
                             diagram.update_node(id=i, data=object_data[i])
                         else:
-                            add_node_object(object_pattern, object_data[i], i)
+                            add_object(object_pattern, object_data[i], i)
 
                 except KeyError as e:
                     pass

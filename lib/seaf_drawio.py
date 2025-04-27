@@ -560,6 +560,34 @@ class SeafDrawio:
 
         return json_obj
 
+    @staticmethod
+    def dump_file(filename=None, folder="./Output/", content=None):
+        """
+        Method to save current diagram in .drawio file.
+
+        **Parameters**
+
+        * ``filename`` (str) name of the file to save diagram into
+        * ``folder`` (str) OS path to folder where to save diagram file*
+        * ``content`` diagram
+
+        If no ``filename`` provided, timestamped format will be
+        used to produce filename, e.g.: ``Sun Jun 28 20-30-57 2020_output.drawio``
+
+        """
+        import time
+
+        # create output folder if it does not exists
+        os.makedirs(folder, exist_ok=True)
+        # create file name
+        if not filename:
+            ctime = time.ctime().replace(":", "-")
+            filename = "{}_output.drawio".format(ctime)
+        # save file to disk
+        with open(os.path.join(folder, filename), "w", encoding="utf-8") as outfile:
+            outfile.write(ET.tostring(content, encoding="unicode"))
+
+
 class ValidateFile(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not os.path.isfile(values):

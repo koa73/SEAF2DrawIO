@@ -13,7 +13,7 @@ diagram = drawio_diagram()
 node_xml_default = diagram.drawio_node_object_xml
 root_object = 'seaf.ta.services.dc_region'
 diagram_pages = {'main': ['Main Schema'], 'office': [], 'dc': []}
-diagram_ids = {'Main Schema':[]}
+diagram_ids = {'Main Schema': []}
 conf = {}
 
 # Переменные по умолчанию
@@ -59,13 +59,13 @@ def position_offset(pattern):
         # По оси Y cверху вниз относительно родительского объекта
         case 'Y+':
             if return_ready(pattern):
-                pattern['x'] = pattern['x'] +  pattern['w'] + pattern['offset']
+                pattern['x'] = pattern['x'] + pattern['w'] + pattern['offset']
                 pattern['y'] = pattern['y'] - (pattern['h'] + pattern['offset']) * pattern['deep']
             pattern['y'] = pattern['y'] + pattern['h'] + pattern['offset']
 
         case 'Y-':
             if return_ready(pattern):
-                pattern['x'] = pattern['x'] +  pattern['w'] + pattern['offset']
+                pattern['x'] = pattern['x'] + pattern['w'] + pattern['offset']
                 pattern['y'] = pattern['y'] + (pattern['h'] + pattern['offset']) * pattern['deep']
             pattern['y'] = pattern['y'] - pattern['h'] - pattern['offset']
 
@@ -82,6 +82,7 @@ def position_offset(pattern):
                 pattern['x'] = pattern['x'] - (pattern['w'] + pattern['offset']) * pattern['deep']
             pattern['x'] = pattern['x'] + pattern['w'] + pattern['offset']
 
+
 def return_ready(pattern):
     pattern['count']+=1
     if pattern['count'] == pattern['deep']:
@@ -89,12 +90,14 @@ def return_ready(pattern):
 
     return not bool(pattern['count'])
 
+
 def get_parent_value(pattern, current_parent):
     r = ''
     if pattern.get('parent_key'):
         r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_yaml_file(conf['data_yaml_file']))),
                                                     current_parent), pattern['parent_key'])
     return r
+
 
 def add_pages(pattern):
 
@@ -116,6 +119,7 @@ def add_pages(pattern):
 
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
+
 
 def add_object(pattern, data, key_id):
 
@@ -148,7 +152,6 @@ def add_object(pattern, data, key_id):
             #      .format(key=str(e), id=i, page=page_name, data=data))
             return
 
-
         if key_id in diagram_ids[page_name]:
 
             """
@@ -177,6 +180,7 @@ def add_object(pattern, data, key_id):
 
         diagram.drawio_node_object_xml = node_xml_default
 
+
 def add_links(pattern):
 
     diagram.drawio_link_object_xml = pattern['xml']
@@ -200,6 +204,7 @@ def add_links(pattern):
     except TypeError as e:
         pass
         print(f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
+
 
 if __name__ == '__main__':
 
@@ -232,7 +237,6 @@ if __name__ == '__main__':
                     default_pattern = deepcopy(object_pattern)
 
                     for i in list(object_data.keys()):
-                        #print(f'i: {i}   ---  {object_data[i]}')
                         if diagram._node_exists(id=i):
                             diagram.update_node(id=i, data=object_data[i])
                         else:
@@ -245,5 +249,5 @@ if __name__ == '__main__':
                 if bool(re.match(r'^network_links(_\d+)*',k)):
                     add_links(object_pattern)  # Связывание объектов на текущей диаграмме
 
-    diagram.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file'])
-    if os.path.dirname(conf['output_file']) else './')
+    d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
+                content=diagram.drawing if os.path.dirname(conf['output_file']) else './')

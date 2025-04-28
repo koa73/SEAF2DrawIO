@@ -143,7 +143,7 @@ def add_object(pattern, data, key_id):
 
         try:
             diagram.drawio_node_object_xml = diagram.drawio_node_object_xml.format_map(
-                data | {'Group_ID': f'{key_id}_0', 'parent_type' : default_pattern['parent']})  # замена в xml шаблоне переменных в одинарных {}, добавление ID группы
+                data | {'Group_ID': f'{key_id}_0', 'parent_type' : default_pattern['parent'], 'description' : data.get('description','') })  # замена в xml шаблоне переменных в одинарных {}, добавление ID группы
             data['OID'] = key_id
 
         except KeyError as e:

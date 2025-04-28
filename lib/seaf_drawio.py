@@ -569,7 +569,7 @@ class SeafDrawio:
 
         * ``filename`` (str) name of the file to save diagram into
         * ``folder`` (str) OS path to folder where to save diagram file*
-        * ``content`` diagram
+        * ``content`` diagram content
 
         If no ``filename`` provided, timestamped format will be
         used to produce filename, e.g.: ``Sun Jun 28 20-30-57 2020_output.drawio``

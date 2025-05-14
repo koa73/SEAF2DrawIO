@@ -239,7 +239,7 @@ if __name__ == '__main__':
                     default_pattern = deepcopy(object_pattern)
 
                     for i in list(object_data.keys()):
-                        if diagram._node_exists(id=i) and  i in diagram_ids[page_name]:
+                        if i in diagram.nodes_ids[diagram.current_diagram_id]:
                             diagram.update_node(id=i, data=object_data[i])
                             d.append_to_dict(diagram_ids, page_name, i)
                         else:

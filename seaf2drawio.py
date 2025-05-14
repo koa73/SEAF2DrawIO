@@ -130,9 +130,6 @@ def add_object(pattern, data, key_id):
 
         # Если у элемента есть родитель, получаем ID родителя и проверяем связан ли родитель с текущей диаграммой (страницей)
         # добавляем в справочник ID элемента
-        if i == 'sberins.lan.03' and page_name == '3Data СБС':
-            print(diagram_ids[page_name])
-
         if pattern.get('parent_id') and d.list_contain(d.find_key_value(data, pattern['parent_id']),
                                                      diagram_ids[page_name]) and pattern_count == 0:
             d.append_to_dict(diagram_ids, page_name, key_id)

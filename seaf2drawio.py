@@ -130,6 +130,8 @@ def add_object(pattern, data, key_id):
 
         # Если у элемента есть родитель, получаем ID родителя и проверяем связан ли родитель с текущей диаграммой (страницей)
         # добавляем в справочник ID элемента
+        if i == 'sberins.lan.03' and page_name == '3Data СБС':
+            print(diagram_ids[page_name])
 
         if pattern.get('parent_id') and d.list_contain(d.find_key_value(data, pattern['parent_id']),
                                                      diagram_ids[page_name]) and pattern_count == 0:
@@ -202,8 +204,7 @@ def add_links(pattern):
                               f'{page_name}')
         except KeyError as e:
             pass
-            print(
-                f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
+            print(f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
         except TypeError as e:
             pass
             print(
@@ -241,8 +242,9 @@ if __name__ == '__main__':
                     default_pattern = deepcopy(object_pattern)
 
                     for i in list(object_data.keys()):
-                        if diagram._node_exists(id=i):
+                        if diagram._node_exists(id=i) and  i in diagram_ids[page_name]:
                             diagram.update_node(id=i, data=object_data[i])
+                            d.append_to_dict(diagram_ids, page_name, i)
                         else:
                             add_object(object_pattern, object_data[i], i)
 

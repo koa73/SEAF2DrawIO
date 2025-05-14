@@ -185,9 +185,11 @@ def add_links(pattern):
 
     diagram.drawio_link_object_xml = pattern['xml']
     source_id = 'Unknown'
-    try :
-        for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'],
-                                               type=object_pattern.get('type')).items():  # source_id - ID объекта
+
+    for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'],
+                                           type=object_pattern.get('type')).items():  # source_id - ID объекта
+
+        try:
             if source_id in diagram_ids[page_name]:  # Объект присутствует на текущей диаграмме
                 if pattern.get('parent_id'):
                     targets = {pattern['targets']: [get_parent_value(pattern, targets[pattern['parent_id']])]}
@@ -198,12 +200,14 @@ def add_links(pattern):
                     else:
                         print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
                               f'{page_name}')
-    except KeyError as e:
-        pass
-        print(f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
-    except TypeError as e:
-        pass
-        print(f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
+        except KeyError as e:
+            pass
+            print(
+                f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
+        except TypeError as e:
+            pass
+            print(
+                f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
 
 
 if __name__ == '__main__':
@@ -248,6 +252,5 @@ if __name__ == '__main__':
 
                 if bool(re.match(r'^network_links(_\d+)*',k)):
                     add_links(object_pattern)  # Связывание объектов на текущей диаграмме
-
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')

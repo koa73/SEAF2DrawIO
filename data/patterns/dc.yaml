@@ -636,7 +636,7 @@ network_links:
   style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#FF0000;"
   schema: 'seaf.ta.components.network'
   targets: 'network_connection'
-  type: 'type:ROUTER'
+  type: 'type:Маршрутизатор'
 
 network_links_1:
   xml: >

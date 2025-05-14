@@ -1,9 +1,8 @@
 # Переменные по умолчанию
 #
 seaf2drawio:
-  data_yaml_file: data/example/sberins.yaml
-  #data_yaml_file: data/example/test_seaf_ta_P41_v0.7.yaml
-  drawio_pattern: data/base_1.drawio
+  data_yaml_file: data/example/test_seaf_ta_P41_v0.7.yaml
+  drawio_pattern: data/base.drawio
   output_file: result/Sample_graph.drawio
 
 drawio2seaf:

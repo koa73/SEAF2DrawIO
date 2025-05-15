@@ -7,7 +7,7 @@
     "title": "Регион"
   },
   {
-    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"Зона доступности\" title=\"\" description=\"Зона доступности\" region=\"\" vendor=\"\" external_id=\"\" OID=\"\" schema=\"seaf.ta.services.dc_az\" id=\"2\"&gt;&lt;mxCell style=\"swimlane;whiteSpace=wrap;html=1;fillColor=#CCFFE6;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"360\" height=\"260\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
+    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"Зона доступности\" title=\"\" description=\"Зона доступности\" region=\"\" az_vendor=\"\" availabilityzone_id=\"\" OID=\"\" schema=\"seaf.ta.services.dc_az\" id=\"2\"&gt;&lt;mxCell style=\"swimlane;whiteSpace=wrap;html=1;fillColor=#CCFFE6;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"360\" height=\"260\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
     "w": 360,
     "h": 260,
     "aspect": "fixed",
@@ -21,7 +21,7 @@
     "title": "Офис"
   },
   {
-    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"DC\" title=\"\" description=\"\" vendor=\"\" type=\"\" address=\"\" rack_qty=\"\" tier=\"\" ownership=\"\" availabilityzone=\"\" OID=\"\" schema=\"seaf.ta.services.dc\" link=\"\" id=\"2\"&gt;&lt;mxCell style=\"shape=mxgraph.cisco.buildings.branch_office;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"120\" height=\"60\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
+    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"DC\" title=\"\" description=\"\" dc_vendor=\"\" dc_type=\"\" dc_address=\"\" dc_rack_qty=\"\" dc_tier=\"\" dc_ownership=\"\" availabilityzone=\"\" OID=\"\" schema=\"seaf.ta.services.dc\" link=\"\" id=\"2\"&gt;&lt;mxCell style=\"shape=mxgraph.cisco.buildings.branch_office;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"120\" height=\"60\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
     "w": 120,
     "h": 60,
     "aspect": "fixed",
@@ -56,13 +56,13 @@
     "title": "Провайдер"
   },
   {
-    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"&amp;lt;font style=&amp;quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &amp;quot;&amp;gt;&amp;amp;nbsp;--- Router ---&amp;amp;nbsp;&amp;lt;/font&amp;gt;\" title=\"\" description=\"\" realization_type=\"\" model=\"\" type=\"\" placement_segment=\"\" purpose=\"\" address=\"0.0.0.0\" network_connection=\"[]\" OID=\"\" schema=\"seaf.ta.components.network\" id=\"2\"&gt;&lt;mxCell style=\"shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"40\" height=\"30\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
+    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"&amp;lt;font style=&amp;quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &amp;quot;&amp;gt;&amp;amp;nbsp;--- Router ---&amp;amp;nbsp;&amp;lt;/font&amp;gt;\" title=\"\" description=\"\" realization_type=\"\" model=\"\" type=\"\" segment_id=\"\" purpose=\"\" address=\"0.0.0.0\" network_connection=\"[]\" OID=\"\" schema=\"seaf.ta.components.network\" id=\"2\"&gt;&lt;mxCell style=\"shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"40\" height=\"30\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
     "w": 40,
     "h": 30,
     "aspect": "fixed"
   },
   {
-    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"&amp;lt;font style=&amp;quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &amp;quot;&amp;gt;&amp;amp;nbsp;--- WiFi ---&amp;amp;nbsp;&amp;lt;/font&amp;gt;\" title=\"\" description=\"\" realization_type=\"\" model=\"\" type=\"\" placement_segment=\"\" purpose=\"\" address=\"0.0.0.0\" network_connection=\"[]\" OID=\"\" schema=\"seaf.ta.components.network\" id=\"2\"&gt;&lt;mxCell style=\"shape=mxgraph.cisco.wireless.wlan_controller;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=none;fontSize=9;fontColor=default;fontStyle=1;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"38\" height=\"19\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
+    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"&amp;lt;font style=&amp;quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &amp;quot;&amp;gt;&amp;amp;nbsp;--- WiFi ---&amp;amp;nbsp;&amp;lt;/font&amp;gt;\" title=\"\" description=\"\" realization_type=\"\" model=\"\" type=\"\" segment_id=\"\" purpose=\"\" address=\"0.0.0.0\" network_connection=\"[]\" OID=\"\" schema=\"seaf.ta.components.network\" id=\"2\"&gt;&lt;mxCell style=\"shape=mxgraph.cisco.wireless.wlan_controller;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=none;fontSize=9;fontColor=default;fontStyle=1;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"38\" height=\"19\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
     "w": 38,
     "h": 19,
     "aspect": "fixed"
@@ -82,9 +82,15 @@
     "title": "Сегменты ЦОД"
   },
   {
-    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"&amp;lt;font style=&amp;quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &amp;quot;&amp;gt;&amp;amp;nbsp;--Firewall--&amp;amp;nbsp;&amp;lt;/font&amp;gt;\" title=\"\" description=\"\" class=\"Межсетевое экранирование\" segment_id=\"flix.network_segment.dc.ntwrk.01\" network_connection=\"[]\" OID=\"\" schema=\"seaf.ta.services.kb\" id=\"2\"&gt;&lt;mxCell style=\"shape=mxgraph.cisco.security.firewall;html=1;pointerEvents=1;dashed=0;fillColor=#FF0000;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;flipH=1;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"20\" height=\"60\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
+    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"&amp;lt;font style=&amp;quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &amp;quot;&amp;gt;&amp;amp;nbsp;--FireWall--&amp;amp;nbsp;&amp;lt;/font&amp;gt;\" title=\"FireWall\" description=\"\" realization_type=\"\" model=\"\" type=\"МСЭ\" placement_segment=\"\" purpose=\"\" address=\"\" network_connection=\"['']\" OID=\"\" schema=\"seaf.ta.components.network\" id=\"2\"&gt;&lt;mxCell style=\"shape=mxgraph.cisco.security.firewall;html=1;pointerEvents=1;dashed=0;fillColor=#FF0000;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;flipH=1;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"20\" height=\"60\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
     "w": 20,
     "h": 60,
+    "aspect": "fixed"
+  },
+  {
+    "xml": "&lt;mxGraphModel&gt;&lt;root&gt;&lt;mxCell id=\"0\"/&gt;&lt;mxCell id=\"1\" parent=\"0\"/&gt;&lt;object label=\"&amp;lt;font style=&amp;quot;font-size: 8px;&amp;quot;&amp;gt;--ФПСУ--&amp;lt;/font&amp;gt;\" title=\"\" description=\"\" type=\"Криптошлюз\" placement_segment=\"\" network_connection=\"['']\" OID=\"\" schema=\"seaf.ta.components.network\" id=\"2\"&gt;&lt;mxCell style=\"sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=#232F3E;fillColor=#FF3333;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.vpn_gateway;\" vertex=\"1\" parent=\"1\"&gt;&lt;mxGeometry width=\"40\" height=\"40\" as=\"geometry\"/&gt;&lt;/mxCell&gt;&lt;/object&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;",
+    "w": 40,
+    "h": 40,
     "aspect": "fixed"
   },
   {

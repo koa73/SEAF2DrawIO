@@ -215,13 +215,13 @@ lan:
 router:
   xml : >
     <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
-          <mxCell style="shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{segment_id}" vertex="1">
+          <mxCell style="shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
             <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
           </mxCell>
     </object>
   schema: 'seaf.ta.components.network'
-  parent_id: 'segment_id'
-  type: "type:ROUTER"
+  parent_id: 'placement_segment'
+  type: "type:Маршрутизатор"
   deep: 7
   offset: 30
   x: 20
@@ -233,13 +233,13 @@ router:
 wireless_controller:
   xml : >
     <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
-          <mxCell style="shape=mxgraph.cisco.wireless.wlan_controller;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=none;fontSize=9;fontColor=default;fontStyle=1;" parent="{segment_id}" vertex="1">
+          <mxCell style="shape=mxgraph.cisco.wireless.wlan_controller;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=none;fontSize=9;fontColor=default;fontStyle=1;" parent="{placement_segment}" vertex="1">
             <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
           </mxCell>
     </object>
   schema: 'seaf.ta.components.network'
-  parent_id: 'segment_id'
-  type: "type:Wireless Controller"
+  parent_id: 'placement_segment'
+  type: "type:Контроллер WiFi"
   deep: 7
   offset: 30
   x: 170
@@ -248,18 +248,16 @@ wireless_controller:
   h: 19
   algo: 'Y+'
 
-#----------------------- Сервисы Кибер безопасности -----------------------------------------------------
-
 firewall:
   xml : >
     <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
-      <mxCell style="shape=mxgraph.cisco.security.firewall;html=1;pointerEvents=1;dashed=0;fillColor=#FF0000;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;flipH=1;" parent="{segment_id}" vertex="1">
+      <mxCell style="shape=mxgraph.cisco.security.firewall;html=1;pointerEvents=1;dashed=0;fillColor=#FF0000;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;flipH=1;" parent="{placement_segment}" vertex="1">
         <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
       </mxCell>
     </object>
-  schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: "class:Межсетевое экранирование"
+  schema: 'seaf.ta.components.network'
+  parent_id: 'placement_segment'
+  type: "type:МСЭ"
   deep: 9
   offset: 30
   x: 130
@@ -267,6 +265,26 @@ firewall:
   w: 20
   h: 60
   algo: 'Y+'
+
+fpsu:
+  xml : >
+    <object label="&lt;font style=&quot;font-size: 8px;&quot;&gt;{{label}}&lt;/font&gt;" id="{{id}}">
+      <mxCell style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=#232F3E;fillColor=#FF3333;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.vpn_gateway;" vertex="1" parent="{placement_segment}">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'placement_segment'
+  type: "type:Криптошлюз"
+  deep: 9
+  offset: 30
+  x: -20
+  y: 30
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+#----------------------- Сервисы Кибер безопасности -----------------------------------------------------
 
 waf:
   xml : >
@@ -278,24 +296,6 @@ waf:
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
   type: "class:Защита веб-приложений WAF"
-  deep: 9
-  offset: 30
-  x: -20
-  y: 30
-  w: 40
-  h: 40
-  algo: 'Y+'
-
-fpsu:
-  xml : >
-    <object label="&lt;font style=&quot;font-size: 8px;&quot;&gt;{{label}}&lt;/font&gt;" id="{{id}}">
-      <mxCell style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=#232F3E;fillColor=#FF3333;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.vpn_gateway;" vertex="1" parent="{segment_id}">
-        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
-      </mxCell>
-    </object>
-  schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: "class:Шифрование канала"
   deep: 9
   offset: 30
   x: -20
@@ -636,7 +636,7 @@ network_links:
   style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#FF0000;"
   schema: 'seaf.ta.components.network'
   targets: 'network_connection'
-  type: 'type:ROUTER'
+  type: 'type:Маршрутизатор'
 
 network_links_1:
   xml: >

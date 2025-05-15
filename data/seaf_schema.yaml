@@ -32,6 +32,9 @@
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.services.stand.stand"
+            external_id:
+              title: Идентификатор во внешней системе
+              type: string
 
 #### Базовые свойства Технологического компонента ####
   seaf.ta.components.entity:
@@ -52,6 +55,9 @@
                 type: array
                 items:
                   $ref: "#/$rels/seaf.ta.services.stand.stand"
+              external_id:
+                title: Идентификатор во внешней системе
+                type: string
 
 #### Описания технологических сервисов. Добавляются все необходимые поля и устанавливаются правила их наполнения ####
   seaf.ta.services.dc_region:
@@ -65,12 +71,7 @@
       patternProperties:
         "^[a-zA-Z0-9_\\.]*$":
           $ref: "#/$defs/seaf.ta.services.base.entity"
-          properties:
-            region_id:
-              title: Region ID
-              type: string
-          required:
-            - region_id
+
 
 #### Описания зоны доступности.
   seaf.ta.services.dc_az:
@@ -85,18 +86,15 @@
         "^[a-zA-Z0-9_\\.]*$":
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            availabilityzone_id:
-              title: Availability Zone ID
-              type: string
-            az_vendor:
+            vendor:
               title: Поставщик
               type: string
             region:
               title: В какой регион входит зона доступности
               $ref: "#/$rels/seaf.ta.services.dc_region.dc_region"
           required:
-            - availabilityzone_id
-            - az_vendor
+            - external_id
+            - vendor
             - region
 
 ################## ЦОД ################################################
@@ -112,25 +110,22 @@
         "^[a-zA-Z0-9_\\.]*$":
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            dc_id:
-              title: Datacenter ID
-              type: string
-            dc_ownership:
+            ownership:
               title: Тип владения ЦОД
               type: string
-            dc_type:
+            type:
               title: Тип ЦОД
               type: string
-            dc_vendor:
+            vendor:
               title: Поставщик
               type: string
-            dc_address:
+            address:
               title: Адрес ЦОД
               type: string
-            dc_rack_qty:
+            rack_qty:
               title: Количество стоек (аренда или владение)
               type: integer
-            dc_tier:
+            tier:
               title: Уровень сертификации ЦОД
               type: string
             availabilityzone:
@@ -139,13 +134,12 @@
               items:
                 $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
           required:
-            - dc_id
-            - dc_ownership
-            - dc_type
-            - dc_vendor
-            - dc_address
-            - dc_rack_qty
-            - dc_tier
+            - ownership
+            - type
+            - vendor
+            - address
+            - rack_qty
+            - tier
             - availabilityzone
 
 ################ Офис ####################################################
@@ -162,9 +156,6 @@
           type: object
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            office_id:
-              title: Office ID
-              type: string
             address:
               title: Адрес офиса или местоположения
               type: string
@@ -172,7 +163,6 @@
               title: В какой регион входит офис
               $ref: "#/$rels/seaf.ta.services.dc_region.dc_region"
           required:
-            - office_id
             - address
 
 ################ Зоны безопасности ###########################################################
@@ -228,9 +218,6 @@
           oneOf:
             - type: object
               properties:
-                id:
-                  title: Network ID
-                  type: string
                 type:
                   type: string
                   enum: [WAN]
@@ -268,7 +255,6 @@
                   items:
                     $ref: "#/$rels/seaf.ta.components.network.network"
               required:
-                - id
                 - wan_ip
                 - type
                 - provider
@@ -277,9 +263,6 @@
               additionalProperties: false
             - type: object
               properties:
-                id:
-                  title: Network ID
-                  type: string
                 type:
                   type: string
                   enum: [LAN]
@@ -318,7 +301,6 @@
                   items:
                     $ref: "#/$rels/seaf.ta.components.network.network"
               required:
-                - id
                 - type
                 - lan_type
                 - ipnetwork
@@ -343,9 +325,6 @@
           type: object
           $ref: "#/$defs/seaf.ta.components.base.entity"
           properties:
-            id:
-              title: Network Appliance ID
-              type: string
             model:
               title: Модель и производитель
               type: string
@@ -378,10 +357,9 @@
             type:
                 title: Сетевая зона
                 enum:
-                    - ROUTER
-                    - Wireless Controller
-                    - FIREWALL
-            segment_id:
+                    - Маршрутизатор
+                    - Контроллер WiFi
+            placement_segment:
                 title: ID ЦОД или Офиса
                 type: string
                 items:
@@ -389,7 +367,6 @@
                     - $ref: "#/$rels/seaf.ta.services.dc.dc"
                     - $ref: "#/$rels/seaf.ta.services.office.office"
           required:
-            - network_appliance_id
             - model
             - realization_type
       type: object

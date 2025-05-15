@@ -85,6 +85,8 @@ office:
     </diagram>
     
 
+
+
 dc:
   xml : > 
     <object id="{{id}}" label="{{label}}">
@@ -126,11 +128,15 @@ dc:
     </diagram>
 
 
+
+
 segment_internet:
   xml : >
-    <mxCell id="{{id}}" value="" style="group;noLabel=1;" parent="003" vertex="1">
+    <object id="{id}">
+      <mxCell value="" style="group;noLabel=1;" parent="003" vertex="1">
         <mxGeometry  x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />            
-    </mxCell>
+      </mxCell>
+    </object>
   schema: 'seaf.ta.services.network_segment'
   parent_id: 'location'
   type: "zone:INTERNET"
@@ -142,9 +148,11 @@ segment_internet:
 
 segment_transport_wan:
   xml : >
-    <mxCell id="{{id}}" value="" style="group;noLabel=1;" parent="004" vertex="1">
-      <mxGeometry  x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />            
-    </mxCell>
+    <object id="{id}">
+      <mxCell value="" style="group;noLabel=1;" parent="004" vertex="1">
+        <mxGeometry  x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />            
+      </mxCell>
+    </object>
   schema: 'seaf.ta.services.network_segment'
   parent_id: 'location'
   type: "zone:TRANSPORT-WAN"

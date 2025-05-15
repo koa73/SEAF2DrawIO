@@ -621,7 +621,7 @@ seaf.ta.components.network:
       - flix.wan.dc.isp.02
       - flix.lan.dc.wan_edge
 
-  flix.network.вс.fw_1:
+  flix.network.dc.fw_1:
     title: NGFW-IDFW
     description: Пограничный NGFW
     realization_type: Физический
@@ -629,7 +629,7 @@ seaf.ta.components.network:
     type: "МСЭ"
     placement_segment: flix.network_segment.dc.ntwrk.01
     purpose: Пограничный NGFW транспортной сети
-    address: 192.168.8.23
+    address: 192.168.8.25
     network_connection:
       - flix.lan.dc.inet_guest_edge
       - flix.lan.dc.ext.lan

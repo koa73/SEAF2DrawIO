@@ -160,8 +160,13 @@ def add_object(pattern, data, key_id):
                 data['sid'] = data.pop('id')
 
             data['schema'] = pattern['schema']
+            oid = f"{key_id}_{pattern_count}" if not d.contains_object_tag(xml_pattern, 'object') else key_id
+
+            if key_id == 'flix.network_segment.dc.internet':
+                print(f'------- {page_name} : {key_id} / {oid} : {diagram_ids[page_name]} // {diagram.nodes_ids[diagram.current_diagram_id]}')
+
             diagram.add_node(
-                id=f"{key_id}_{pattern_count}" if not d.contains_object_tag(xml_pattern, 'object') else key_id,
+                id=oid,
                 label=data['title'],
                 x_pos=pattern['x'],
                 y_pos=pattern['y'],
@@ -208,6 +213,14 @@ def add_links(pattern):
                 f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
 
 
+def add_group_id():
+    for diagram_elem in diagram.drawing.findall("./diagram"):
+        diagram_root = diagram_elem.find("./mxGraphModel/root")
+        for mxcell in diagram_root.findall("./mxCell"):
+            if mxcell.attrib.get("parent") in ["004","003"]:
+                diagram.nodes_ids[diagram_elem.attrib["id"]].append(mxcell.attrib.get("id"))
+
+
 if __name__ == '__main__':
 
     if sys.version_info < (3, 9):
@@ -224,7 +237,7 @@ if __name__ == '__main__':
         for page_name in pages:
 
             diagram.go_to_diagram(page_name)
-
+            #add_group_id() # Добавляем в справочник групповые объекты не входящие в общий перечень
             for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():
 
                 try:

@@ -1,0 +1,760 @@
+# Тест технологической архитектуры для Р41
+# Описание технологической архитектуры идёт сверху вниз.
+
+#### Создаём Регион
+seaf.ta.services.dc_region:
+  flix.dc_region.russia:
+    title: Регион Россия
+    description: Регион доступности Россия ООО Фликс
+
+#### Создаём AZ
+seaf.ta.services.dc_az:
+  flix.dc_az.moscow:
+    title: Зона доступности Москва
+    description: Зона доступности Москва
+    region: flix.dc_region.russia
+    vendor: Фликс
+    external_id: dc_az.moscow
+
+#### Создаём офис
+seaf.ta.services.office:
+  flix.office.hq:
+    title: Головной офис
+    description: Головной офис компании
+    address: Берёзовый бульвар, д.14
+    region: flix.dc_region.russia
+
+#### Создаем ЦОД #
+
+seaf.ta.services.dc:
+  flix.dc.01:
+    title: Sber Cloud DC
+    description: Sber Cloud Advanced
+    vendor: Sber
+    type: Основной
+    address: Огородный проезд
+    rack_qty: 5
+    tier: '3'
+    ownership: Аренда
+    availabilityzone: flix.dc_az.moscow
+
+#### Создаём сегменты сети офиса
+## Internet
+seaf.ta.services.network_segment:
+  flix.network_segment.internet:
+    title: Internet
+    sber:
+      zone: 'INTERNET'
+      location: 'flix.office.hq'
+  ## Transport network (Leased Lines)
+  flix.network_segment.transport:
+    title: Транспортная сеть
+    sber:
+      zone: TRANSPORT-WAN
+      location: 'flix.office.hq'
+  ## Office
+  flix.network_segment.office.inet_edge:
+    title: INET-EDGE
+    sber:
+      zone: INET-EDGE
+      location: 'flix.office.hq'
+  flix.network_segment.office.access:
+    title: УС уровня доступа
+    sber:
+      zone: DMZ
+      location: 'flix.office.hq'
+  flix.network_segment.office.wan_edge:
+    title: WAN-EDGE
+    sber:
+      zone: INT-WAN-EDGE
+      location: 'flix.office.hq'
+  flix.network_segment.office.int:
+    title: Внутренняя сеть офиса (ЛВС)
+    sber:
+      zone: INT-NET
+      location: 'flix.office.hq'
+
+  ##### Создаем зоны безопасности сети ЦОД
+  ## Internet
+  flix.network_segment.dc.internet:
+    title: Internet
+    sber:
+      zone: 'INTERNET'
+      location: 'flix.dc.01'
+  ## Transport network (Leased Lines)
+  flix.network_segment_dc.transport:
+    title: Транспортная сеть
+    sber:
+      zone: TRANSPORT-WAN
+      location: 'flix.dc.01'
+
+  flix.network_segment.dc.ntwrk.01:
+    title: DMZ_1
+    sber:
+      zone: DMZ
+      location: 'flix.dc.01'
+
+  flix.network_segment.dc.ntwrk.02:
+    title: INT WAN-EDGE
+    sber:
+      zone: INT-WAN-EDGE
+      location: 'flix.dc.01'
+
+  flix.network_segment.dc.ntwrk.03:
+    title: 'Внутренняя сеть ЦОД'
+    sber:
+      zone: INT-NET
+      location: 'flix.dc.01'
+
+  flix.network_segment.dc.ntwrk.04:
+    title: 'Защищенный сегмент&lt;br&gt;данных'
+    sber:
+      zone: INT-SECURITY-NET
+      location: 'flix.dc.01'
+
+  flix.network_segment.dc.ntwrk.05:
+    title: INET-EDGE
+    sber:
+      zone: INET-EDGE
+      location: 'flix.dc.01'
+  flix.network_segment.dc.ntwrk.06:
+    title: 'EXT WAN-EDGE'
+    sber:
+      zone: EXT-WAN-EDGE
+      location: 'flix.dc.01'
+
+#### Создаём описание сетей
+seaf.ta.services.network:
+  #### Создаём описание сетей ISP офиса
+  flix.wan.office.isp.guest:
+    title: ISP Guest
+    provider: МТС
+    bandwidth: 1000
+    wan_ip: 10.20.10.0/24
+    description: Сеть ISP провайдера гостевой сети
+    type: 'WAN'
+    segment: flix.network_segment.internet
+
+  flix.wan.office.isp.01:
+    title: ISP01
+    provider: МТС
+    bandwidth: 1000
+    wan_ip: 10.20.11.0/24
+    description: Сеть ISP провайдера основного интернет канала
+    type: WAN
+    segment: flix.network_segment.internet
+
+  flix.wan.office.isp.02:
+    title: ISP02
+    provider: Megafon
+    bandwidth: 1000
+    wan_ip: 10.20.12.0/24
+    description: Сеть ISP провайдера резервного интернет канала
+    type: WAN
+    segment: flix.network_segment.internet
+
+  #### Создаём описание сетей SP
+  flix.wan.office.sp.01:
+    title: SP01
+    provider: МТС
+    bandwidth: 10000
+    wan_ip: 10.20.13.0/24
+    description: Сеть SP провайдера основного транспортного канала
+    type: WAN
+    segment: flix.network_segment.transport
+
+  flix.wan.office.sp.02:
+    title: SP02
+    provider: Ростелеком
+    bandwidth: 10000
+    wan_ip: 10.20.14.0/24
+    description: Сеть SP провайдера резервного транспортного канала
+    type: WAN
+    segment: flix.network_segment.transport
+
+  ### Создаем описание ISP ЦОД
+  flix.wan.dc.isp.01:
+    title: ISP Guest
+    provider: Beeline
+    bandwidth: 1000
+    wan_ip: 10.20.11.0/24
+    description: Сеть ISP провайдера гостевой сети
+    type: WAN
+    segment: flix.network_segment.dc.internet
+
+  flix.wan.dc.isp.02:
+    title: SP02
+    provider: Ростелеком
+    bandwidth: 10000
+    wan_ip: 10.20.14.0/24
+    description: Сеть SP провайдера резервного транспортного канала
+    type: WAN
+    segment: flix.network_segment_dc.transport
+
+  #### Создаём описание пограничных сетей офиса
+  flix.lan.office.inet_guest_edge:
+    title: OF-Guest Internet EDGE LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.inet_edge
+    vlan: 10
+    ipnetwork: 10.10.10.0/24
+    description: Сеть модуля подключения к внешним сетям - гостевая
+
+  flix.lan.office.inet_edge:
+    title: OF-Internet EDGE LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.inet_edge
+    vlan: 11
+    ipnetwork: 10.10.11.0/24
+    description: Сеть модуля подключения к внешним сетям
+
+  flix.lan.office.wan_edge:
+    title: OF-WAN EDGE LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.wan_edge
+    vlan: 12
+    ipnetwork: 10.10.12.0/24
+    description: Сеть модуля транспортной сети
+
+  #### Создаём описание пограничных сетей ЦОД
+  flix.lan.dc.wan_edge:
+    title: OF-WAN EDGE LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.dc.ntwrk.02
+    vlan: 12
+    ipnetwork: 10.10.12.0/24
+    description: Сеть модуля транспортной сети
+
+  flix.lan.dc.inet_guest_edge:
+    title: OF-Guest Internet EDGE LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.dc.ntwrk.05
+    vlan: 10
+    ipnetwork: 10.10.10.0/24
+    description: Сеть модуля подключения к внешним сетям - гостевая
+
+  flix.lan.dc.inet_edge:
+    title: OF-Internet EDGE LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.inet_edge
+    vlan: 11
+    ipnetwork: 10.10.11.0/24
+    description: Сеть модуля подключения к внешним сетям
+
+  #### Создаём описание сетей сегмента DMZ ЦОД
+  flix.lan.dc.ext.lan:
+    title: OF-EXT LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.dc.ntwrk.01
+    vlan: 13
+    ipnetwork: 192.168.10.0/24
+    description: Core сети УС офиса
+
+  #### Создаём описание сетей сегмента УС уровня доступа
+  flix.lan.office.ext.lan:
+    title: OF-EXT LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.access
+    vlan: 13
+    ipnetwork: 192.168.10.0/24
+    description: Core сети УС офиса
+
+  flix.lan.office.wifi.guest:
+    title: WiFi Guest LAN
+    type: LAN
+    lan_type: Беспроводная
+    segment: flix.network_segment.office.access
+    vlan: 14
+    ipnetwork: 192.168.11.0/24
+    description: Сеть гостевого WiFi
+
+  flix.lan.office.security:
+    title: OF-Security
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.access
+    vlan: 15
+    ipnetwork: 192.168.12.0/24
+    description: Сеть систем безопасности офиса
+
+  #### Создаём описание сетей сегмента Внутренняя сеть офиса (ЛВС)
+  flix.lan.office.int.lan:
+    title: OF-INT LAN
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.int
+    vlan: 16
+    ipnetwork: 192.168.1.0/24
+    description: Core сети УС офиса
+
+  flix.lan.office.wifi.arm:
+    title: Wi-Fi АРМ
+    type: LAN
+    lan_type: Беспроводная
+    segment: flix.network_segment.office.int
+    vlan: 17
+    ipnetwork: 192.168.3.0/24
+    description: Беспроводная сеть АРМ
+
+  flix.lan.office.wired.ARM:
+    title: Wired АРМ
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.int
+    vlan: 18
+    ipnetwork: 192.168.4.0/24
+    description: Проводная сеть АРМ
+
+  flix.lan.office.admin.ARM:
+    title: АРМ Admin
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.int
+    vlan: 19
+    ipnetwork: 192.168.5.0/24
+    description: Сеть АРМ администраторов
+
+  flix.lan.office.printers:
+    title: Printers
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.int
+    vlan: 20
+    ipnetwork: 192.168.6.0/24
+    description: Сеть печатающих устройств
+
+  flix.lan.office.ipphones:
+    title: IP Phones
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.int
+    vlan: 21
+    ipnetwork: 192.168.7.0/24
+    description: Сеть IP телефонов
+
+  flix.lan.office.mgmt:
+    title: OF-MGMT
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.int
+    vlan: 22
+    ipnetwork: 192.168.8.0/24
+    description: Сеть интерфейсов управления
+
+#### Создаём описание сетевых устройств офиса
+seaf.ta.components.network:
+
+  flix.network.guest.router:
+    title: Guest Router
+    description: Пограничный маршрутизатор гостевого интернет провайдера
+    realization_type: Физический
+    model: ASR 1001-X
+    type: "Маршрутизатор"
+    placement_segment: flix.network_segment.office.inet_edge
+    purpose: Пограничный маршрутизатор
+    address: 192.168.8.15
+    network_connection:
+      - flix.wan.office.isp.guest
+      - flix.lan.office.inet_guest_edge
+
+  flix.network.router.01:
+    title: Router 1
+    description: Пограничный маршрутизатор ISP1
+    realization_type: Физический
+    model: ASR 1001-X
+    type: "Маршрутизатор"
+    placement_segment: flix.network_segment.office.inet_edge
+    purpose: Пограничный маршрутизатор
+    address: 192.168.8.16
+    network_connection:
+      - flix.wan.office.isp.01
+      - flix.lan.office.inet_edge
+      - flix.network.router.02
+
+  flix.network.router.02:
+    title: Router 2
+    description: Пограничный маршрутизатор ISP2
+    realization_type: Физический
+    model: ASR 1001-X
+    type: "Маршрутизатор"
+    placement_segment: flix.network_segment.office.inet_edge
+    purpose: Пограничный маршрутизатор
+    address: 192.168.8.17
+    network_connection:
+      - flix.wan.office.isp.02
+      - flix.lan.office.inet_edge
+
+  flix.network.router.03:
+    title: Router 3
+    description: Пограничный маршрутизатор SP1
+    realization_type: Физический
+    model: ASR 1001-X
+    type: "Маршрутизатор"
+    placement_segment: flix.network_segment.office.wan_edge
+    purpose: Пограничный маршрутизатор
+    address: 192.168.8.18
+    network_connection:
+      - flix.wan.office.sp.01
+      - flix.lan.office.wan_edge
+      - flix.network.router.04
+
+  flix.network.router.04:
+    title: Router 4
+    description: Пограничный маршрутизатор SP2
+    realization_type: Физический
+    model: ASR 1001-X
+    type: "Маршрутизатор"
+    placement_segment: flix.network_segment.office.wan_edge
+    purpose: Пограничный маршрутизатор
+    address: 192.168.8.19
+    network_connection:
+      - flix.wan.office.sp.02
+      - flix.lan.office.wan_edge
+
+  flix.network.wificontroller.guest:
+    title: Wireless Controller Guest
+    description: WIiFi Router Guest
+    realization_type: Физический
+    model: Cisco
+    type: "Контроллер WiFi"
+    placement_segment: flix.network_segment.office.access
+    purpose: Controller сети WiFI Guest
+    address: 192.168.8.20
+    network_connection:
+      - flix.lan.office.wifi.guest
+
+  flix.network.wificontroller.arm:
+    title: Wireless Controller ARM
+    description: WIiFi Router ARM
+    realization_type: Физический
+    model: Cisco
+    type: "Контроллер WiFi"
+    placement_segment: flix.network_segment.office.int
+    purpose: Controller сети WiFI ARM
+    address: 192.168.8.20
+    network_connection:
+      - flix.lan.office.wifi.arm
+
+  flix.network.ngfw.01:
+    title: NGFW 1
+    description: Пограничный NGFW 1
+    realization_type: Физический
+    model: 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.access
+    purpose: Пограничный NGFW
+    address: 192.168.8.21
+    network_connection:
+      - flix.lan.office.inet_edge
+      - flix.lan.office.ext.lan
+      - flix.network.ngfw.02
+
+  flix.network.ngfw.02:
+    title: NGFW 2
+    description: Пограничный NGFW 2
+    realization_type: Физический
+    model: 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.access
+    purpose: Пограничный NGFW
+    address: 192.168.8.22
+    network_connection:
+      - flix.lan.office.inet_edge
+      - flix.lan.office.ext.lan
+
+  flix.network.ngfw.03:
+    title: NGFW 3
+    description: Пограничный NGFW Guest
+    realization_type: Физический
+    model: 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.access
+    purpose: Пограничный NGFW подклюшения к интернет гостевой
+    address: 192.168.8.23
+    network_connection:
+      - flix.lan.office.inet_guest_edge
+      - flix.lan.office.wifi.guest
+
+  flix.network.ngfw.idfw:
+    title: NGFW-IDFW
+    description: Пограничный NGFW
+    realization_type: Физический
+    model: 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.int
+    purpose: Пограничный NGFW транспортной сети
+    address: 192.168.8.23
+    network_connection:
+      - flix.lan.office.wan_edge
+      - flix.lan.office.int.lan
+
+  flix.network.ngfw.cntxt1:
+    title: CNTXT1-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.int
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.ext.lan
+      - flix.lan.office.int.lan
+
+  flix.network.ngfw.cntxt2:
+    title: CNTXT2-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.access
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.ext.lan
+      - flix.lan.office.security
+
+  flix.network.ngfw.cntxt3:
+    title: CNTXT3-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.int
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.wifi.arm
+
+  flix.network.ngfw.cntxt4:
+    title: CNTXT4-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.int
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.wired.ARM
+
+  flix.network.ngfw.cntxt5:
+    title: CNTXT5-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.int
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.admin.ARM
+
+  flix.network.ngfw.cntxt6:
+    title: CNTXT6-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.int
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.printers
+
+  flix.network.ngfw.cntxt7:
+    title: CNTXT7-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.int
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.ipphones
+
+  flix.network.ngfw.cntxt8:
+    title: CNTXT8-NGFW
+    description: Контекст правил безопасности NGFW
+    realization_type: Виртуальный
+    model: FortiGate 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.office.int
+    purpose: Контекст NGFW
+    network_connection:
+      - flix.lan.office.int.lan
+      - flix.lan.office.mgmt
+
+
+  #### Создаём описание сетевых устройств ЦОД
+
+  flix.network.dc.router_1:
+    title: Guest Router
+    description: Пограничный маршрутизатор гостевого интернет провайдера
+    realization_type: Физический
+    model: ASR 1001-X
+    type: "Маршрутизатор"
+    placement_segment: flix.network_segment.dc.ntwrk.05
+    purpose: Пограничный маршрутизатор
+    address: 192.168.8.15
+    network_connection:
+      - flix.wan.dc.isp.01
+      - flix.lan.dc.inet_guest_edge
+
+  flix.network.dc.router_2:
+    title: WAN Router
+    description: Пограничный маршрутизатор доступа в корпоративную сеть
+    realization_type: Физический
+    model: ASR 1001-X
+    type: "Маршрутизатор"
+    placement_segment: flix.network_segment.dc.ntwrk.02
+    purpose: Пограничный маршрутизатор
+    address: 192.168.8.15
+    network_connection:
+      - flix.wan.dc.isp.02
+      - flix.lan.dc.wan_edge
+
+  flix.network.dc.fw_1:
+    title: NGFW-IDFW
+    description: Пограничный NGFW
+    realization_type: Физический
+    model: 4800F
+    type: "МСЭ"
+    placement_segment: flix.network_segment.dc.ntwrk.01
+    purpose: Пограничный NGFW транспортной сети
+    address: 192.168.8.25
+    network_connection:
+      - flix.lan.dc.inet_guest_edge
+      - flix.lan.dc.ext.lan
+
+  flix.kb.fpsu_1:
+    title: FPSU-1
+    description: ФПСУ для ширования канала
+    type: "Криптошлюз"
+    placement_segment: flix.network_segment.dc.ntwrk.05
+    network_connection:
+      - flix.lan.dc.inet_guest_edge
+      - flix.wan.dc.isp.01
+
+#### Сервисы кибер безопасности
+seaf.ta.services.kb:
+
+  flix.kb.waf_1:
+    title: WAF
+    description: WAF for All-App
+    technology: Защита веб-приложений WAF
+    network_connection:
+      - flix.wan.dc.isp.02
+      - flix.lan.dc.wan_edge
+    segment_id: flix.network_segment.dc.ntwrk.01
+
+  flix.kb.ddos_1:
+    title: DDOS
+    description: Сервис защиты от DDOs от BiZone
+    technology: Защита от атака типа "Отказ в обслуживании"
+    segment_id: flix.network_segment.dc.ntwrk.05
+    network_connection:
+      - flix.wan.dc.isp.01
+
+  flix.kb.1:
+    title: S1
+    description: Сервис кибер безопасности
+    technology: Инструментальный контроль защищенности
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.2:
+    title: S2
+    description: Сервис кибер безопасности
+    technology: Управление доступом пользователей
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.3:
+    title: S3
+    description: Сервис кибер безопасности
+    technology: Механизмы ААА
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.4:
+    title: S4
+    description: Сервис кибер безопасности
+    technology: МСЭ
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.5:
+    title: S5
+    description: Сервис кибер безопасности
+    technology: Потоковый антивирус
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.6:
+    title: S6
+    description: Сервис кибер безопасности
+    technology: Контроль подключений к сети
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.7:
+    title: S7
+    description: Сервис кибер безопасности
+    technology: Шлюзы безопасности прикладного уровня
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.8:
+    title: S8
+    description: Сервис кибер безопасности
+    technology: Контентная фильтрация и разграничение доступа в Интернет
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.9:
+    title: S9
+    description: Сервис кибер безопасности
+    technology: Аудит событий КБ
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.10:
+    title: S10
+    description: Сервис кибер безопасности
+    technology: Динамический анализ угроз Sandbox
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.11:
+    title: S11
+    description: Сервис кибер безопасности
+    technology: Безопасность конфигураций
+    segment_id: flix.network_segment.dc.ntwrk.03
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+  flix.kb.12:
+    title: S12
+    description: Сервис кибер безопасности
+    technology: Безопасность конфигураций
+    segment_id: flix.network_segment.office.int
+    network_connection:
+      - flix.lan.office.admin.ARM

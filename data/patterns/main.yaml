@@ -128,8 +128,6 @@ dc:
     </diagram>
 
 
-
-
 segment_internet:
   xml : >
     <object id="{id}">

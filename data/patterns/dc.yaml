@@ -295,7 +295,7 @@ waf:
     </object>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: "class:Защита веб-приложений WAF"
+  type: 'technology:Защита веб-приложений WAF'
   deep: 9
   offset: 30
   x: -20
@@ -313,7 +313,7 @@ ddos:
     </object>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Защита от атака типа "Отказ в обслуживании"'
+  type: 'technology:Защита от атака типа "Отказ в обслуживании"'
   deep: 3
   offset: 30
   x: 100
@@ -343,7 +343,7 @@ kb_services_aaa:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Механизмы ААА'
+  type: 'technology:Механизмы ААА'
   deep: 6
   offset: 30
   x: 30
@@ -373,7 +373,7 @@ kb_services_ib_tool:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Инструментальный контроль защищенности'
+  type: 'technology:Инструментальный контроль защищенности'
   deep: 6
   offset: 30
   x: 30
@@ -403,7 +403,7 @@ kb_services_antivirus:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Потоковый антивирус'
+  type: 'technology:Потоковый антивирус'
   deep: 6
   offset: 30
   x: 30
@@ -436,7 +436,7 @@ kb_services_user_access:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Управление доступом пользователей'
+  type: 'technology:Управление доступом пользователей'
   deep: 6
   offset: 30
   x: 30
@@ -466,7 +466,7 @@ kb_services_app_gateway:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Шлюзы безопасности прикладного уровня'
+  type: 'technology:Шлюзы безопасности прикладного уровня'
   deep: 6
   offset: 30
   x: 30
@@ -496,7 +496,7 @@ kb_services_proxy:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Контентная фильтрация и разграничение доступа в Интернет'
+  type: 'technology:Контентная фильтрация и разграничение доступа в Интернет'
   deep: 6
   offset: 30
   x: 30
@@ -526,7 +526,7 @@ kb_services_audit:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Аудит событий КБ'
+  type: 'technology:Аудит событий КБ'
   deep: 6
   offset: 30
   x: 30
@@ -556,7 +556,7 @@ kb_services_sand_box:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Динамический анализ угроз Sandbox'
+  type: 'technology:Динамический анализ угроз Sandbox'
   deep: 6
   offset: 30
   x: 30
@@ -586,7 +586,7 @@ kb_services_config:
     </mxCell>
   schema: 'seaf.ta.services.kb'
   parent_id: 'segment_id'
-  type: 'class:Безопасность конфигураций'
+  type: 'technology:Безопасность конфигураций'
   deep: 6
   offset: 30
   x: 30

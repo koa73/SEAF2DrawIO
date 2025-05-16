@@ -289,12 +289,12 @@ fpsu:
 waf:
   xml : >
     <object label="{{label}}" id="{{id}}">
-      <mxCell style="verticalLabelPosition=bottom;sketch=0;fillColor=#FF0000;strokeColor=none;verticalAlign=top;pointerEvents=1;align=center;shape=mxgraph.cisco_safe.security_icons.waf;aspect=fixed;" vertex="1" parent="{segment_id}">
+      <mxCell style="verticalLabelPosition=bottom;sketch=0;fillColor=#FF0000;strokeColor=none;verticalAlign=top;pointerEvents=1;align=center;shape=mxgraph.cisco_safe.security_icons.waf;aspect=fixed;" vertex="1" parent="{parent_id}">
         <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
       </mxCell>
     </object>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Защита веб-приложений WAF'
   deep: 9
   offset: 30

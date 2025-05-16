@@ -116,6 +116,8 @@ class SeafDrawio:
         if isinstance(data, dict):
             for key, value in data.items():
                 if key == target_key:
+                    if isinstance(value, list) and len(value) > 0:  # Если в качестве parent_id указан список выбираем 1 элемент
+                        value = value[0]
                     results.append(value)  # Add the value if the key matches
                 if isinstance(value, (dict, list)):
                     results.extend(self.find_key_value(value, target_key))  # Recurse into nested structures
@@ -137,14 +139,20 @@ class SeafDrawio:
         """
         if isinstance(data, dict):  # If the current item is a dictionary
             if target_key in data:  # Check if the target_key exists in this dictionary
+                if isinstance(data[target_key], list) and len(data[target_key])>0:
+                    return data[target_key][0]
                 return data[target_key]
             for value in data.values():  # Recursively search in the values of the dictionary
                 result = self.find_value_by_key(value, target_key)
+                if isinstance(result, list) and len(result)>0:
+                    return result[0]
                 if result is not None:
                     return result
         elif isinstance(data, list):  # If the current item is a list
             for item in data:  # Recursively search in each item of the list
                 result = self.find_value_by_key(item, target_key)
+                if isinstance(result, list) and len(result) > 0:
+                    return result[0]
                 if result is not None:
                     return result
         return None  # Return None if the key is not found
@@ -190,18 +198,19 @@ class SeafDrawio:
             return result
 
     @staticmethod
-    def list_contain(l, k):
+    def list_contain(l, s):
         """
-            Check if l (list) not empty and contain first value equal to string or in another lis
+            Check if l (list) not empty and contain first value equal to string or in another list
 
             :param l: list.
-            :param k: string or list for comparing.
+            :param s: string or list for comparing.
             :return: boolean True/False.
         """
-        if isinstance(k, str):
-            return True if len(l) > 0 and l[0] == k else False
-        elif isinstance(k, list):
-            return True if len(l) > 0 and l[0] in k else False
+        if isinstance(s, str):
+            return True if len(l) > 0 and l[0] == s else False
+        elif isinstance(s, list):
+            return True if len(l) > 0 and l[0] in s else False
+        return False
 
     def get_object(self, file, key, **kwargs):
         """

@@ -649,11 +649,10 @@ seaf.ta.services.kb:
   flix.kb.waf_1:
     title: WAF
     description: WAF for All-App
-    technology: Защита веб-приложений WAF
+    technology: 'Защита веб-приложений WAF'
     network_connection:
-      - flix.wan.dc.isp.02
       - flix.lan.dc.wan_edge
-    segment_id: flix.network_segment.dc.ntwrk.01
+      - flix.wan.dc.isp.02
 
   flix.kb.ddos_1:
     title: DDOS

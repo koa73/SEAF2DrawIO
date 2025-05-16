@@ -658,7 +658,6 @@ seaf.ta.services.kb:
     title: DDOS
     description: Сервис защиты от DDOs от BiZone
     technology: Защита от атака типа "Отказ в обслуживании"
-    segment_id: flix.network_segment.dc.ntwrk.05
     network_connection:
       - flix.wan.dc.isp.01
 
@@ -666,7 +665,6 @@ seaf.ta.services.kb:
     title: S1
     description: Сервис кибер безопасности
     technology: Инструментальный контроль защищенности
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -674,7 +672,6 @@ seaf.ta.services.kb:
     title: S2
     description: Сервис кибер безопасности
     technology: Управление доступом пользователей
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -682,7 +679,6 @@ seaf.ta.services.kb:
     title: S3
     description: Сервис кибер безопасности
     technology: Механизмы ААА
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -690,7 +686,6 @@ seaf.ta.services.kb:
     title: S4
     description: Сервис кибер безопасности
     technology: МСЭ
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -698,7 +693,6 @@ seaf.ta.services.kb:
     title: S5
     description: Сервис кибер безопасности
     technology: Потоковый антивирус
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -706,7 +700,6 @@ seaf.ta.services.kb:
     title: S6
     description: Сервис кибер безопасности
     technology: Контроль подключений к сети
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -714,7 +707,6 @@ seaf.ta.services.kb:
     title: S7
     description: Сервис кибер безопасности
     technology: Шлюзы безопасности прикладного уровня
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -722,7 +714,6 @@ seaf.ta.services.kb:
     title: S8
     description: Сервис кибер безопасности
     technology: Контентная фильтрация и разграничение доступа в Интернет
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -730,7 +721,6 @@ seaf.ta.services.kb:
     title: S9
     description: Сервис кибер безопасности
     technology: Аудит событий КБ
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -738,7 +728,6 @@ seaf.ta.services.kb:
     title: S10
     description: Сервис кибер безопасности
     technology: Динамический анализ угроз Sandbox
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -746,7 +735,6 @@ seaf.ta.services.kb:
     title: S11
     description: Сервис кибер безопасности
     technology: Безопасность конфигураций
-    segment_id: flix.network_segment.dc.ntwrk.03
     network_connection:
       - flix.lan.dc.ext.lan
 
@@ -754,6 +742,5 @@ seaf.ta.services.kb:
     title: S12
     description: Сервис кибер безопасности
     technology: Безопасность конфигураций
-    segment_id: flix.network_segment.office.int
     network_connection:
       - flix.lan.office.admin.ARM

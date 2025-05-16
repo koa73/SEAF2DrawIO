@@ -249,7 +249,6 @@ fpsu:
   algo: 'Y+'
 
 #-------------------------------------- Сервисы Кибер безопасности -----------------------------------------------------
-
 waf:
   xml : >
     <object label="{{label}}" id="{{id}}">
@@ -276,7 +275,7 @@ ddos:
       </mxCell>
     </object>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Защита от атака типа "Отказ в обслуживании"'
   deep: 3
   offset: 30
@@ -288,7 +287,7 @@ ddos:
 
 kb_services_aaa:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -306,7 +305,7 @@ kb_services_aaa:
       <mxGeometry x="20" y="13" width="15" height="15" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Механизмы ААА'
   deep: 6
   offset: 30
@@ -318,7 +317,7 @@ kb_services_aaa:
 
 kb_services_ib_tool:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -336,7 +335,7 @@ kb_services_ib_tool:
       <mxGeometry x="17.5" y="11" width="22" height="18" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Инструментальный контроль защищенности'
   deep: 6
   offset: 30
@@ -348,7 +347,7 @@ kb_services_ib_tool:
 
 kb_services_antivirus:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -366,7 +365,7 @@ kb_services_antivirus:
       <mxGeometry x="21.78" y="13" width="14" height="14" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Потоковый антивирус'
   deep: 6
   offset: 30
@@ -378,7 +377,7 @@ kb_services_antivirus:
 
 kb_services_user_access:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -399,7 +398,7 @@ kb_services_user_access:
       <mxGeometry x="27.31707317073176" y="19" width="4.878048780487805" height="10" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Управление доступом пользователей'
   deep: 6
   offset: 30
@@ -411,7 +410,7 @@ kb_services_user_access:
 
 kb_services_app_gateway:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -429,7 +428,7 @@ kb_services_app_gateway:
       <mxGeometry x="19" y="10" width="19" height="19" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Шлюзы безопасности прикладного уровня'
   deep: 6
   offset: 30
@@ -441,7 +440,7 @@ kb_services_app_gateway:
 
 kb_services_proxy:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -459,7 +458,7 @@ kb_services_proxy:
       <mxGeometry x="19" y="13" width="14" height="14" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Контентная фильтрация и разграничение доступа в Интернет'
   deep: 6
   offset: 30
@@ -471,7 +470,7 @@ kb_services_proxy:
 
 kb_services_audit:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -489,7 +488,7 @@ kb_services_audit:
       <mxGeometry x="15" y="14" width="20" height="15" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Аудит событий КБ'
   deep: 6
   offset: 30
@@ -501,7 +500,7 @@ kb_services_audit:
 
 kb_services_sand_box:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -519,7 +518,7 @@ kb_services_sand_box:
       <mxGeometry x="21" y="11.5" width="17" height="17" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Динамический анализ угроз Sandbox'
   deep: 6
   offset: 30
@@ -531,7 +530,7 @@ kb_services_sand_box:
 
 kb_services_config:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -549,7 +548,7 @@ kb_services_config:
       <mxGeometry x="20" y="10" width="20" height="20" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   type: 'technology:Безопасность конфигураций'
   deep: 6
   offset: 30
@@ -561,7 +560,7 @@ kb_services_config:
 
 kb_services:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{parent_id}">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -579,7 +578,7 @@ kb_services:
       <mxGeometry x="17.25" y="13.5" width="18" height="13" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
+  parent_id: 'network_connection'
   deep: 6
   offset: 30
   x: 180

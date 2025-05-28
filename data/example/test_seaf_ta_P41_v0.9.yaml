@@ -756,7 +756,6 @@ seaf.ta.services.cluster:
     stand:
       - flix.stand.prod
     network_connection:
-      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
     service_type: 'Средства управления ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)'
 
@@ -769,9 +768,20 @@ seaf.ta.services.cluster:
     stand:
       - flix.stand.prod
     network_connection:
-      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
     service_type: 'Средства коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
+
+  flix.cluster.vdi:
+    title: Кластер vdi
+    cluster_id: cluster.VDI
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Кластер vdi
+    stand:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Виртуализация рабочих мест (ВАРМ и VDI)'
 
  #### Создаём описание технических сервисов (stand-alone)
 seaf.ta.services.compute_service:
@@ -779,7 +789,6 @@ seaf.ta.services.compute_service:
     title: Ansible
     description: Инструменты автоматизации развертывания инфраструктуры
     network_connection:
-      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
     service_type: 'Средства управления и автоматизации (Ansible, Terraform, Jenkins и т.д.)'
 
@@ -787,10 +796,29 @@ seaf.ta.services.compute_service:
     title: Devops инструменты GitLab
     description: Инструменты разработки GitLab
     network_connection:
-      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
     service_type: 'Средства (инструменты) управления разработкой и хранения кода (Gitlab, Jira и т.д.)'
 
+  flix.network.tools_1:
+    title: DNS
+    description: Внутренний DNS
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Системы управления сетевым адресным пространством (DHCP, DNS т.д.)'
+
+  flix.network.remote_1:
+    title: R.Access
+    description: Сервис удаленного доступа
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Инфраструктура удаленного доступа'
+
+  flix.network.file_storage_1:
+    title: s3
+    description: Хранилище данных
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Файловый ресурс (FTP, NFS, SMB, S3 итд)'
 
  ### Системы резервного копирования
 seaf.ta.services.backup:
@@ -811,9 +839,7 @@ seaf.ta.services.backup:
     stand_id:
       - flix.stand.prod
     network_connection:
-      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
-
 
  #### Создаём описание сервиса мониторинга
 seaf.ta.services.monitoring:
@@ -836,5 +862,5 @@ seaf.ta.services.monitoring:
     stand_id:
       - flix.stand.prod
     network_connection:
-      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
+

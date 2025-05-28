@@ -587,6 +587,69 @@ kb_services:
   h: 40
   algo: 'Y+'
 
+#----------------------- Сервисы Технической Архитектуры (ТА) -----------------------------------------------------
+
+ta_services_messaging_compute:
+    xml: >
+      <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+      <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;S1&lt;/font&gt;&lt;/div&gt;" title="" description="" class="Механизмы ААА&#xa;Межсетевое экранирование&#xa;Сигнатурный анализ режим обнаружнения вторжений&#xa;Сигнатурный анализ режим предотвращения вторжений&#xa;Поведенческий анализ сетевого трафика&#xa;Динамический анализ угроз Sandbox&#xa;Защита от атака типа &quot;Отказ в обслуживании&quot;&#xa;Шифрование канала&#xa;Потоковый антивирус&#xa;Управление доступом пользователей&#xa;Контроль подключений к сети&#xa;Защита веб-приложений WAF&#xa;Контентная фильтрация и разграничение доступа в Интернет&#xa;Шлюзы безопасности прикладного уровня Инструментальныйконтроль защищенности&#xa;Безопасность конфигураций&#xa;Аудит событий КБ" segment_id="" network_connection="[&#39;&#39;]" OID="" schema="seaf.ta.p41.services.kb" id="{{id}}">
+        <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+          <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+        </mxCell>
+      </object>
+      <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry y="10" width="40" height="20" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="13" y="11" width="8.78048780487805" height="18" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=light-dark(#2875E2,#4285F4);labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam2.globe;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="20" y="13" width="15" height="15" as="geometry" />
+      </mxCell>
+    schema: 'seaf.ta.services.compute'
+    parent_id: 'network_connection'
+    type: 'class:Средства коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
+    deep: 10
+    offset: 30
+    x: 1330
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_messaging_cluster:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;S1&lt;/font&gt;&lt;/div&gt;" title="" description="" class="Механизмы ААА&#xa;Межсетевое экранирование&#xa;Сигнатурный анализ режим обнаружнения вторжений&#xa;Сигнатурный анализ режим предотвращения вторжений&#xa;Поведенческий анализ сетевого трафика&#xa;Динамический анализ угроз Sandbox&#xa;Защита от атака типа &quot;Отказ в обслуживании&quot;&#xa;Шифрование канала&#xa;Потоковый антивирус&#xa;Управление доступом пользователей&#xa;Контроль подключений к сети&#xa;Защита веб-приложений WAF&#xa;Контентная фильтрация и разграничение доступа в Интернет&#xa;Шлюзы безопасности прикладного уровня Инструментальныйконтроль защищенности&#xa;Безопасность конфигураций&#xa;Аудит событий КБ" segment_id="" network_connection="[&#39;&#39;]" OID="" schema="seaf.ta.p41.services.kb" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="40" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="13" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=light-dark(#2875E2,#4285F4);labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam2.globe;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="20" y="13" width="15" height="15" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.services.cluster'
+  parent_id: 'network_connection'
+  type: 'class:Средства коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
+  deep: 10
+  offset: 30
+  x: 1400
+  y: 1240
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+
 #-------------------------------------- Network Links -----------------------------------------------------------------
 network_links:
   xml: >
@@ -620,4 +683,26 @@ network_links_2:
     </object>
   style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
   schema: 'seaf.ta.services.kb'
+  targets: 'network_connection'
+
+network_links_3:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.cluster'
+  targets: 'network_connection'
+
+network_links_4:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.compute'
   targets: 'network_connection'

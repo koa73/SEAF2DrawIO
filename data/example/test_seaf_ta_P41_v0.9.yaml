@@ -756,6 +756,7 @@ seaf.ta.services.cluster:
     stand:
       - flix.stand.prod
     network_connection:
+      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
     service_type: 'Средства управления ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)'
 
@@ -768,6 +769,7 @@ seaf.ta.services.cluster:
     stand:
       - flix.stand.prod
     network_connection:
+      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
     service_type: 'Средства коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
 
@@ -777,6 +779,7 @@ seaf.ta.services.compute_service:
     title: Ansible
     description: Инструменты автоматизации развертывания инфраструктуры
     network_connection:
+      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
     service_type: 'Средства управления и автоматизации (Ansible, Terraform, Jenkins и т.д.)'
 
@@ -784,6 +787,7 @@ seaf.ta.services.compute_service:
     title: Devops инструменты GitLab
     description: Инструменты разработки GitLab
     network_connection:
+      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
     service_type: 'Средства (инструменты) управления разработкой и хранения кода (Gitlab, Jira и т.д.)'
 
@@ -807,6 +811,7 @@ seaf.ta.services.backup:
     stand_id:
       - flix.stand.prod
     network_connection:
+      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan
 
 
@@ -831,4 +836,5 @@ seaf.ta.services.monitoring:
     stand_id:
       - flix.stand.prod
     network_connection:
+      - flix.lan.office.int.lan
       - flix.lan.dc.ext.lan

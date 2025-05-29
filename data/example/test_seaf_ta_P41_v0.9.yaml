@@ -592,6 +592,17 @@ seaf.ta.components.network:
       - flix.lan.office.int.lan
       - flix.lan.office.mgmt
 
+  flix.network.switch:
+    title: Printer Switch
+    description: Коммутатор сети принтеров
+    realization_type: Физический
+    model: Cisco
+    type: "Коммутатор"
+    placement_segment: flix.network_segment.office.int
+    purpose: Сетевой свитч
+    address: 192.168.6.15
+    network_connection:
+      - flix.lan.office.printers
 
   #### Создаём описание сетевых устройств ЦОД
 

@@ -284,6 +284,59 @@ fpsu:
   h: 40
   algo: 'Y+'
 
+switch:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+          <mxCell style="shape=mxgraph.cisco.switches.workgroup_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'placement_segment'
+  type: "type:Коммутатор"
+  deep: 7
+  offset: 30
+  x: 210
+  y: 40
+  w: 50
+  h: 20
+  algo: 'Y+'
+
+vpn:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+          <mxCell style="shape=mxgraph.cisco.hubs_and_gateways.vpn_gateway;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'placement_segment'
+  type: "type:VPN"
+  deep: 7
+  offset: 30
+  x: 20
+  y: 40
+  w: 50
+  h: 20
+  algo: 'Y+'
+
+nat:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+          <mxCell style="shape=mxgraph.cisco.security.guard;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'placement_segment'
+  type: "type:NAT"
+  deep: 7
+  offset: 30
+  x: 20
+  y: 40
+  w: 50
+  h: 20
+  algo: 'Y+'
 #----------------------- Сервисы Кибер безопасности -----------------------------------------------------
 waf:
   xml : >

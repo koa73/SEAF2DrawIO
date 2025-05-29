@@ -359,6 +359,11 @@
                 enum:
                     - Маршрутизатор
                     - Контроллер WiFi
+                    - МСЭ
+                    - Криптошлюз
+                    - VPN
+                    - NAT
+                    - Коммутатор
             placement_segment:
                 title: ID ЦОД или Офиса
                 type: string

@@ -748,7 +748,7 @@ seaf.ta.services.kb:
 #### Создаём описание технических сервисов (кластер)
 seaf.ta.services.cluster:
   flix.cluster.ad:
-    title: Кластер Active Directory
+    title: Кластер AD
     cluster_id: cluster.ad
     cluster_fqdn:
     cluster_reservation_type: Active-Active
@@ -757,7 +757,7 @@ seaf.ta.services.cluster:
       - flix.stand.prod
     network_connection:
       - flix.lan.dc.ext.lan
-    service_type: 'Средства управления ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)'
+    service_type: 'Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)'
 
   flix.cluster.mail:
     title: Почтовый кластер
@@ -769,7 +769,7 @@ seaf.ta.services.cluster:
       - flix.stand.prod
     network_connection:
       - flix.lan.dc.ext.lan
-    service_type: 'Средства коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
+    service_type: 'Коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
 
   flix.cluster.vdi:
     title: Кластер vdi
@@ -790,21 +790,21 @@ seaf.ta.services.compute_service:
     description: Инструменты автоматизации развертывания инфраструктуры
     network_connection:
       - flix.lan.dc.ext.lan
-    service_type: 'Средства управления и автоматизации (Ansible, Terraform, Jenkins и т.д.)'
+    service_type: 'Управление и автоматизацией (Ansible, Terraform, Jenkins и т.д.)'
 
   flix.gitlab:
     title: Devops инструменты GitLab
     description: Инструменты разработки GitLab
     network_connection:
       - flix.lan.dc.ext.lan
-    service_type: 'Средства (инструменты) управления разработкой и хранения кода (Gitlab, Jira и т.д.)'
+    service_type: 'Управление разработкой и хранения кода (Gitlab, Jira и т.д.)'
 
   flix.network.tools_1:
     title: DNS
     description: Внутренний DNS
     network_connection:
       - flix.lan.dc.ext.lan
-    service_type: 'Системы управления сетевым адресным пространством (DHCP, DNS т.д.)'
+    service_type: 'Управление сетевым адресным пространством (DHCP, DNS и т.д.)'
 
   flix.network.remote_1:
     title: R.Access
@@ -818,7 +818,7 @@ seaf.ta.services.compute_service:
     description: Хранилище данных
     network_connection:
       - flix.lan.dc.ext.lan
-    service_type: 'Файловый ресурс (FTP, NFS, SMB, S3 итд)'
+    service_type: 'Файловый ресурс (FTP, NFS, SMB, S3 и т.д.)'
 
  ### Системы резервного копирования
 seaf.ta.services.backup:
@@ -864,3 +864,28 @@ seaf.ta.services.monitoring:
     network_connection:
       - flix.lan.dc.ext.lan
 
+### Создаём сервис виртуализации
+seaf.ta.services.cluster_virtualization:
+  flix.cluster_virtualization.vmware.01:
+    title: Кластер виртуализации
+    description: Кластер виртуализации
+    virtualization_id: cluster_virtualization.vmware.01
+    drs_support: true
+    sdrs_support: false
+    stand:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+### Создаём сервиса Kubernetes
+seaf.ta.services.k8s:
+  flix.service.k8s.01:
+    title: Kubernetes кластер
+    description: Kubernetes кластер
+    kubernetes_id: k8s.01
+    is_own: false
+    sdrs_support: false
+    stand:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan

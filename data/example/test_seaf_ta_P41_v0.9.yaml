@@ -836,7 +836,6 @@ seaf.ta.services.backup:
   flix.backup.acronis:
     title: Acronis
     description: Резервное копирование Acronis
-    backup_id: backup.01
     path: sw_storage.01
     availabilityzone_id:
       - flix.dc_az.moscow
@@ -857,7 +856,6 @@ seaf.ta.services.monitoring:
   flix.monitoring.01:
     title: Zabbix
     description: Инфра мониторинг
-    monitoring_id: monitoring.01
     ha: false
     availabilityzone_id:
       - flix.dc_az.moscow
@@ -880,7 +878,6 @@ seaf.ta.services.cluster_virtualization:
   flix.cluster_virtualization.vmware.01:
     title: Кластер виртуализации
     description: Кластер виртуализации
-    virtualization_id: cluster_virtualization.vmware.01
     drs_support: true
     sdrs_support: false
     stand:
@@ -893,7 +890,6 @@ seaf.ta.services.k8s:
   flix.service.k8s.01:
     title: Kubernetes кластер
     description: Kubernetes кластер
-    kubernetes_id: k8s.01
     is_own: false
     sdrs_support: false
     stand:

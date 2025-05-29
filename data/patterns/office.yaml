@@ -1239,3 +1239,25 @@ network_links_6:
   style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
   schema: 'seaf.ta.services.backup'
   targets: 'network_connection'
+
+network_links_7:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.k8s'
+  targets: 'network_connection'
+
+network_links_8:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.cluster_virtualization'
+  targets: 'network_connection'

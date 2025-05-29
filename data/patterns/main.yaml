@@ -80,6 +80,9 @@ office:
             <mxGeometry x="420" y="60" width="160" height="1060"  as="geometry" />
           </mxCell>
           <mxCell id="100" value="Links" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="101" value="Сервисы KБ" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="102" value="Tех. сервисы" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="103" value="Прикладные компоненты" style="group;fontColor=none;noLabel=1;" parent="0"/>
         </root>
       </mxGraphModel>
     </diagram>
@@ -109,7 +112,6 @@ dc:
         <root>
           <mxCell id="0"/>   
           <mxCell id="1" parent="0"/>
-          <mxCell id="01" value="Links" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="001" value="DC" style="group;strokeColor=default;rounded=0;strokeWidth=1;perimeterSpacing=1;fontColor=none;noLabel=1;" parent="0" vertex="1">
             <mxGeometry  x="615" y="60" width="1821" height="1400" as="geometry" />            
           </mxCell>
@@ -123,11 +125,12 @@ dc:
               <mxGeometry x="420" y="60" width="160" height="1400"  as="geometry" />
           </mxCell>
           <mxCell id="100" value="Links" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="101" value="Сервисы KБ" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="102" value="Tех. сервисы" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="103" value="Прикладные компоненты" style="group;fontColor=none;noLabel=1;" parent="0"/>
         </root>
       </mxGraphModel>
     </diagram>
-
-
 
 
 segment_internet:

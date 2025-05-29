@@ -248,18 +248,70 @@ fpsu:
   h: 40
   algo: 'Y+'
 
-#-------------------------------------- Сервисы Кибер безопасности -----------------------------------------------------
+switch:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+          <mxCell style="shape=mxgraph.cisco.switches.workgroup_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'placement_segment'
+  type: "type:Коммутатор"
+  deep: 7
+  offset: 30
+  x: 210
+  y: 40
+  w: 50
+  h: 20
+  algo: 'Y+'
 
+vpn:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+          <mxCell style="shape=mxgraph.cisco.hubs_and_gateways.vpn_gateway;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'placement_segment'
+  type: "type:VPN"
+  deep: 7
+  offset: 30
+  x: 20
+  y: 40
+  w: 50
+  h: 20
+  algo: 'Y+'
+
+nat:
+  xml : >
+    <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
+          <mxCell style="shape=mxgraph.cisco.security.guard;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
+            <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+          </mxCell>
+    </object>
+  schema: 'seaf.ta.components.network'
+  parent_id: 'placement_segment'
+  type: "type:NAT"
+  deep: 7
+  offset: 30
+  x: 20
+  y: 40
+  w: 50
+  h: 20
+  algo: 'Y+'
+#-------------------------------------- Сервисы Кибер безопасности -----------------------------------------------------
 waf:
   xml : >
     <object label="{{label}}" id="{{id}}">
-      <mxCell style="verticalLabelPosition=bottom;sketch=0;fillColor=#FF0000;strokeColor=none;verticalAlign=top;pointerEvents=1;align=center;shape=mxgraph.cisco_safe.security_icons.waf;aspect=fixed;" vertex="1" parent="{segment_id}">
+      <mxCell style="verticalLabelPosition=bottom;sketch=0;fillColor=#FF0000;strokeColor=none;verticalAlign=top;pointerEvents=1;align=center;shape=mxgraph.cisco_safe.security_icons.waf;aspect=fixed;" vertex="1" parent="101">
         <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
       </mxCell>
     </object>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: "class:Защита веб-приложений WAF"
+  parent_id: 'network_connection'
+  type: 'technology:Защита веб-приложений WAF'
   deep: 9
   offset: 30
   x: -20
@@ -276,8 +328,8 @@ ddos:
       </mxCell>
     </object>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Защита от атака типа "Отказ в обслуживании"'
+  parent_id: 'network_connection'
+  type: 'technology:Защита от атака типа "Отказ в обслуживании"'
   deep: 3
   offset: 30
   x: 100
@@ -288,7 +340,7 @@ ddos:
 
 kb_services_aaa:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -306,19 +358,19 @@ kb_services_aaa:
       <mxGeometry x="20" y="13" width="15" height="15" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Механизмы ААА'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Механизмы ААА'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1000
+  x: 615
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services_ib_tool:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -336,19 +388,19 @@ kb_services_ib_tool:
       <mxGeometry x="17.5" y="11" width="22" height="18" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Инструментальный контроль защищенности'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Инструментальный контроль защищенности'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1050
+  x: 685
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services_antivirus:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -366,19 +418,19 @@ kb_services_antivirus:
       <mxGeometry x="21.78" y="13" width="14" height="14" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Потоковый антивирус'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Потоковый антивирус'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1100
+  x: 755
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services_user_access:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -399,19 +451,19 @@ kb_services_user_access:
       <mxGeometry x="27.31707317073176" y="19" width="4.878048780487805" height="10" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Управление доступом пользователей'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Управление доступом пользователей'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1150
+  x: 825
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services_app_gateway:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -429,19 +481,19 @@ kb_services_app_gateway:
       <mxGeometry x="19" y="10" width="19" height="19" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Шлюзы безопасности прикладного уровня'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Шлюзы безопасности прикладного уровня'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1200
+  x: 895
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services_proxy:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -459,19 +511,19 @@ kb_services_proxy:
       <mxGeometry x="19" y="13" width="14" height="14" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Контентная фильтрация и разграничение доступа в Интернет'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Контентная фильтрация и разграничение доступа в Интернет'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1250
+  x: 965
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services_audit:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -489,19 +541,19 @@ kb_services_audit:
       <mxGeometry x="15" y="14" width="20" height="15" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Аудит событий КБ'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Аудит событий КБ'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1300
+  x: 1035
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services_sand_box:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -519,19 +571,19 @@ kb_services_sand_box:
       <mxGeometry x="21" y="11.5" width="17" height="17" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Динамический анализ угроз Sandbox'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Динамический анализ угроз Sandbox'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1350
+  x: 1105
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services_config:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -549,19 +601,19 @@ kb_services_config:
       <mxGeometry x="20" y="10" width="20" height="20" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  type: 'class:Безопасность конфигураций'
-  deep: 6
+  parent_id: 'network_connection'
+  type: 'technology:Безопасность конфигураций'
+  deep: 10
   offset: 30
-  x: 30
-  y: 1400
+  x: 1175
+  y: 1240
   w: 40
   h: 40
-  algo: 'X+'
+  algo: 'Y+'
 
 kb_services:
   xml : >
-    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{segment_id}">
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="101">
       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
     </mxCell>
     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
@@ -579,15 +631,536 @@ kb_services:
       <mxGeometry x="17.25" y="13.5" width="18" height="13" as="geometry" />
     </mxCell>
   schema: 'seaf.ta.services.kb'
-  parent_id: 'segment_id'
-  deep: 6
+  parent_id: 'network_connection'
+  deep: 10
   offset: 30
-  x: 180
-  y: 1000
+  x: 1245
+  y: 1240
   w: 40
   h: 40
   algo: 'Y+'
 
+#----------------------- Сервисы Технической Архитектуры (ТА) -----------------------------------------------------
+
+ta_services_messaging_compute:
+    xml: >
+      <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+      <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+        <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+          <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+        </mxCell>
+      </object>
+      <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry y="10" width="40" height="20" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="13" y="11" width="8.78048780487805" height="18" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=light-dark(#2875E2,#4285F4);labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam2.globe;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="20" y="13" width="15" height="15" as="geometry" />
+      </mxCell>
+    schema: 'seaf.ta.services.compute_service'
+    parent_id: 'network_connection'
+    type: 'service_type:Коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
+    deep: 10
+    offset: 30
+    x: 1330
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_messaging_cluster:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="40" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="13" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=light-dark(#2875E2,#4285F4);labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam2.globe;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="20" y="13" width="15" height="15" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.services.cluster'
+  parent_id: 'network_connection'
+  type: 'service_type:Коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
+  deep: 10
+  offset: 30
+  x: 1400
+  y: 1240
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+
+ta_services_infra_tools_compute:
+    xml: >
+      <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+      <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+        <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;" vertex="1" parent="{Group_ID}">
+          <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+        </mxCell>
+      </object>
+      <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry y="10" width="40" height="20" as="geometry" />
+      </mxCell>
+      <mxCell id="I{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="13" y="11" width="8.78048780487805" height="18" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" value="" style="verticalLabelPosition=bottom;sketch=0;html=1;fillColor=#FFFFFF;strokeColor=none;verticalAlign=top;pointerEvents=1;align=center;shape=mxgraph.cisco_safe.iot_things_icons.icon45;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="23" y="12.5" width="15" height="15" as="geometry" />
+      </mxCell>
+    schema: 'seaf.ta.services.compute_service'
+    parent_id: 'network_connection'
+    type: 'service_type:Управление и автоматизацией (Ansible, Terraform, Jenkins и т.д.)'
+    deep: 10
+    offset: 30
+    x: 1470
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_infra_tools_cluster:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="40" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="I{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="13" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="verticalLabelPosition=bottom;sketch=0;html=1;fillColor=#FFFFFF;strokeColor=none;verticalAlign=top;pointerEvents=1;align=center;shape=mxgraph.cisco_safe.iot_things_icons.icon45;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="23" y="12.5" width="15" height="15" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.services.cluster'
+  parent_id: 'network_connection'
+  type: 'service_type:Управление и автоматизацией (Ansible, Terraform, Jenkins и т.д.)'
+  deep: 10
+  offset: 30
+  x: 1540
+  y: 1240
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+
+ta_services_control_tools_cluster:
+  xml : >
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+       <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;" vertex="1" parent="{Group_ID}">
+         <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+       </mxCell>
+     </object>
+     <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry y="10" width="40" height="20" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#FFFFFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.systems_manager_application_manager;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="21" y="10" width="18" height="18" as="geometry" />
+     </mxCell>
+  schema: 'seaf.ta.services.cluster'
+  parent_id: 'network_connection'
+  type: 'service_type:Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)'
+  deep: 10
+  offset: 30
+  x: 1540
+  y: 1240
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+ta_services_control_tools_compute:
+    xml: >
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+       <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;" vertex="1" parent="{Group_ID}">
+         <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+       </mxCell>
+     </object>
+     <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry y="10" width="40" height="20" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#FFFFFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.systems_manager_application_manager;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="21" y="10" width="18" height="18" as="geometry" />
+     </mxCell>
+    schema: 'seaf.ta.services.compute_service'
+    parent_id: 'network_connection'
+    type: 'service_type:Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)'
+    deep: 10
+    offset: 30
+    x: 1470
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_dev_tools_compute:
+    xml: >
+      <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+      <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+        <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+          <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+        </mxCell>
+      </object>
+      <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry y="10" width="40" height="20" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="14" y="11" width="8.78048780487805" height="18" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=none;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.managed_services;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="17" y="10" width="20" height="20" as="geometry" />
+      </mxCell>
+    schema: 'seaf.ta.services.compute_service'
+    parent_id: 'network_connection'
+    type: 'service_type:Управление разработкой и хранения кода (Gitlab, Jira и т.д.)'
+    deep: 10
+    offset: 30
+    x: 1610
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_dev_tools_cluster:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="40" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="14" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=none;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.managed_services;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="17" y="10" width="20" height="20" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.services.cluster'
+  parent_id: 'network_connection'
+  type: 'service_type:Управление разработкой и хранения кода (Gitlab, Jira и т.д.)'
+  deep: 10
+  offset: 30
+  x: 1680
+  y: 1240
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+ta_services_monitoring:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{Group_ID}">
+      <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="40" height="40" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#2875E2;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="40" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15074;fillColor=none;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam2.microsoft_scom;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="17" y="10" width="20" height="20" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.services.monitoring'
+  parent_id: 'network_connection'
+  deep: 10
+  offset: 30
+  x: 1750
+  y: 1240
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+ta_services_backup:
+  xml : >
+   <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="40" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=none;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloud_directory;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="20" y="10" width="20" height="20" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.services.backup'
+  parent_id: 'network_connection'
+  deep: 10
+  offset: 30
+  x: 1820
+  y: 1240
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+ta_services_net_tools_compute:
+    xml: >
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+       <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+         <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+       </mxCell>
+     </object>
+     <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry y="10" width="40" height="20" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="12" y="11.5" width="8.78048780487805" height="17" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=#FFFFFF;fillColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cluster;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="19.5" y="10" width="20" height="20" as="geometry" />
+     </mxCell>
+    schema: 'seaf.ta.services.compute_service'
+    parent_id: 'network_connection'
+    type: 'service_type:Управление сетевым адресным пространством (DHCP, DNS и т.д.)'
+    deep: 10
+    offset: 30
+    x: 1890
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_remote_tools_compute:
+    xml: >
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{Group_ID}">
+       <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+       <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+         <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+       </mxCell>
+     </object>
+     <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry y="10" width="40" height="20" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="13.5" y="11" width="8.78048780487805" height="18" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=none;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.workspaces_thin_client;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="22.28" y="12.5" width="15" height="15" as="geometry" />
+     </mxCell>
+    schema: 'seaf.ta.services.compute_service'
+    parent_id: 'network_connection'
+    type: 'service_type:Инфраструктура удаленного доступа'
+    deep: 10
+    offset: 30
+    x: 1960
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_files_compute:
+    xml: >
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+       <mxGeometry  x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{Group_ID}">
+       <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+         <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+       </mxCell>
+     </object>
+     <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#2875E2;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry y="10" width="40" height="20" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" style="vsdxID=15074;fillColor=none;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#FFFFFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.file_system;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="22" y="13" width="14" height="14" as="geometry" />
+     </mxCell>
+    schema: 'seaf.ta.services.compute_service'
+    parent_id: 'network_connection'
+    type: 'service_type:Файловый ресурс (FTP, NFS, SMB, S3 и т.д.)'
+    deep: 10
+    offset: 30
+    x: 2030
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_files_cluster:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+      <mxGeometry  x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{Group_ID}">
+      <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#2875E2;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="40" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" style="vsdxID=15074;fillColor=none;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#FFFFFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.file_system;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="22" y="13" width="14" height="14" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.services.cluster'
+  parent_id: 'network_connection'
+  type: 'service_type:Файловый ресурс (FTP, NFS, SMB, S3 итд)'
+  deep: 10
+  offset: 30
+  x: 2100
+  y: 1240
+  w: 40
+  h: 40
+  algo: 'Y+'
+
+ta_services_vdi_cluster:
+    xml: >
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+       <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="{Group_ID}">
+       <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+     </mxCell>
+     <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+       <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="40" height="40" as="geometry" />
+       </mxCell>
+     </object>
+     <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry y="10" width="40" height="20" as="geometry" />
+     </mxCell>
+     <mxCell id="{{id}}" value="" style="sketch=0;shadow=0;dashed=0;html=1;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam.3d.vapp;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="11" y="11" width="18" height="18" as="geometry" />
+     </mxCell>
+    schema: 'seaf.ta.services.cluster'
+    parent_id: 'network_connection'
+    type: 'service_type:Виртуализация рабочих мест (ВАРМ и VDI)'
+    deep: 10
+    offset: 30
+    x: 2170
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_virtual_cluster:
+    xml: >
+      <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+      <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+        <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+          <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+        </mxCell>
+      </object>
+      <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry y="10" width="40" height="20" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=none;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.deep_learning_containers;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="20" y="10" width="20" height="20" as="geometry" />
+      </mxCell>
+    schema: 'seaf.ta.services.cluster_virtualization'
+    parent_id: 'network_connection'
+    deep: 10
+    offset: 30
+    x: 2240
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
+
+ta_services_k8s:
+    xml: >
+      <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+      <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;" id="{{id}}">
+        <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+          <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+        </mxCell>
+      </object>
+      <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+       <mxGeometry y="10" width="40" height="20" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" style="vsdxID=15074;fillColor=#2875E2;gradientColor=none;shape=stencil(pVTRcoMgEPwaXpmDU5DHTpr+RyYx1anVDDGN+ftioaOUKDJ9445dbm+POYK7a3W4lITDtdfdR3mvT31F8JVwXrdVqevenAjuCe7OnS7fdXdrTza+HEbkePrsvsYXBssrBBVyZHF42Az8RG8W3NTtDMyQIi6Djzdtn2b2Ujgom2Nh4F74cCGnKoeCKSFNGQaQuUID+nAXCpqLqTa8BFrB02keXGkL/gH2hYQmTHgWadQZoTLfGPB9mA8MgyE8MSIyYf87yABs6IVatoMHXyKdwKiSy4QnkpIJ65I2EGIuSaRyRVLYdDJBFLTIU3pIJkQkbSDEXGLqN7Ox6XRCRmVS0+mEdUkbCOYwbeNz3TR2mc/v/25vk7KbH/ff);strokeColor=#ffffff;spacingTop=-3;spacingBottom=-3;spacingLeft=-3;spacingRight=-3;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="12" y="11" width="8.78048780487805" height="18" as="geometry" />
+      </mxCell>
+      <mxCell id="{{id}}" value="" style="aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=control_plane;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry x="20.78000000000003" y="12.5" width="15" height="15" as="geometry" />
+      </mxCell>
+    schema: 'seaf.ta.services.k8s'
+    parent_id: 'network_connection'
+    deep: 10
+    offset: 30
+    x: 2310
+    y: 1240
+    w: 40
+    h: 40
+    algo: 'Y+'
 #-------------------------------------- Network Links -----------------------------------------------------------------
 network_links:
   xml: >
@@ -621,4 +1194,70 @@ network_links_2:
     </object>
   style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
   schema: 'seaf.ta.services.kb'
+  targets: 'network_connection'
+
+network_links_3:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.cluster'
+  targets: 'network_connection'
+
+network_links_4:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.compute_service'
+  targets: 'network_connection'
+
+network_links_5:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.monitoring'
+  targets: 'network_connection'
+
+network_links_6:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.backup'
+  targets: 'network_connection'
+
+network_links_7:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.k8s'
+  targets: 'network_connection'
+
+network_links_8:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  schema: 'seaf.ta.services.cluster_virtualization'
   targets: 'network_connection'

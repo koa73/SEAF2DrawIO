@@ -10,31 +10,31 @@
               title: Наименование
               type: string
             description:
-              title: Описание
-              type: string
+                title: Описание
+                type: string
             app_components:
-              title: Перечисление связанных прикладных компонентов с технологичесим сервисом в виде массива
-              type: array
-              items:
-                $ref: "#/$rels/components.component"
+                title: Перечисление связанных прикладных компонентов с технологичесим сервисом в виде массива
+                type: array
+                items:
+                  $ref: "#/$rels/components.component"
             requirements:
-              title: Требования
-              type: array
-              items:
-                $ref: "#/$rels/seaf.change.requirements.requirement"
+                title: Требования
+                type: array
+                items:
+                  $ref: "#/$rels/seaf.change.requirements.requirement"
             integrations:
-              title: Перечисление связанных интеграций с технологичесим сервисом в виде массива
-              type: array
-              items:
-                $ref: "#/$rels/seaf.app.integrations.integrations"
-            stand_id:
-              title: Имя стенда внутри окружения
-              type: array
-              items:
-                $ref: "#/$rels/seaf.ta.services.stand.stand"
+                title: Перечисление связанных интеграций с технологичесим сервисом в виде массива
+                type: array
+                items:
+                  $ref: "#/$rels/seaf.app.integrations.integrations"
+            stand:
+                title: Имя стенда внутри окружения
+                type: array
+                items:
+                  $ref: "#/$rels/seaf.ta.services.stand.stand"
             external_id:
-              title: Идентификатор во внешней системе
-              type: string
+                title: Идентификатор во внешней системе
+                type: string
 
 #### Базовые свойства Технологического компонента ####
   seaf.ta.components.entity:
@@ -359,6 +359,11 @@
                 enum:
                     - Маршрутизатор
                     - Контроллер WiFi
+                    - МСЭ
+                    - Криптошлюз
+                    - VPN
+                    - NAT
+                    - Коммутатор
             placement_segment:
                 title: ID ЦОД или Офиса
                 type: string
@@ -468,4 +473,317 @@
           type: object
           $ref: "#/$defs/seaf.ta.services.kb"
 
+############### Сервисы TA (Compute) #######################################################
+  seaf.ta.services.compute_service:
+    title: Compute Service
+    objects:
+      compute_service:
+        route: "/"
+        title: Вычислительный сервис
+    schema: # JSON Schema контролирующая описание объекта сущности
+      $defs:
+        seaf.ta.services.compute_service:
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            availabilityzone:
+              title: В какие зоны доступности входит
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+            service_type:
+              title: Тип сервиса
+              type: string
+              enum:
+                - "Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)"
+                - "Управление и автоматизацией (Ansible, Terraform, Jenkins и т.д.)"
+                - "Управление разработкой и хранения кода (Gitlab, Jira и т.д.)"
+                - "Управление сетевым адресным пространством (DHCP, DNS и т.д.)"
+                - "Виртуализация рабочих мест (ВАРМ и VDI)"
+                - "Шлюз, Балансировщик, прокси"
+                - "СУБД"
+                - "Распределенный кэш"
+                - "Интеграционная шина  (MQ, ETL, API)"
+                - "Файловый ресурс (FTP, NFS, SMB, S3 и т.д.)"
+                - "Инфраструктура удаленного доступа"
+                - "Коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)"
+                - "Cерверы приложений и т.д."
+            location:
+              title: ID ЦОД или Офиса
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
+            network_connection:
+              title: Перечисление связанных сетей
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network.network"
+          required:
+            - availabilityzone
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.compute_service"
 
+############### Сервисы TA (Cluster) #######################################################
+  seaf.ta.services.cluster:
+    title: Cluster
+    objects:
+      cluster:
+        route: "/"
+        title: Кластер
+    schema: # JSON Schema контролирующая описание объекта сущности
+      $defs:
+        seaf.ta.services.cluster:
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            availabilityzone:
+              title: В какие зоны доступности входит
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+            location:
+              title: ID ЦОД или Офиса
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
+            fqdn:
+              title: FQDN имя кластера
+              type: string
+            reservation_type:
+              title: Тип резервирования кластера
+              type: string
+            network_connection:
+              title: Перечисление связанных сетей
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network.network"
+            service_type:
+              title: Тип сервиса
+              type: string
+              enum:
+                - "Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)"
+                - "Управление и автоматизацией (Ansible, Terraform, Jenkins и т.д.)"
+                - "Управление разработкой и хранения кода (Gitlab, Jira и т.д.)"
+                - "Управление сетевым адресным пространством (DHCP, DNS и т.д.)"
+                - "Виртуализация рабочих мест (ВАРМ и VDI)"
+                - "Шлюз, Балансировщик, прокси"
+                - "СУБД"
+                - "Распределенный кэш"
+                - "Интеграционная шина  (MQ, ETL, API)"
+                - "Файловый ресурс (FTP, NFS, SMB, S3 и т.д.)"
+                - "Инфраструктура удаленного доступа"
+                - "Коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)"
+                - "Cерверы приложений и т.д."
+          required:
+            - availabilityzone
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.cluster"
+
+############### Бэкап #######################################################
+  seaf.ta.services.backup:
+    title: Backup Service
+    objects:
+      backup:
+        route: "/"
+        title: Сервис резервного копирования
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            availabilityzone:
+              title: В какие зоны доступности входит
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+            network_connection:
+              title: Перечисление связанных сетей
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network.network"
+            location:
+              title: ID ЦОД или Офиса
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
+            path:
+              title: Место хранения РК
+              type: string
+            replication:
+              title: Репликация в другой ЦОД
+              type: boolean
+          required:
+            - availabilityzone
+            - path
+############### Мониторинг ##################################################
+  seaf.ta.services.monitoring:
+    title: Monitoring Service
+    objects:
+      monitoring:
+        route: "/"
+        title: Сервис мониторинга
+    schema: # JSON Schema контролирующая описание объекта сущности
+      $defs:
+        seaf.ta.services.monitoring:
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            availabilityzone:
+              title: В какие зоны доступности входит
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+            dc:
+              title: Имя ЦОД/Серверной комнаты
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.dc.dc"
+            name:
+              title: Производитель и название системы мониторинга
+              type: string
+            role:
+              title: Роль
+              type: array
+              items:
+                enum: [ Инфраструктурный, Прикладной, Журналирование, Трейсинг ]
+            ha:
+              title: Высокая доступность системы мониторинга
+              type: boolean
+            network_connection:
+              title: Перечисление связанных сетей
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network.network"
+          required:
+            - availabilityzone
+            - role
+            - ha
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.monitoring"
+
+############### K8S #######################################################
+  seaf.ta.services.k8s:
+    title: Kubernetes Cluster
+    objects:
+      k8s:
+        route: "/"
+        title: Kubernetes кластер
+    schema: # JSON Schema контролирующая описание объекта сущности
+      $defs:
+        seaf.ta.services.k8s:
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            availabilityzone:
+              title: В какие зоны доступности входит
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+            location:
+              title: ID ЦОД или Офиса
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
+            is_own:
+              title: Кластер куплен как услуга
+              type: boolean
+            software:
+              title: ПО реализующее Kubernetes кластер
+              type: string
+            master_qty:
+              title: Количество мастер нод кластера
+              type: integer
+            worker_qty:
+              title: Количество воркер нод кластера
+              type: integer
+            cni:
+              title: CNI плагин
+              type: string
+            service_mesh:
+              title: Service Mesh
+              type: string
+            cluster_autoscaler:
+              title: Работа автомасштабирования воркер нод кластера
+              type: boolean
+            keys:
+              title: Хранилище секретов кластера
+              type: string
+            policy:
+              title: ПО для реализации управления политиками
+              type: string
+            auth:
+              title: ПО для реализации внешней системой аутентификации
+              type: string
+            network_connection:
+              title: Перечисление связанных сетей
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network.network"
+          required:
+            - availabilityzone
+            - software
+            - master_qty
+            - worker_qty
+            - auth
+            - cni
+            - is_own
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.k8s"
+
+############### Кластер виртуализации #######################################
+  seaf.ta.services.cluster_virtualization:
+    title: Описание кластера виртуализации
+    objects:
+      cluster_virtualization:
+        route: "/"
+        title: Кластер виртуализации
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            hypervisor:
+              title: Гипервизор
+              type: string
+            oversubscription_rate:
+              title: Коэффициент переподписки кластера виртуализации
+              type: integer
+            drs_support:
+              title: Поддержка DRS кластером виртуализации
+              type: boolean
+            sdrs_support:
+              title: Поддержка Storage DRS кластером виртуализации
+              type: boolean
+            availabilityzone:
+              title: В какие зоны доступности входит
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+            location:
+              title: ID ЦОД или Офиса
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
+            network_connection:
+              title: Перечисление связанных сетей
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network.network"
+          required:
+            - availabilityzone

@@ -592,6 +592,17 @@ seaf.ta.components.network:
       - flix.lan.office.int.lan
       - flix.lan.office.mgmt
 
+  flix.network.switch:
+    title: Printer Switch
+    description: Коммутатор сети принтеров
+    realization_type: Физический
+    model: Cisco
+    type: "Коммутатор"
+    placement_segment: flix.network_segment.office.int
+    purpose: Сетевой свитч
+    address: 192.168.6.15
+    network_connection:
+      - flix.lan.office.printers
 
   #### Создаём описание сетевых устройств ЦОД
 
@@ -649,112 +660,239 @@ seaf.ta.services.kb:
   flix.kb.waf_1:
     title: WAF
     description: WAF for All-App
-    class: Защита веб-приложений WAF
+    technology: 'Защита веб-приложений WAF'
     network_connection:
-      - flix.wan.dc.isp.02
       - flix.lan.dc.wan_edge
-    segment_id: flix.network_segment.dc.ntwrk.01
+      - flix.wan.dc.isp.02
 
   flix.kb.ddos_1:
     title: DDOS
     description: Сервис защиты от DDOs от BiZone
-    class: Защита от атака типа "Отказ в обслуживании"
-    segment_id: flix.network_segment.dc.ntwrk.05
+    technology: Защита от атака типа "Отказ в обслуживании"
     network_connection:
       - flix.wan.dc.isp.01
 
   flix.kb.1:
     title: S1
     description: Сервис кибер безопасности
-    class: Инструментальный контроль защищенности
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Инструментальный контроль защищенности
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.2:
     title: S2
     description: Сервис кибер безопасности
-    class: Управление доступом пользователей
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Управление доступом пользователей
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.3:
     title: S3
     description: Сервис кибер безопасности
-    class: Механизмы ААА
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Механизмы ААА
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.4:
     title: S4
     description: Сервис кибер безопасности
-    class: МСЭ
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: МСЭ
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.5:
     title: S5
     description: Сервис кибер безопасности
-    class: Потоковый антивирус
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Потоковый антивирус
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.6:
     title: S6
     description: Сервис кибер безопасности
-    class: Контроль подключений к сети
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Контроль подключений к сети
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.7:
     title: S7
     description: Сервис кибер безопасности
-    class: Шлюзы безопасности прикладного уровня
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Шлюзы безопасности прикладного уровня
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.8:
     title: S8
     description: Сервис кибер безопасности
-    class: Контентная фильтрация и разграничение доступа в Интернет
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Контентная фильтрация и разграничение доступа в Интернет
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.9:
     title: S9
     description: Сервис кибер безопасности
-    class: Аудит событий КБ
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Аудит событий КБ
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.10:
     title: S10
     description: Сервис кибер безопасности
-    class: Динамический анализ угроз Sandbox
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Динамический анализ угроз Sandbox
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.11:
     title: S11
     description: Сервис кибер безопасности
-    class: Безопасность конфигураций
-    segment_id: flix.network_segment.dc.ntwrk.03
+    technology: Безопасность конфигураций
     network_connection:
       - flix.lan.dc.ext.lan
 
   flix.kb.12:
     title: S12
     description: Сервис кибер безопасности
-    class: Безопасность конфигураций
-    segment_id: flix.network_segment.office.int
+    technology: Безопасность конфигураций
     network_connection:
       - flix.lan.office.admin.ARM
+
+#### Создаём описание технических сервисов (кластер)
+seaf.ta.services.cluster:
+  flix.cluster.ad:
+    title: Кластер AD
+    cluster_id: cluster.ad
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Кластер Active Directory
+    stand:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)'
+
+  flix.cluster.mail:
+    title: Почтовый кластер
+    cluster_id: cluster.mail
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Почтовый кластер
+    stand:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Коммуникации (АТС, Почта, мессенджеры, СМС шлюзы и т.д.)'
+
+  flix.cluster.vdi:
+    title: Кластер vdi
+    cluster_id: cluster.VDI
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Кластер vdi
+    stand:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Виртуализация рабочих мест (ВАРМ и VDI)'
+
+ #### Создаём описание технических сервисов (stand-alone)
+seaf.ta.services.compute_service:
+  flix.infra.tools_1:
+    title: Ansible
+    description: Инструменты автоматизации развертывания инфраструктуры
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Управление и автоматизацией (Ansible, Terraform, Jenkins и т.д.)'
+
+  flix.gitlab:
+    title: Devops инструменты GitLab
+    description: Инструменты разработки GitLab
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Управление разработкой и хранения кода (Gitlab, Jira и т.д.)'
+
+  flix.network.tools_1:
+    title: DNS
+    description: Внутренний DNS
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Управление сетевым адресным пространством (DHCP, DNS и т.д.)'
+
+  flix.network.remote_1:
+    title: R.Access
+    description: Сервис удаленного доступа
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Инфраструктура удаленного доступа'
+
+  flix.network.file_storage_1:
+    title: s3
+    description: Хранилище данных
+    network_connection:
+      - flix.lan.dc.ext.lan
+    service_type: 'Файловый ресурс (FTP, NFS, SMB, S3 и т.д.)'
+
+ ### Системы резервного копирования
+seaf.ta.services.backup:
+  flix.backup.acronis:
+    title: Acronis
+    description: Резервное копирование Acronis
+    path: sw_storage.01
+    availabilityzone_id:
+      - flix.dc_az.moscow
+    replication: false
+    app_components:
+      - flix.home_cinema.auth.app
+      - flix.home_cinema.auth.token_manager
+      - flix.home_cinema.catalog.app
+      - flix.home_cinema.payments.app
+      - flix.home_cinema.canals.app
+    stand_id:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+ #### Создаём описание сервиса мониторинга
+seaf.ta.services.monitoring:
+  flix.monitoring.01:
+    title: Zabbix
+    description: Инфра мониторинг
+    ha: false
+    availabilityzone_id:
+      - flix.dc_az.moscow
+    app_components:
+      - flix.home_cinema.auth.app
+      - flix.home_cinema.auth.token_manager
+      - flix.home_cinema.catalog.app
+      - flix.home_cinema.canals.app
+      - flix.home_cinema.payments.app
+    role:
+      - Инфраструктурный
+      - Журналирование
+    stand_id:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+### Создаём сервис виртуализации
+seaf.ta.services.cluster_virtualization:
+  flix.cluster_virtualization.vmware.01:
+    title: Кластер виртуализации
+    description: Кластер виртуализации
+    drs_support: true
+    sdrs_support: false
+    stand:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan
+
+### Создаём сервиса Kubernetes
+seaf.ta.services.k8s:
+  flix.service.k8s.01:
+    title: Kubernetes кластер
+    description: Kubernetes кластер
+    is_own: false
+    sdrs_support: false
+    stand:
+      - flix.stand.prod
+    network_connection:
+      - flix.lan.dc.ext.lan

@@ -142,7 +142,8 @@ def add_object(pattern, data, key_id):
 
         try:
             diagram.drawio_node_object_xml = diagram.drawio_node_object_xml.format_map(
-                data | {'Group_ID': f'{key_id}_0', 'parent_type' : default_pattern['parent'], 'description' : data.get('description','') })  # замена в xml шаблоне переменных в одинарных {}, добавление ID группы
+                data | {'Group_ID': f'{key_id}_0', 'parent_id' : current_parent, 'parent_type' : default_pattern['parent'],
+                        'description' : data.get('description','') })  # замена в xml шаблоне переменных в одинарных {}, добавление ID группы
             data['OID'] = key_id
 
         except KeyError as e:
@@ -150,6 +151,7 @@ def add_object(pattern, data, key_id):
             #print("Error: Can't add object: {id} to page: {page}. Key: {key} out of dictionary. Data: {data}"
             #      .format(key=str(e), id=i, page=page_name, data=data))
             return
+
 
         if key_id in diagram_ids[page_name]:
 
@@ -160,7 +162,7 @@ def add_object(pattern, data, key_id):
                 data['sid'] = data.pop('id')
 
             data['schema'] = pattern['schema']
-
+            # Если не содержит конструкции <object></object>, то изменять ID добавляя порядковый номер
             diagram.add_node(
                 id=f"{key_id}_{pattern_count}" if not d.contains_object_tag(xml_pattern, 'object') else key_id,
                 label=data['title'],

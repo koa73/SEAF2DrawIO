@@ -117,9 +117,10 @@ class SeafDrawio:
             for key, value in data.items():
                 if key == target_key:
                     if isinstance(value, list) and len(value) > 0:  # Если в качестве parent_id указан список выбираем 1 элемент
-                        value = value[0]
-                    results.append(value)  # Add the value if the key matches
-                if isinstance(value, (dict, list)):
+                        return value
+                    else:
+                        results.append(value)  # Add the value if the key matches
+                if isinstance(value, dict):
                     results.extend(self.find_key_value(value, target_key))  # Recurse into nested structures
 
         # If the current data is a list
@@ -211,6 +212,46 @@ class SeafDrawio:
         elif isinstance(s, list):
             return True if len(l) > 0 and l[0] in s else False
         return False
+
+
+    @staticmethod
+    def find_common_element(l1, l2):
+        """
+        Returns the first element from l1 (string or list) that is present in l2.
+
+        If there are no common elements, returns False.
+
+        Args:
+            l1 (list or str): The input to check elements from.
+                              If string, treated as a sequence of characters.
+            l2 (list): The list in which to look for elements from l1.
+
+        Returns:
+            any: The first element from l1 found in l2.
+            bool: False if no common elements are found.
+
+        Examples:
+            >>> find_common_element("hello", ['e', 'l', 'o'])
+            'e'
+            >>> find_common_element(["apple", "banana"], ["cherry", "banana"])
+            'banana'
+            >>> find_common_element("abc", ["x", "y"])
+            False
+        """
+        # Приводим l1 к итерируемому виду (список символов для строки)
+        if isinstance(l1, str):
+            iterable = list(l1)
+        elif isinstance(l1, list):
+            iterable = l1
+        else:
+            raise TypeError("l1 must be of type 'str' or 'list'")
+
+        # Поиск первого совпадения
+        for item in iterable:
+            if item in l2:
+                return item
+        return False
+
 
     def get_object(self, file, key, **kwargs):
         """

@@ -196,7 +196,9 @@ seaf.ta.services.network:
     title: OF-Guest Internet EDGE LAN
     type: LAN
     lan_type: Проводная
-    segment: flix.network_segment.office.inet_edge
+    segment:
+      - flix.network_segment.office.inet_edge
+      - flix.network_segment.dc.ntwrk.02
     vlan: 10
     ipnetwork: 10.10.10.0/24
     description: Сеть модуля подключения к внешним сетям - гостевая

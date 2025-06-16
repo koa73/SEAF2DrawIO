@@ -30,7 +30,7 @@ segment_dmz:
   x: 195
   y: 0
   w: 440
-  h: 1238
+  h: 1080
   offset: 0
   deep: 0
   algo: 'none'
@@ -46,9 +46,9 @@ segment_int_wan-edge:
     parent_id: 'location'
     type: "zone:INT-WAN-EDGE"
     x: 195
-    y: 1238
+    y: 1080
     w: 440
-    h: 161
+    h: 310
     offset: 0
     deep: 0
     algo: 'none'
@@ -66,7 +66,7 @@ segment_int_net:
   x: 635
   y: 0
   w: 750
-  h: 1400
+  h: 1390
   offset: 0
   deep: 0
   algo: 'none'
@@ -84,7 +84,7 @@ segment_int_security_net:
   x: 1385
   y: 0
   w: 436
-  h: 1400
+  h: 1390
   offset: 0
   deep: 0
   algo: 'none'
@@ -135,7 +135,7 @@ segment_internet:
   schema: 'seaf.ta.services.network_segment'
   parent_id: 'location'
   type: "zone:INTERNET"
-  x: -660
+  x: -720
   y: 690
   w: 1345
   h: 27
@@ -195,7 +195,7 @@ isp:
 lan:
   xml : >
     <object label="&lt;div style=&quot;font-size: 1px&quot;&gt;&lt;p style=&quot;align:center;margin-left:0;margin-right:0;margin-top:0px;margin-bottom:0px;text-indent:0;valign:middle;direction:ltr;&quot;&gt;&lt;font style=&quot;font-size:9.88px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;&lt;b&gt;{title}&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:9.88px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;  &lt;/font&gt;&lt;font style=&quot;font-size:8.47px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;{ipnetwork}&lt;/font&gt;&lt;font style=&quot;font-size:11.29px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;&lt;b&gt;&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;" id="{{id}}">
-      <mxCell style="verticalAlign=middle;align=center;vsdxID=35397;rotation=270;fillColor=#c0cfe2;gradientColor=none;shape=stencil(nZFLDsIwDERP4y0KyQKxLuUCnCAihliEpEpL+ZyetANS6YJFs7JnXmxpTKZqvW2YtGq7nC58F9d5MjvSWqLnLF2pyNRkqlPKfM7pFh36xhZSq1Fhhz/rgdbK5uNBXgxts9r+PjAYck39sPwBVMF6foYp9HugQeIE/ZqL4D/oQnC2vhRjPAhOQkC6U38eZ5FwClO/AQ==);strokeColor=#000000;labelBackgroundColor=none;rounded=1;html=1;whiteSpace=wrap;" vertex="1" parent="{segment}">
+      <mxCell style="verticalAlign=middle;align=center;vsdxID=35397;rotation=270;fillColor=#c0cfe2;gradientColor=none;shape=stencil(nZFLDsIwDERP4y0KyQKxLuUCnCAihliEpEpL+ZyetANS6YJFs7JnXmxpTKZqvW2YtGq7nC58F9d5MjvSWqLnLF2pyNRkqlPKfM7pFh36xhZSq1Fhhz/rgdbK5uNBXgxts9r+PjAYck39sPwBVMF6foYp9HugQeIE/ZqL4D/oQnC2vhRjPAhOQkC6U38eZ5FwClO/AQ==);strokeColor=#000000;labelBackgroundColor=none;rounded=1;html=1;whiteSpace=wrap;" vertex="1" parent="{parent_id}">
         <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
       </mxCell>
     </object>
@@ -215,7 +215,7 @@ lan:
 router:
   xml : >
     <object label="&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237)); line-height: 140%; font-size: 9px; &quot;&gt;&amp;nbsp;{{label}}&amp;nbsp;&lt;/font&gt;" id="{{id}}">
-          <mxCell style="shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=none;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
+          <mxCell style="shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;labelBackgroundColor=default;fontSize=12;fontColor=#FFFFFF;" parent="{placement_segment}" vertex="1">
             <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
           </mxCell>
     </object>
@@ -225,9 +225,9 @@ router:
   deep: 7
   offset: 30
   x: 20
-  y: 40
-  w: 40
-  h: 30
+  y: 110
+  w: 30
+  h: 20
   algo: 'Y+'
 
 wireless_controller:
@@ -261,9 +261,9 @@ firewall:
   deep: 9
   offset: 30
   x: 130
-  y: 30
+  y: 90
   w: 20
-  h: 60
+  h: 40
   algo: 'Y+'
 
 fpsu:
@@ -276,12 +276,12 @@ fpsu:
   schema: 'seaf.ta.components.network'
   parent_id: 'placement_segment'
   type: "type:Криптошлюз"
-  deep: 9
+  deep: 7
   offset: 30
-  x: -20
-  y: 30
-  w: 40
-  h: 40
+  x: 30
+  y: 232
+  w: 30
+  h: 30
   algo: 'Y+'
 
 switch:
@@ -338,6 +338,7 @@ nat:
   h: 20
   algo: 'Y+'
 #----------------------- Сервисы Кибер безопасности -----------------------------------------------------
+
 waf:
   xml : >
     <object label="{{label}}" id="{{id}}">
@@ -350,8 +351,8 @@ waf:
   type: 'technology:Защита веб-приложений WAF'
   deep: 9
   offset: 30
-  x: -20
-  y: 30
+  x: 350
+  y: 470
   w: 40
   h: 40
   algo: 'Y+'
@@ -369,7 +370,7 @@ ddos:
   deep: 3
   offset: 30
   x: 100
-  y: 30
+  y: 500
   w: 45
   h: 40
   algo: 'Y+'

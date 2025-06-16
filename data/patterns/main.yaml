@@ -68,7 +68,7 @@ office:
           <mxCell id="0"/>   
           <mxCell id="1" parent="0"/>
           <mxCell value="Office" id="001" style="group;strokeColor=default;rounded=0;strokeWidth=1;perimeterSpacing=1;fontColor=none;noLabel=1;" parent="0" vertex="1">
-            <mxGeometry x="615" y="60" width="1385" height="1060" as="geometry" />
+            <mxGeometry x="615" y="60" width="1385" height="1120" as="geometry" />
           </mxCell>
           <mxCell value="External Net" id="002" style="group;fontColor=none;noLabel=1;" parent="0" vertex="1">
             <mxGeometry x="20" y="60" width="200" height="1060"  as="geometry" />
@@ -86,9 +86,6 @@ office:
         </root>
       </mxGraphModel>
     </diagram>
-    
-
-
 
 dc:
   xml : > 
@@ -113,7 +110,7 @@ dc:
           <mxCell id="0"/>   
           <mxCell id="1" parent="0"/>
           <mxCell id="001" value="DC" style="group;strokeColor=default;rounded=0;strokeWidth=1;perimeterSpacing=1;fontColor=none;noLabel=1;" parent="0" vertex="1">
-            <mxGeometry  x="615" y="60" width="1821" height="1400" as="geometry" />            
+            <mxGeometry  x="615" y="60" width="1825" height="1390" as="geometry" />            
           </mxCell>
           <mxCell value="External Net" id="002" style="group;fontColor=none;noLabel=1;" parent="0" vertex="1">
               <mxGeometry x="20" y="60" width="200" height="1400"  as="geometry" />

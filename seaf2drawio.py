@@ -130,10 +130,10 @@ def add_object(pattern, data, key_id):
 
         # Если у элемента есть родитель, получаем ID родителя и проверяем связан ли родитель с текущей диаграммой (страницей)
         # добавляем в справочник ID элемента
-        if pattern.get('parent_id') and d.list_contain(d.find_key_value(data, pattern['parent_id']),
+        if pattern.get('parent_id') and d.find_common_element(d.find_key_value(data, pattern['parent_id']),
                                                      diagram_ids[page_name]) and pattern_count == 0:
             d.append_to_dict(diagram_ids, page_name, key_id)
-            current_parent = d.find_value_by_key(data, pattern['parent_id'])
+            current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),diagram_ids[page_name])
 
             if current_parent != pattern['last_parent']:   # reset to default pattern
                 default_pattern['parent'] = get_parent_value(pattern, current_parent)
@@ -162,6 +162,7 @@ def add_object(pattern, data, key_id):
                 data['sid'] = data.pop('id')
 
             data['schema'] = pattern['schema']
+
             # Если не содержит конструкции <object></object>, то изменять ID добавляя порядковый номер
             diagram.add_node(
                 id=f"{key_id}_{pattern_count}" if not d.contains_object_tag(xml_pattern, 'object') else key_id,

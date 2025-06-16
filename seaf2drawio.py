@@ -221,7 +221,6 @@ if __name__ == '__main__':
 
     diagram.from_xml(d.read_file_with_utf8(conf['drawio_pattern']))
     diagram_ids['Main Schema'] = list(d.get_object(conf['data_yaml_file'], root_object).keys())
-
     for file_name, pages in diagram_pages.items():
 
         for page_name in pages:
@@ -253,5 +252,6 @@ if __name__ == '__main__':
 
                 if bool(re.match(r'^network_links(_\d+)*',k)):
                     add_links(object_pattern)  # Связывание объектов на текущей диаграмме
+
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')

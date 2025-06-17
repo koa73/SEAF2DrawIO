@@ -14,6 +14,7 @@ node_xml_default = diagram.drawio_node_object_xml
 root_object = 'seaf.ta.services.dc_region'
 diagram_pages = {'main': ['Main Schema'], 'office': [], 'dc': []}
 diagram_ids = {'Main Schema': []}
+object_area = {}
 conf = {}
 
 # Переменные по умолчанию
@@ -140,6 +141,8 @@ def add_object(pattern, data, key_id):
                 pattern.update(default_pattern)
                 pattern['last_parent'] = current_parent
 
+            print(pattern)
+
         try:
             diagram.drawio_node_object_xml = diagram.drawio_node_object_xml.format_map(
                 data | {'Group_ID': f'{key_id}_0', 'parent_id' : current_parent, 'parent_type' : default_pattern['parent'],
@@ -225,6 +228,8 @@ if __name__ == '__main__':
     for file_name, pages in diagram_pages.items():
 
         for page_name in pages:
+
+            object_area[page_name] = {} # Создаем поле объектов страницы
 
             diagram.go_to_diagram(page_name)
             for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():

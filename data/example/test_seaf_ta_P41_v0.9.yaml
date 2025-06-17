@@ -226,7 +226,8 @@ seaf.ta.services.network:
     title: OF-WAN EDGE LAN
     type: LAN
     lan_type: Проводная
-    segment: flix.network_segment.dc.ntwrk.02
+    segment:
+      - flix.network_segment.dc.ntwrk.02
     vlan: 12
     ipnetwork: 10.10.12.0/24
     description: Сеть модуля транспортной сети
@@ -239,15 +240,6 @@ seaf.ta.services.network:
     vlan: 10
     ipnetwork: 10.10.10.0/24
     description: Сеть модуля подключения к внешним сетям - гостевая
-
-  flix.lan.dc.inet_edge:
-    title: OF-Internet EDGE LAN
-    type: LAN
-    lan_type: Проводная
-    segment: flix.network_segment.office.inet_edge
-    vlan: 11
-    ipnetwork: 10.10.11.0/24
-    description: Сеть модуля подключения к внешним сетям
 
   #### Создаём описание сетей сегмента DMZ ЦОД
   flix.lan.dc.ext.lan:

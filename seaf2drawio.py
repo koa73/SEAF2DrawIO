@@ -83,7 +83,6 @@ def position_offset(pattern):
                 pattern['x'] = pattern['x'] - (pattern['w'] + pattern['offset']) * pattern['deep']
             pattern['x'] = pattern['x'] + pattern['w'] + pattern['offset']
 
-
 def return_ready(pattern):
     pattern['count']+=1
     if pattern['count'] == pattern['deep']:
@@ -91,14 +90,12 @@ def return_ready(pattern):
 
     return not bool(pattern['count'])
 
-
 def get_parent_value(pattern, current_parent):
     r = ''
     if pattern.get('parent_key'):
         r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_and_merge_yaml(conf['data_yaml_file']))),
                                                     current_parent), pattern['parent_key'])
     return r
-
 
 def add_pages(pattern):
 
@@ -121,6 +118,17 @@ def add_pages(pattern):
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
 
+def update_object_area( area, key, algo, offset, **kwargs ):
+    try:
+        if key not in area:
+            area[key] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none':0}
+        else:
+            if kwargs.get('parent'):
+                #print('f>>>>')
+                area[kwargs['parent']][algo] += offset
+    except Exception as e:
+        pass
+        #print(f'-->{page_name} :: {key} -- {kwargs.get('parent')}')
 
 def add_object(pattern, data, key_id):
 
@@ -176,14 +184,14 @@ def add_object(pattern, data, key_id):
                 url=pattern.get('ext_page') and data['title']
             )
             d.append_to_dict(diagram_ids, page_name, key_id)  # Добавляет ID root элементов
+            #print(f'{current_parent}')
+            #update_object_area(object_area[page_name], key_id, pattern.get('algo'), 1, parent=current_parent)
 
             if pattern_count == 0:  # Change position of element
                 position_offset(object_pattern)
-
             pattern_count += 1
 
         diagram.drawio_node_object_xml = node_xml_default
-
 
 def add_links(pattern):
 
@@ -213,6 +221,7 @@ def add_links(pattern):
                 f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
 
 
+
 if __name__ == '__main__':
 
     if sys.version_info < (3, 9):
@@ -227,7 +236,7 @@ if __name__ == '__main__':
 
         for page_name in pages:
 
-            #object_area[page_name] = {} # Создаем поле объектов страницы
+            object_area[page_name] = {} # Создаем поле объектов страницы
 
             diagram.go_to_diagram(page_name)
             for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():

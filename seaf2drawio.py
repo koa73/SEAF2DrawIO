@@ -20,7 +20,7 @@ conf = {}
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
     "seaf2drawio": {
-        "data_yaml_file": "data/example/test_seaf_ta_P41_v0.5.yaml",
+        "data_yaml_file": "data/example/test_seaf_ta_P41_v0.9.yaml",
         "drawio_pattern": "data/base.drawio",
         "output_file": "result/Sample_graph.drawio"
     }
@@ -95,7 +95,7 @@ def return_ready(pattern):
 def get_parent_value(pattern, current_parent):
     r = ''
     if pattern.get('parent_key'):
-        r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_yaml_file(conf['data_yaml_file']))),
+        r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_and_merge_yaml(conf['data_yaml_file']))),
                                                     current_parent), pattern['parent_key'])
     return r
 
@@ -140,8 +140,6 @@ def add_object(pattern, data, key_id):
                 default_pattern['parent'] = get_parent_value(pattern, current_parent)
                 pattern.update(default_pattern)
                 pattern['last_parent'] = current_parent
-
-            print(pattern)
 
         try:
             diagram.drawio_node_object_xml = diagram.drawio_node_object_xml.format_map(
@@ -229,7 +227,7 @@ if __name__ == '__main__':
 
         for page_name in pages:
 
-            object_area[page_name] = {} # Создаем поле объектов страницы
+            #object_area[page_name] = {} # Создаем поле объектов страницы
 
             diagram.go_to_diagram(page_name)
             for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():

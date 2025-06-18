@@ -9,6 +9,7 @@ from copy import deepcopy
 from N2G import drawio_diagram
 import xml.etree.ElementTree as ET
 import xml.sax.saxutils as saxutils
+from deepmerge import Merger
 
 class SeafDrawio:
 
@@ -75,6 +76,51 @@ class SeafDrawio:
         else:
             # Возвращаем как есть, если это не строка, словарь или список
             return data
+
+    @staticmethod
+    def read_and_merge_yaml(files, **kwargs):
+        """
+        Читает и объединяет один или несколько YAML-файлов по ключам.
+
+        :param files: Путь к одному файлу (str) или список путей (list)
+        :return: dict - объединённый YAML-документ
+        """
+
+        # Поддержка одного файла как строки
+        if isinstance(files, str):
+            files = [files]
+
+        # Настройка слияния: работает с dict и списками
+        merger = Merger(
+            [(dict, ["merge"]), (list, ["prepend"])],  # Например, можно использовать extend, prepend, append
+            ["override"],
+            []
+        )
+
+        merged_data = {}
+
+        for filename in files:
+            try:
+                with open(filename, 'r', encoding='utf-8') as f:
+                    try:
+                        data = yaml.safe_load(f)
+                        if data is None:
+                            print(f"Файл {filename} пустой.")
+                            continue
+                        if not isinstance(data, dict):
+                            print(f"Файл {filename} содержит не словарь. Пропускаем.")
+                            continue
+
+                        # Выполняем глубокое слияние
+                        merger.merge(merged_data, data)
+
+                    except yaml.YAMLError as e:
+                        print(f"Ошибка YAML в файле {filename}: {e}")
+            except IOError as e:
+                print(f"I/O ошибка({e.errno}): {e.strerror} : {filename}")
+                sys.exit(1)
+
+        return merged_data
 
     @staticmethod
     def read_yaml_file(file, **kwargs):
@@ -263,7 +309,7 @@ class SeafDrawio:
             :return: json object.
         """
         try:
-            x = json.loads(json.dumps(self.read_yaml_file(file)[key]))
+            x = json.loads(json.dumps(self.read_and_merge_yaml(file)[key]))
             if kwargs.get('type'):
 
                 if kwargs['type'].find(":") != -1:

@@ -1207,7 +1207,7 @@ network_links:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#FF0000;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#FF0000;jumpStyle=arc;"
   schema: 'seaf.ta.components.network'
   targets: 'network_connection'
   type: 'type:Маршрутизатор'
@@ -1219,7 +1219,7 @@ network_links_1:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.components.network'
   targets: 'network_connection'
 
@@ -1230,7 +1230,7 @@ network_links_2:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.services.kb'
   targets: 'network_connection'
 
@@ -1241,7 +1241,7 @@ network_links_3:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.services.cluster'
   targets: 'network_connection'
 
@@ -1252,7 +1252,7 @@ network_links_4:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.services.compute_service'
   targets: 'network_connection'
 
@@ -1263,7 +1263,7 @@ network_links_5:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.services.monitoring'
   targets: 'network_connection'
 
@@ -1275,7 +1275,7 @@ network_links_6:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.services.backup'
   targets: 'network_connection'
 
@@ -1286,7 +1286,7 @@ network_links_7:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.services.k8s'
   targets: 'network_connection'
 
@@ -1297,6 +1297,6 @@ network_links_8:
             <mxGeometry relative="1" as="geometry"/>
         </mxCell>
     </object>
-  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;"
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.services.cluster_virtualization'
   targets: 'network_connection'

@@ -118,17 +118,16 @@ def add_pages(pattern):
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
 
-def update_object_area( area, key, algo, offset, **kwargs ):
+def update_object_area(area,  key, algo, offset, **kwargs ):
     try:
         if key not in area:
             area[key] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none':0}
-        else:
-            if kwargs.get('parent'):
-                #print('f>>>>')
-                area[kwargs['parent']][algo] += offset
-    except Exception as e:
-        pass
-        #print(f'-->{page_name} :: {key} -- {kwargs.get('parent')}')
+        if kwargs.get('parent'):
+            area[kwargs['parent']][algo] += offset
+            #print(f">>>>{page_name}::  {key} --> {kwargs['parent']} :: {area[kwargs['parent']][algo]}")
+    except KeyError as e:
+        area[kwargs.get('parent')] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none': 0}
+        update_object_area(area,  key, algo, offset, **kwargs )
 
 def add_object(pattern, data, key_id):
 
@@ -184,8 +183,8 @@ def add_object(pattern, data, key_id):
                 url=pattern.get('ext_page') and data['title']
             )
             d.append_to_dict(diagram_ids, page_name, key_id)  # Добавляет ID root элементов
-            #print(f'{current_parent}')
-            #update_object_area(object_area[page_name], key_id, pattern.get('algo'), 1, parent=current_parent)
+            if d.contains_object_tag(xml_pattern, 'object'): ## ---- ToDo ----
+                update_object_area(object_area[page_name], key_id, pattern.get('algo'), 1, parent=current_parent)
 
             if pattern_count == 0:  # Change position of element
                 position_offset(object_pattern)
@@ -268,3 +267,5 @@ if __name__ == '__main__':
 
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')
+
+    #print(object_area)

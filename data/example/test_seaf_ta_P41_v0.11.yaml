@@ -37,12 +37,14 @@ seaf.ta.services.dc:
     ownership: Аренда
     availabilityzone: flix.dc_az.moscow
 
-  flix.dc.02:
-    title: Арендованный ЦОД
-    description: Datalain DC
-    vendor: Даталайн
+#### Создаем ЦОД
+seaf.ta.services.dc01:
+  flix.dc.01:
+    title: ЦОД 01
+    description: Собственный ЦОД
+    vendor: Sber
     type: Основной
-    address: Шоссейка, д.102
+    address: Огородный проезд
     rack_qty: 5
     tier: '3'
     ownership: Аренда
@@ -53,72 +55,81 @@ seaf.ta.services.dc:
 seaf.ta.services.network_segment:
   flix.network_segment.internet:
     title: Internet
-    zone: 'INTERNET'
-    location: 'flix.office.hq'
+    sber:
+      zone: 'INTERNET'
+      location: 'flix.office.hq'
   ## Transport network (Leased Lines)
   flix.network_segment.transport:
     title: Транспортная сеть
-    zone: TRANSPORT-WAN
-    location: 'flix.office.hq'
+    sber:
+      zone: TRANSPORT-WAN
+      location: 'flix.office.hq'
   ## Внутренние сегменты офиса
   flix.network_segment.office.inet_edge:
     title: INET-EDGE
-    zone: INET-EDGE
-    location: 'flix.office.hq'
+    sber:
+      zone: INET-EDGE
+      location: 'flix.office.hq'
   flix.network_segment.office.access:
     title: УС уровня доступа
-    zone: DMZ
-    location: 'flix.office.hq'
+    sber:
+      zone: DMZ
+      location: 'flix.office.hq'
   flix.network_segment.office.wan_edge:
     title: WAN-EDGE
-    zone: INT-WAN-EDGE
-    location: 'flix.office.hq'
+    sber:
+      zone: INT-WAN-EDGE
+      location: 'flix.office.hq'
   flix.network_segment.office.int:
     title: Внутренняя сеть офиса (ЛВС)
-    zone: INT-NET
-    location: 'flix.office.hq'
+    sber:
+      zone: INT-NET
+      location: 'flix.office.hq'
 
   ##### Создаем сегменты/зоны безопасности сети ЦОД
-  ## Внешний сегмент
-  flix.network_segment.dc.external_net:
-    title: EXTERNAL NET
-    zone: 'EXTERNAL-NET'
-    location: 'flix.dc.01'
   ## Internet
   flix.network_segment.dc.internet:
     title: Internet
-    zone: 'INTERNET'
-    location: 'flix.dc.01'
+    sber:
+      zone: 'INTERNET'
+      location: 'flix.dc.01'
   ## Transport network (Leased Lines)
   flix.network_segment.dc.transport:
     title: Транспортная сеть
-    zone: TRANSPORT-WAN
-    location: 'flix.dc.01'
+    sber:
+      zone: TRANSPORT-WAN
+      location: 'flix.dc.01'
  ## Внутренние сегменты ЦОД
   flix.network_segment.dc.inet_edge:
     title: INET-EDGE
-    zone: INET-EDGE
-    location: 'flix.dc.01'
+    sber:
+      zone: INET-EDGE
+      location: 'flix.dc.01'
   flix.network_segment.dc.ext_wan_edge:
     title: EXT WAN-EDGE
-    zone: EXT-WAN-EDGE
-    location: 'flix.dc.01'
+    sber:
+      zone: EXT-WAN-EDGE
+      location: 'flix.dc.01'
   flix.network_segment.dc.int_wan_edge:
     title: INT WAN-EDGE
-    zone: INT-WAN-EDGE
-    location: 'flix.dc.01'
+    sber:
+      zone: INT-WAN-EDGE
+      location: 'flix.dc.01'
   flix.network_segment.dc.dmz:
     title: DMZ
-    zone: DMZ
-    location: 'flix.dc.01'
+    sber:
+      zone: DMZ
+      location: 'flix.dc.01'
   flix.network_segment.dc.int_net:
     title: 'Внутренняя сеть ЦОД'
-    zone: INT-NET
-    location: 'flix.dc.01'
+    sber:
+      zone: INT-NET
+      location: 'flix.dc.01'
   flix.network_segment.dc.int_security_net:
     title: 'Защищенный сегмент&lt;br&gt;данных'
-    zone: INT-SECURITY-NET
-    location: 'flix.dc.01'
+    sber:
+      zone: INT-SECURITY-NET
+      location: 'flix.dc.01'
 
 #### Создаём описание сетей
 seaf.ta.services.network:
@@ -170,7 +181,7 @@ seaf.ta.services.network:
     segment: flix.network_segment.transport
 
   ### Создаем описание ISP ЦОД
-  flix.dc.isp.01:
+  flix.wan.dc.isp.01:
     title: ISP01
     provider: Beeline
     bandwidth: 1000
@@ -179,7 +190,7 @@ seaf.ta.services.network:
     type: WAN
     segment: flix.network_segment.dc.internet
 
-  flix.dc.isp.02:
+  flix.wan.dc.isp.02:
     title: ISP02
     provider: Ростелеком
     bandwidth: 10000
@@ -301,7 +312,6 @@ seaf.ta.services.network:
     ipnetwork: 192.168.3.0/24
     description: Беспроводная сеть АРМ
 
-
   flix.lan.office.int.lan:
     title: OF-INT LAN
     type: LAN
@@ -356,7 +366,17 @@ seaf.ta.services.network:
     ipnetwork: 192.168.8.0/24
     description: Сеть интерфейсов управления
 
+  flix.lan.office.pr.security:
+    title: PR-Security
+    type: LAN
+    lan_type: Проводная
+    segment: flix.network_segment.office.int
+    vlan: 22
+    ipnetwork: 192.168.8.0/24
+    description: Сеть периметровых средств безопасности
+
 #### Создаём описание сетей сегмента DMZ ЦОД
+
   flix.lan.dc.dmz.security:
     title: DMZ-Security
     type: LAN
@@ -768,7 +788,7 @@ seaf.ta.components.network:
     purpose: Пограничный маршрутизатор
     address: 192.168.8.15
     network_connection:
-      - flix.dc.isp.01
+      - flix.wan.dc.isp.01
       - flix.lan.dc.inet_edge
 
   flix.network.dc.router.02:
@@ -781,7 +801,7 @@ seaf.ta.components.network:
     purpose: Пограничный маршрутизатор
     address: 192.168.8.16
     network_connection:
-      - flix.dc.isp.02
+      - flix.wan.dc.isp.02
       - flix.lan.dc.inet_edge
 
   flix.network.dc.router.03:
@@ -794,7 +814,7 @@ seaf.ta.components.network:
     purpose: Пограничный маршрутизатор EXT_WAN
     address: 192.168.8.17
     network_connection:
-      - flix.dc.isp.01
+      - flix.wan.dc.isp.01
       - flix.lan.dc.ext_wan_edge
       - flix.network.dc.router.04
 
@@ -808,7 +828,7 @@ seaf.ta.components.network:
     purpose: Пограничный маршрутизатор EXT_WAN
     address: 192.168.8.18
     network_connection:
-      - flix.dc.isp.02
+      - flix.wan.dc.isp.02
       - flix.lan.dc.ext_wan_edge
 
   flix.network.dc.router.05:
@@ -942,8 +962,8 @@ seaf.ta.components.network:
     description: Контекст правил безопасности NGFW
     realization_type: Виртуальный
     model: FortiGate 4800F
-    type: МСЭ
-    placement_segment: flix.network_segment.dc.dmz
+    type: 'МСЭ'
+    placement_segment: flix.network_segment.dc.int_net
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.dc.int.prod
@@ -956,76 +976,90 @@ seaf.ta.components.network:
     placement_segment: flix.network_segment.dc.dmz
     network_connection:
       - flix.lan.dc.dmz.vpn
-      - flix.dc.isp.01
+      - flix.wan.dc.isp.01
 
-#### Сервисы кибер безопасности
+#### Создаём описание КБ сервисов
 seaf.ta.services.kb:
   flix.kb.waf_1:
-    title: WAF
+    title: 'WAF'
     description: WAF for All-App
     technology: 'Защита веб-приложений WAF'
     network_connection:
       - flix.lan.dc.inet_edge
-      - flix.dc.isp.01
-      - flix.dc.isp.02
+      - flix.wan.dc.isp.01
+      - flix.wan.dc.isp.02
 
   flix.kb.ddos_1:
-    title: DDOS
+    title: 'DDOS'
     description: Сервис защиты от DDOs от BiZone
-    technology: Защита от атака типа "Отказ в обслуживании"
+    technology: 'Защита от атака типа "Отказ в обслуживании'
     network_connection:
       - flix.lan.dc.inet_edge
-      - flix.dc.isp.01
+      - flix.wan.dc.isp.01
+
+  flix.service.kb.skud:
+    title: 'СКУД'
+    description: Сервис СКУД в офисе
+    technology: Управление доступом пользователей
+    network_connection:
+      - flix.lan.office.pr.security
+
+  flix.service.kb.radius:
+    title: 'RADIUS'
+    description: Сервис RADIUS в ЦОД1
+    technology: 'Управление доступом пользователеЙ'
+    network_connection:
+      - flix.lan.dc.int.security
 
   flix.kb.1:
-    title: S1
+    title: 'Инструментальный контроль защищенности'
     description: Сервис кибер безопасности
-    technology: Инструментальный контроль защищенности
+    technology: 'Инструментальный контроль защищенности'
     network_connection:
       - flix.lan.dc.dmz.security
 
   flix.kb.2:
     title: S2
     description: Сервис кибер безопасности
-    technology: Управление доступом пользователей
+    technology: 'Управление доступом пользователей'
     network_connection:
       - flix.lan.dc.int.security
 
   flix.kb.3:
     title: S3
     description: Сервис кибер безопасности
-    technology: Механизмы ААА
+    technology: 'Механизмы ААА'
     network_connection:
-      - flix.lan.dc.int.sec.security
+      - flix.lan.dc.int.security
 
   flix.kb.4:
-    title: S4
+    title: МСЭ
     description: Сервис кибер безопасности
-    technology: МСЭ
+    technology: 'МСЭ'
     network_connection:
       - flix.lan.dc.dmz.prod
       - flix.lan.dc.int.prod
 
   flix.kb.5:
-    title: S5
+    title: Сервис антивирус
     description: Сервис кибер безопасности
-    technology: Потоковый антивирус
+    technology: 'Потоковый антивирус'
     network_connection:
       - flix.lan.dc.int.security
 
   flix.kb.6:
     title: S6
     description: Сервис кибер безопасности
-    technology: Контроль подключений к сети
+    technology: 'Контроль подключений к сети'
     network_connection:
-      - flix.lan.dc.int.sec.security
+      - flix.lan.dc.int.security
 
   flix.kb.7:
     title: S7
     description: Сервис кибер безопасности
-    technology: Шлюзы безопасности прикладного уровня
+    technology: 'Шлюзы безопасности прикладного уровня'
     network_connection:
-      - flix.lan.dc.int.sec.security
+      - flix.lan.dc.ext.lan
 
   flix.kb.8:
     title: S8
@@ -1047,7 +1081,7 @@ seaf.ta.services.kb:
     technology: Аудит событий КБ
     location: Интернет
     network_connection:
-      - flix.dc.isp.01
+      - flix.wan.dc.isp.01
 
   flix.kb.sandbox:
     title: Sandbox
@@ -1068,14 +1102,7 @@ seaf.ta.services.kb:
     description: Сервис кибер безопасности
     technology: Безопасность конфигураций
     network_connection:
-      - flix.lan.dc.int.sec.security
-
-  flix.kb.13:
-    title: Потоковый антивирус
-    description: Сервис кибер безопасности
-    technology: Потоковый антивирус
-    network_connection:
-      - flix.lan.office.security
+      - flix.lan.dc.int.security
 
 #### Создаём описание технических сервисов (кластер)
 seaf.ta.services.cluster:
@@ -1115,7 +1142,83 @@ seaf.ta.services.cluster:
       - flix.lan.dc.dmz.vdi
     service_type: 'Виртуализация рабочих мест (ВАРМ и VDI)'
 
- #### Создаём описание технических сервисов (stand-alone)
+  ### Создаём описание технических сервисов для прикладного слоя
+  #### Система AC1
+  flix.cluster.app_ac1:
+    title: Кластер приложений AC1
+    cluster_id: cluster.app_ac1
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Кластер приложений AC1
+    service_type: "Cерверы приложений и т.д."
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  flix.cluster.db_ac1:
+    title: Кластер СУБД AC1
+    cluster_id: cluster.db_ac1
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Кластер СУБД AC1
+    service_type: СУБД
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  #### Система AC2
+  flix.cluster.app_ac2:
+    title: Кластер приложений AC2
+    cluster_id: cluster.app_ac2
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Кластер приложений AC2
+    service_type: "Cерверы приложений и т.д."
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  flix.cluster.db_ac2:
+    title: Кластер СУБД AC2
+    cluster_id: cluster.db_ac2
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Кластер СУБД AC2
+    service_type: СУБД
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  ### Система АС3
+  flix.cluster.web_ac3:
+    title: Фронт (web-приложение) AC3
+    cluster_id: cluster.web_ac3
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Фронт (web-приложение) Модуль бронирования
+    service_type: Серверы приложений и т.д.
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  flix.cluster.db_ac3:
+    title: Кластер СУБД AC3
+    cluster_id: cluster.db_ac3
+    cluster_fqdn:
+    cluster_reservation_type: Active-Active
+    description: Кластер базы данных Модуль бронирования
+    service_type: СУБД
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+ #### Создаём описание технических сервисов (stand-alone compute service)
 seaf.ta.services.compute_service:
   flix.infra.tools_1:
     title: Ansible
@@ -1138,20 +1241,6 @@ seaf.ta.services.compute_service:
       - flix.lan.dc.int.it.services
     service_type: 'Управление сетевым адресным пространством (DHCP, DNS и т.д.)'
 
-  flix.network.tools_2:
-    title: DNS
-    description: Внутренний DNS
-    network_connection:
-      - flix.lan.office.mgmt
-    service_type: 'Управление сетевым адресным пространством (DHCP, DNS и т.д.)'
-
-  flix.network.tools_3:
-    title: Domain Controller
-    description: Контроллер домена
-    network_connection:
-      - flix.lan.office.mgmt
-    sservice_type: 'Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)'
-
   flix.network.remote_1:
     title: R.Access
     description: Сервис удаленного доступа
@@ -1166,28 +1255,185 @@ seaf.ta.services.compute_service:
       - flix.lan.dc.ext.lan
     service_type: 'Файловый ресурс (FTP, NFS, SMB, S3 и т.д.)'
 
- ### Системы резервного копирования
-seaf.ta.services.backup:
-  flix.backup.acronis:
-    title: Acronis
-    description: Резервное копирование Acronis
-    path: sw_storage.01
-    availabilityzone_id:
-      - flix.dc_az.moscow
-    replication: false
-    app_components:
-      - flix.home_cinema.auth.app
-      - flix.home_cinema.auth.token_manager
-      - flix.home_cinema.catalog.app
-      - flix.home_cinema.payments.app
-      - flix.home_cinema.canals.app
-    stand_id:
-      - flix.stand.prod
+#### Создаём описание прикладных сервисов AC (stand-alone compute service)
+### AC4
+  flix.compute_service.web_ac4:
+    title: Фронт (web-приложение) AC4
+    compute_id: compute_service.web01
+    description: Фронт (web-приложение) AC4
+    service_type: Серверы приложений и т.д.
     network_connection:
-      - flix.lan.dc.int.it.services
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
 
- #### Создаём описание сервиса мониторинга
-seaf.ta.services.monitoring:
+  ### AC5
+  flix.compute_service.web_ac5:
+    title: Фронт (web-приложение) AC5
+    compute_id: compute_service.web_ac5
+    description: Фронт (web-приложение)AC5
+    service_type: Серверы приложений и т.д.
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  flix.compute_service.db_ac5:
+    title: База данных AC5
+    compute_id: compute_service.db_ac5
+    description: База данных AC5
+    service_type: СУБД
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  ### AC6
+  flix.compute_service.web_ac6:
+    title: Шлюз AC6
+    compute_id: compute_service.web_ac6
+    description: Шлюз AC6
+    service_type: Шлюзы, Балансировщики, Proxy
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  ### AC7
+  flix.compute_service.web_ac7:
+    title: Web AC7
+    compute_id: compute_service.web_ac7
+    description: Web AC7
+    service_type: Шлюзы, Балансировщики, Proxy
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  ### CMS (Content Management System)
+  flix.compute_service.cms:
+    title: CMS
+    compute_id: compute_service.cms
+    description: Система управления контентом
+    service_type: СУБД
+    network_connection:
+      -flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  ### BPM (Business Process Management)
+  flix.compute_service.bpm.front:
+    title: Фронт (web-приложение) BPM
+    compute_id: compute_service.bpm
+    description: Система управления бизнес-процессами
+    service_type: Серверы приложений и т.д.
+    network_connection:
+      - flix.lan.dc.dmz.prod
+    stand:
+      - flix.stand.prod
+
+  flix.compute_service.bpm.db:
+    title: База данных BPM
+    compute_id: compute_service.bpm.db
+    description: База данных BPM
+    service_type: СУБД
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  ### Система AC8
+  flix.compute_service.as8.app:
+    title: Фронт (десктопное приложение) АС8
+    compute_id: compute_service.as
+    description: Сервер АС AdReality
+    service_type: Серверы приложений и т.д.
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  flix.compute_service.as8.web:
+    title: Web сервер АС8
+    compute_id: compute_service.as8.web
+    description: Сервер АС AdReality
+    service_type: Серверы приложений и т.д.
+    network_connection:
+      - flix.lan.dc.dmz.prod
+    stand:
+      - flix.stand.prod
+
+  ### Файловый ресурс
+  flix.compute_service.fir:
+    title: Файловый ресурс
+    compute_id: compute_service.as.fir
+    description: СФайловый ресурс
+    service_type: Aрхивирование, Сборка, Файловый ресурс
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  flix.compute_service.yandex_metrika:
+    title: Yandex Metrika
+    compute_id: compute_service.yandex_metrika
+    description:  Yandex Metrika
+    service_type: Серверы приложений и т.д.
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+## AC9
+  flix.compute_service.ac9.db:
+    title: База данных AS9
+    compute_id: compute_service.ac9.db
+    description: База данных Simphony
+    service_type: СУБД
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  flix.compute_service.ac9.app:
+    title: Фронт (десктопное приложение)
+    compute_id: compute_service.simphony.app
+    description: Фронт (десктопное приложение)
+    service_type: Серверы приложений и т.д.
+    network_connection:
+      - flix.lan.dc.int.prod
+    stand:
+      - flix.stand.prod
+
+  ### Технические сервисы
+  flix.compute_service.dns:
+    title: DNS
+    compute_id: compute_service.dns
+    description: Сервис DNS в ЦОД1
+    availabilityzone:
+      - flix.dc_az.opl
+    stand:
+      - flix.stand.prod
+
+  flix.compute_service.dhcp:
+    title: DHCP
+    compute_id: compute_service.dhcp
+    description: Сервис DHCP в ЦОД1
+    availabilityzone:
+      - flix.dc_az.opl
+    stand:
+      - flix.stand.prod
+
+  flix.compute_service.ntp:
+    title: NTP
+    compute_id: compute_service.ntp
+    description: Сервис NTP в ЦОД1
+    availabilityzone:
+      - flix.dc_az.opl
+    stand:
+      - flix.stand.prod
+      - flix.stand.prod
+
+#### Создаём описание сервиса мониторинга
   flix.monitoring.01:
     title: Zabbix
     description: Инфра мониторинг
@@ -1195,11 +1441,8 @@ seaf.ta.services.monitoring:
     availabilityzone_id:
       - flix.dc_az.moscow
     app_components:
-      - flix.home_cinema.auth.app
-      - flix.home_cinema.auth.token_manager
-      - flix.home_cinema.catalog.app
-      - flix.home_cinema.canals.app
-      - flix.home_cinema.payments.app
+      - flix.cluster_virtualization.vmware.01
+      - flix.cluster_virtualization.vmware.02
     role:
       - Инфраструктурный
       - Журналирование
@@ -1208,17 +1451,68 @@ seaf.ta.services.monitoring:
     network_connection:
       - flix.lan.dc.int.it.services
 
+  flix.monitoring.02:
+    title: ELK
+    description: Сбор логов
+    monitoring_id: monitoring.02
+    ha: false
+    availabilityzone:
+      - mriya.dc_az.opl
+    role:
+      - Журналирование
+    stand:
+      - mriya.stand.prod
+
+#### Создаём описание сервиса резервного копирования
+seaf.ta.services.backup:
+  flix.backup.cyberbackup:
+    title: Cyberbackup
+    description: Резервное копирование Cyberbackup
+    backup_id: backup.cyberbackup
+    path: any
+    replication: false
+    network_connection:
+      - flix.lan.dc.int.it.services
+    app_components:
+      - flix.cluster_virtualization.vmware.01
+      - flix.cluster_virtualization.vmware.02
+    stand:
+      - mriya.stand.prod
+
 ### Создаём сервис виртуализации
 seaf.ta.services.cluster_virtualization:
   flix.cluster_virtualization.vmware.01:
     title: Кластер виртуализации
     description: Кластер виртуализации
+    virtualization_id: cluster_virtualization.vmware.02
     drs_support: true
     sdrs_support: false
     stand:
       - flix.stand.prod
     network_connection:
       - flix.lan.dc.int.it.services
+
+    flix.cluster_virtualization.vmware.02:
+      title: Отдельностоящие ноды виртуализации
+      description: Ноды виртуализации 6 штук
+      virtualization_id: cluster_virtualization.vmware.02
+      drs_support: false
+      sdrs_support: false
+      oversubscription_rate: 0
+      stand:
+        - mriya.stand.prod
+      network_connection:
+        - flix.lan.dc.int.it.services
+
+    mriya.cluster_virtualization.proxmox:
+      title: Кластер виртуализации в ЦОД2
+      description: Кластер виртуализации в ЦОД2
+      virtualization_id: cluster_virtualization.proxmox
+      drs_support: false
+      sdrs_support: false
+      oversubscription_rate: 0
+      stand:
+        - mriya.stand.prod
 
 ### Создаём сервиса Kubernetes
 seaf.ta.services.k8s:
@@ -1231,3 +1525,14 @@ seaf.ta.services.k8s:
       - flix.stand.prod
     network_connection:
       - flix.lan.dc.int.it.services
+
+#### Создаём клиентских устройств
+seaf.ta.components.user_device:
+  flix.user_device.laptop:
+    user_device_id: user_device.laptop
+    title: Ноутбуки сотрудников
+    device_type: Внешнее устройство
+    description: Клиентский ноутбук сотрудника
+    network_connection:
+      - flix.wan.dc.isp.01
+

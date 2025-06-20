@@ -890,3 +890,4 @@ seaf.ta.services.k8s:
       - flix.stand.prod
     network_connection:
       - flix.lan.dc.ext.lan
+

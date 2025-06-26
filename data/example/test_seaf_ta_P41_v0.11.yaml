@@ -1108,9 +1108,6 @@ seaf.ta.services.kb:
 seaf.ta.services.cluster:
   flix.cluster.ad:
     title: Кластер AD
-    cluster_id: cluster.ad
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Кластер Active Directory
     stand:
       - flix.stand.prod
@@ -1120,9 +1117,6 @@ seaf.ta.services.cluster:
 
   flix.cluster.mail:
     title: Почтовый кластер
-    cluster_id: cluster.mail
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Почтовый кластер
     stand:
       - flix.stand.prod
@@ -1132,9 +1126,6 @@ seaf.ta.services.cluster:
 
   flix.cluster.vdi:
     title: Кластер vdi
-    cluster_id: cluster.VDI
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Кластер vdi
     stand:
       - flix.stand.prod
@@ -1146,9 +1137,6 @@ seaf.ta.services.cluster:
   #### Система AC1
   flix.cluster.app_ac1:
     title: Кластер приложений AC1
-    cluster_id: cluster.app_ac1
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Кластер приложений AC1
     service_type: "Cерверы приложений и т.д."
     network_connection:
@@ -1158,9 +1146,6 @@ seaf.ta.services.cluster:
 
   flix.cluster.db_ac1:
     title: Кластер СУБД AC1
-    cluster_id: cluster.db_ac1
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Кластер СУБД AC1
     service_type: СУБД
     network_connection:
@@ -1171,9 +1156,6 @@ seaf.ta.services.cluster:
   #### Система AC2
   flix.cluster.app_ac2:
     title: Кластер приложений AC2
-    cluster_id: cluster.app_ac2
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Кластер приложений AC2
     service_type: "Cерверы приложений и т.д."
     network_connection:
@@ -1183,9 +1165,6 @@ seaf.ta.services.cluster:
 
   flix.cluster.db_ac2:
     title: Кластер СУБД AC2
-    cluster_id: cluster.db_ac2
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Кластер СУБД AC2
     service_type: СУБД
     network_connection:
@@ -1196,9 +1175,6 @@ seaf.ta.services.cluster:
   ### Система АС3
   flix.cluster.web_ac3:
     title: Фронт (web-приложение) AC3
-    cluster_id: cluster.web_ac3
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Фронт (web-приложение) Модуль бронирования
     service_type: Серверы приложений и т.д.
     network_connection:
@@ -1208,9 +1184,6 @@ seaf.ta.services.cluster:
 
   flix.cluster.db_ac3:
     title: Кластер СУБД AC3
-    cluster_id: cluster.db_ac3
-    cluster_fqdn:
-    cluster_reservation_type: Active-Active
     description: Кластер базы данных Модуль бронирования
     service_type: СУБД
     network_connection:
@@ -1468,7 +1441,6 @@ seaf.ta.services.backup:
   flix.backup.cyberbackup:
     title: Cyberbackup
     description: Резервное копирование Cyberbackup
-    backup_id: backup.cyberbackup
     path: any
     replication: false
     network_connection:
@@ -1484,7 +1456,6 @@ seaf.ta.services.cluster_virtualization:
   flix.cluster_virtualization.vmware.01:
     title: Кластер виртуализации
     description: Кластер виртуализации
-    virtualization_id: cluster_virtualization.vmware.02
     drs_support: true
     sdrs_support: false
     stand:
@@ -1495,7 +1466,6 @@ seaf.ta.services.cluster_virtualization:
     flix.cluster_virtualization.vmware.02:
       title: Отдельностоящие ноды виртуализации
       description: Ноды виртуализации 6 штук
-      virtualization_id: cluster_virtualization.vmware.02
       drs_support: false
       sdrs_support: false
       oversubscription_rate: 0
@@ -1507,7 +1477,6 @@ seaf.ta.services.cluster_virtualization:
     mriya.cluster_virtualization.proxmox:
       title: Кластер виртуализации в ЦОД2
       description: Кластер виртуализации в ЦОД2
-      virtualization_id: cluster_virtualization.proxmox
       drs_support: false
       sdrs_support: false
       oversubscription_rate: 0
@@ -1520,9 +1489,6 @@ seaf.ta.services.k8s:
     title: Kubernetes кластер
     description: Kubernetes кластер
     is_own: false
-    sdrs_support: false
-    stand:
-      - flix.stand.prod
     network_connection:
       - flix.lan.dc.int.it.services
 

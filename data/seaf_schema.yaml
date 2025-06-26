@@ -364,7 +364,7 @@
                     - VPN
                     - NAT
                     - Коммутатор
-            placement_segment:
+            segment:
                 title: ID ЦОД или Офиса
                 type: string
                 items:

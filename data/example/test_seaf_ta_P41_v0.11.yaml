@@ -530,7 +530,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.office.inet_edge
+    segment: flix.network_segment.office.inet_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.15
     network_connection:
@@ -543,7 +543,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.office.inet_edge
+    segment: flix.network_segment.office.inet_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.16
     network_connection:
@@ -557,7 +557,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.office.inet_edge
+    segment: flix.network_segment.office.inet_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.17
     network_connection:
@@ -570,7 +570,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.office.wan_edge
+    segment: flix.network_segment.office.wan_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.18
     network_connection:
@@ -584,7 +584,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.office.wan_edge
+    segment: flix.network_segment.office.wan_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.19
     network_connection:
@@ -597,7 +597,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: Cisco
     type: "Контроллер WiFi"
-    placement_segment: flix.network_segment.office.access
+    segment: flix.network_segment.office.access
     purpose: Controller сети WiFI Guest
     address: 192.168.8.20
     network_connection:
@@ -609,7 +609,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: Cisco
     type: "Контроллер WiFi"
-    placement_segment: flix.network_segment.office.int
+    segment: flix.network_segment.office.int
     purpose: Controller сети WiFI ARM
     address: 192.168.8.20
     network_connection:
@@ -621,7 +621,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.inet_edge
+    segment: flix.network_segment.office.inet_edge
     purpose: Пограничный NGFW подключения к интернет гостевой
     address: 192.168.8.23
     network_connection:
@@ -634,7 +634,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.inet_edge
+    segment: flix.network_segment.office.inet_edge
     purpose: Пограничный NGFW
     address: 192.168.8.21
     network_connection:
@@ -648,7 +648,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.inet_edge
+    segment: flix.network_segment.office.inet_edge
     purpose: Пограничный NGFW
     address: 192.168.8.22
     network_connection:
@@ -662,7 +662,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.wan_edge
+    segment: flix.network_segment.office.wan_edge
     purpose: Пограничный NGFW транспортной сети
     address: 192.168.8.23
     network_connection:
@@ -675,7 +675,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.access
+    segment: flix.network_segment.office.access
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.office.ext.lan
@@ -687,7 +687,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.access
+    segment: flix.network_segment.office.access
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.office.ext.lan
@@ -699,7 +699,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.int
+    segment: flix.network_segment.office.int
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.office.int.lan
@@ -711,7 +711,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.int
+    segment: flix.network_segment.office.int
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.office.int.lan
@@ -723,7 +723,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.int
+    segment: flix.network_segment.office.int
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.office.int.lan
@@ -735,7 +735,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.int
+    segment: flix.network_segment.office.int
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.office.int.lan
@@ -747,7 +747,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.int
+    segment: flix.network_segment.office.int
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.office.int.lan
@@ -759,7 +759,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: "МСЭ"
-    placement_segment: flix.network_segment.office.int
+    segment: flix.network_segment.office.int
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.office.int.lan
@@ -771,7 +771,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: Cisco
     type: "Коммутатор"
-    placement_segment: flix.network_segment.office.int
+    segment: flix.network_segment.office.int
     purpose: Сетевой свитч
     address: 192.168.6.15
     network_connection:
@@ -784,7 +784,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.dc.inet_edge
+    segment: flix.network_segment.dc.inet_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.15
     network_connection:
@@ -797,7 +797,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.dc.inet_edge
+    segment: flix.network_segment.dc.inet_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.16
     network_connection:
@@ -810,7 +810,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.dc.ext_wan_edge
+    segment: flix.network_segment.dc.ext_wan_edge
     purpose: Пограничный маршрутизатор EXT_WAN
     address: 192.168.8.17
     network_connection:
@@ -824,7 +824,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.dc.ext_wan_edge
+    segment: flix.network_segment.dc.ext_wan_edge
     purpose: Пограничный маршрутизатор EXT_WAN
     address: 192.168.8.18
     network_connection:
@@ -837,7 +837,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.dc.int_wan_edge
+    segment: flix.network_segment.dc.int_wan_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.17
     network_connection:
@@ -851,7 +851,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: ASR 1001-X
     type: "Маршрутизатор"
-    placement_segment: flix.network_segment.dc.int_wan_edge
+    segment: flix.network_segment.dc.int_wan_edge
     purpose: Пограничный маршрутизатор
     address: 192.168.8.18
     network_connection:
@@ -864,7 +864,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment:  flix.network_segment.dc.inet_edge
+    segment:  flix.network_segment.dc.inet_edge
     purpose: Пограничный NGFW Internet
     address: 192.168.8.25
     network_connection:
@@ -880,7 +880,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment:  flix.network_segment.dc.inet_edge
+    segment:  flix.network_segment.dc.inet_edge
     purpose: Пограничный NGFW Internet
     address: 192.168.8.26
     network_connection:
@@ -895,7 +895,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment:  flix.network_segment.dc.ext_wan_edge
+    segment:  flix.network_segment.dc.ext_wan_edge
     purpose: Пограничный NGFW WAN
     address: 192.168.8.27
     network_connection:
@@ -910,7 +910,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment:  flix.network_segment.dc.ext_wan_edge
+    segment:  flix.network_segment.dc.ext_wan_edge
     purpose: Пограничный NGFW Internet
     address: 192.168.8.28
     network_connection:
@@ -924,7 +924,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment:  flix.network_segment.dc.int_wan_edge
+    segment:  flix.network_segment.dc.int_wan_edge
     purpose: Пограничный NGFW WAN
     address: 192.168.8.27
     network_connection:
@@ -938,7 +938,7 @@ seaf.ta.components.network:
     realization_type: Физический
     model: 4800F
     type: "МСЭ"
-    placement_segment:  flix.network_segment.dc.int_wan_edge
+    segment:  flix.network_segment.dc.int_wan_edge
     purpose: Пограничный NGFW Internet
     address: 192.168.8.28
     network_connection:
@@ -951,7 +951,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: МСЭ
-    placement_segment: flix.network_segment.dc.dmz
+    segment: flix.network_segment.dc.dmz
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.dc.dmz.prod
@@ -963,7 +963,7 @@ seaf.ta.components.network:
     realization_type: Виртуальный
     model: FortiGate 4800F
     type: 'МСЭ'
-    placement_segment: flix.network_segment.dc.int_net
+    segment: flix.network_segment.dc.int_net
     purpose: Контекст NGFW
     network_connection:
       - flix.lan.dc.int.prod
@@ -973,7 +973,7 @@ seaf.ta.components.network:
     title: FPSU-1
     description: ФПСУ для ширования канала
     type: "Криптошлюз"
-    placement_segment: flix.network_segment.dc.dmz
+    segment: flix.network_segment.dc.dmz
     network_connection:
       - flix.lan.dc.dmz.vpn
       - flix.wan.dc.isp.01

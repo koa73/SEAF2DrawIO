@@ -128,10 +128,8 @@
               title: Уровень сертификации ЦОД
               type: string
             availabilityzone:
-              title: В какие зоны доступности входит DC
-              type: string
-              items:
-                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+              title: В какую зону доступности входит DC
+              $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
           required:
             - ownership
             - type
@@ -178,9 +176,6 @@
         "^[a-zA-Z0-9_\\.]*$":
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            network_segment_id:
-              title: Network Segment ID
-              type: string
             sber:
               location:
                 title: ID ЦОД или Офиса
@@ -217,20 +212,14 @@
           properties:
             type:
               type: string
-              enum: [ WAN ]
-            dc:
-              title: Имя ЦОД/Серверной комнаты
-              type: array
+              enum: [ WAN, LAN ]
+            location:
+              title: ID ЦОД или Офиса
+              type: string
               items:
-                $ref: "#/$rels/seaf.ta.services.dc.dc"
-            office:
-              title: Офис
-              $ref: "#/$rels/seaf.ta.services.office.office"
-            az:
-              title: В какие зоны доступности входит
-              type: array
-              items:
-                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
             ch_number:
               title: Номер канала
               type: string
@@ -299,15 +288,16 @@
             purpose:
               title: Функциональное назначение сетевого аплаенса
               type: string
-            dc:
-              title: Имя ЦОД/Серверной комнаты
-              $ref: "#/$rels/seaf.ta.services.dc.dc"
             address:
               title: IP адрес устройства
               type: string
-            office:
-              title: Офис
-              $ref: "#/$rels/seaf.ta.services.office.office"
+            location:
+              title: ID ЦОД или Офиса
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
             type:
                 title: Сетевая зона
                 enum:
@@ -319,12 +309,13 @@
                     - NAT
                     - Коммутатор
             segment:
-                title: ID ЦОД или Офиса
-                type: string
-                items:
-                    anyOf:
-                    - $ref: "#/$rels/seaf.ta.services.dc.dc"
-                    - $ref: "#/$rels/seaf.ta.services.office.office"
+              title: Вхождение в сетевые сегменты сети
+              $ref: "#/$rels/seaf.ta.services.network_segment.network_segment"
+            is_part_of_IS_service:
+              title: Перечисление связанных КБ сервисов
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.kb.kb"
           required:
             - model
             - realization_type

@@ -19,16 +19,21 @@ dc_label:
 
 sber_services:
   xml: >
-    <object label="{title}" id="{{id}}">
-        <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#FFFFFF;fillColor=#BFBFBF;verticalAlign=top;strokeColor=none;" vertex="1" parent="001">
-          <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
-        </mxCell>
+    <object label="Сбербанк" schema="seaf.ta.services.network_segment" id="1002">
+      <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#d5e8d4;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontStyle=1;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <object label="Экосистема Сбер" schema="seaf.ta.services.network_segment" id="1001">
+      <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#dae8fc;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontStyle=1;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxGeometry x="190" y="210" width="195" height="510" as="geometry" />
+      </mxCell>
     </object>
   schema: 'components'
-  x: 195
-  y: 830
-  w: 440
-  h: 290
+  x: 230
+  y: 140
+  w: 195
+  h: 800
   offset: 0
   deep: 0
   algo: 'none'

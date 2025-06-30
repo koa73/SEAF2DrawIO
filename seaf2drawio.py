@@ -140,6 +140,7 @@ def add_object(pattern, data, key_id):
         # добавляем в справочник ID элемента
         if pattern.get('parent_id') and d.find_common_element(d.find_key_value(data, pattern['parent_id']),
                                                      diagram_ids[page_name]) and pattern_count == 0:
+
             d.append_to_dict(diagram_ids, page_name, key_id)
             current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),diagram_ids[page_name])
 
@@ -163,6 +164,8 @@ def add_object(pattern, data, key_id):
 
         if key_id in diagram_ids[page_name]:
 
+            #if pattern.get('parent_id') == 'dc':
+            #    print(f'==={i} == {current_parent} === {key_id}_{pattern_count}')
             """
                 Заменяет ключ 'id' на 'sid' в словаре, если он существует.
             """
@@ -170,6 +173,10 @@ def add_object(pattern, data, key_id):
                 data['sid'] = data.pop('id')
 
             data['schema'] = pattern['schema']
+
+            # Удаляем техническое поле если оно присутствует в данных
+            if 'parent_tmp' in data:
+                del data['parent_tmp']
 
             # Если не содержит конструкции <object></object>, то изменять ID добавляя порядковый номер
             diagram.add_node(
@@ -183,8 +190,9 @@ def add_object(pattern, data, key_id):
                 url=pattern.get('ext_page') and data['title']
             )
             d.append_to_dict(diagram_ids, page_name, key_id)  # Добавляет ID root элементов
-            if d.contains_object_tag(xml_pattern, 'object'): ## ---- ToDo ----
-                update_object_area(object_area[page_name], key_id, pattern.get('algo'), 1, parent=current_parent)
+
+            #if d.contains_object_tag(xml_pattern, 'object'): ## ---- ToDo ----
+            #    update_object_area(object_area[page_name], key_id, pattern.get('algo'), 1, parent=current_parent)
 
             if pattern_count == 0:  # Change position of element
                 position_offset(object_pattern)
@@ -243,6 +251,7 @@ if __name__ == '__main__':
                 try:
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),
                         sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
+
                     add_pages(object_pattern)
                     object_pattern.update({
                                 'count': 0,               # Счетчик объектов

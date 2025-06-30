@@ -157,7 +157,6 @@ class SeafDrawio:
         :return: A list of values associated with the target key.
         """
         results = []
-
         # If the current data is a dictionary
         if isinstance(data, dict):
             for key, value in data.items():
@@ -687,6 +686,28 @@ class SeafDrawio:
         # save file to disk
         with open(os.path.join(folder, filename), "w", encoding="utf-8") as outfile:
             outfile.write(ET.tostring(content, encoding="unicode"))
+
+
+    def delete_key(self, d, key_to_delete):
+        """
+        Рекурсивно удаляет все вхождения ключа key_to_delete из словаря d.
+
+        :param d: Словарь (или список/структура, внутри которой нужно искать)
+        :param key_to_delete: Ключ, который нужно удалить
+        """
+        if isinstance(d, dict):
+            # Если это словарь — итерируемся по его ключам
+            keys = list(d.keys())  # Чтобы избежать изменения размера словаря во время итерации
+            for key in keys:
+                if key == key_to_delete:
+                    del d[key]
+                else:
+                    self.delete_key(d[key], key_to_delete)
+        elif isinstance(d, list):
+            # Если это список — итерируемся по элементам
+            for item in d:
+                self.delete_key(item, key_to_delete)
+        # Игнорируем другие типы (int, str, etc.)
 
 
 class ValidateFile(argparse.Action):

@@ -1776,7 +1776,7 @@ logical_links_1:
       </mxCell>
     </object>
   style==>: "edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;strokeColor=#66B2FF;dashed=1;"
-  style<==>: "edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#66B2FF;dashed=1;startArrow=classic;startFill=1;"
-  style<==: "edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#66B2FF;dashed=1;startArrow=classic;startFill=0;endArrow=none;"
+  style<==>: "edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#00CC00;dashed=1;startArrow=classic;startFill=1;"
+  style<==: "edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF0000;dashed=1;startArrow=classic;startFill=0;endArrow=none;"
   schema: 'seaf.ta.services.logical_link'
   targets: 'target'

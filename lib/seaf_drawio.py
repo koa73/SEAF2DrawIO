@@ -407,7 +407,7 @@ class SeafDrawio:
 
         # Формируем dict из объектов диаграмм
         for i, (key, value) in enumerate(diagram.nodes_ids.items()):
-            value = value if i > 0 else list(set(value) - {"0101", "0103"})
+            value = value if i > 0 else list(set(value) - {"0101", "0103", "991", "981"})
             diagram.go_to_diagram(diagram_index=i)
             for object_id in value:
                 # Изменяем id объекта если оно не равно OID
@@ -420,14 +420,14 @@ class SeafDrawio:
         diagram.dump_file(filename=os.path.basename(file_name), folder=os.path.dirname(file_name))
         return objects_data
 
-    def _process_element(self, element, connections):
+    def _process_element(self, element, connections, layer):
         """Рекурсивно обрабатывает элементы, ищет соединения (mxCell edge="1")."""
         # Если элемент — mxCell и это соединение (edge="1")
         if element.tag == "mxCell" and element.get("edge") == "1":
             source = element.get("source")
             target = element.get("target")
 
-            if source and target and element.get("parent") == "100":  # Добавляем связь, только если есть оба узла и connections (Layer 100)
+            if source and target and element.get("parent") == layer:  # Добавляем связь, только если есть оба узла и connections (Layer 100)
                 connections.setdefault(source, [])
                 if target not in connections[source]:
                     connections[source].append(target)
@@ -438,9 +438,9 @@ class SeafDrawio:
 
         # Рекурсивно обрабатываем дочерние элементы
         for child in element:
-            self._process_element(child, connections)
+            self._process_element(child, connections, layer)
 
-    def get_network_connections(self, file_name):
+    def get_network_connections(self, file_name, layer):
         """
             Извлекает сетевые соединения из файла диаграммы .drawio (в формате XML),
             исключая диаграмму с именем "Main Schema". Возвращает связи в виде словаря,
@@ -478,7 +478,7 @@ class SeafDrawio:
         for diagram in root.findall(".//diagram"):
             if diagram.get("name") == "Main Schema":
                 continue
-            self._process_element(diagram, connections)  # Запускаем рекурсивный обход
+            self._process_element(diagram, connections, layer)  # Запускаем рекурсивный обход
 
         return connections
 

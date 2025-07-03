@@ -45,6 +45,7 @@ class SeafDrawio:
                 dict1[key] = value
         return dict1
 
+
     def _merge_configs(self, default, user):
         """
         Рекурсивно объединяет две конфигурации.
@@ -375,6 +376,71 @@ class SeafDrawio:
             attributes.get('schema'): {attributes.get('OID'): {key: value for key, value in attributes.items()
                                                        if key not in [ 'id', 'label', 'OID', 'schema']}}}
 
+    def smart_merge_dicts(self, dict1, dict2):
+        """
+        Рекурсивно объединяет два словаря по следующим правилам:
+
+        Если значение ключа:
+            - одинаковые строки → остаётся строкой.
+            - разные строки → объединяются в список и дедублицируются.
+            - список и строка → строка добавляется в список, затем дедублицируется.
+            - список и список → списки объединяются и дедублицируются.
+            - словарь и словарь → рекурсивно объединяются по тем же правилам.
+
+        Ключ становится списком только если есть 2 и более разных значений.
+
+        Порядок элементов сохраняется при дедубликации.
+
+        Parameters:
+            dict1 (dict): целевой словарь, в который происходит объединение (изменяется на месте).
+            dict2 (dict): исходный словарь, данные из которого добавляются в dict1.
+
+        Returns:
+            dict: изменённый dict1 с объединёнными данными.
+        """
+
+        def dedup_list(lst):
+            """Удаляет дубликаты из списка, сохраняя порядок"""
+            seen = set()
+            result = []
+            for item in lst:
+                if item not in seen:
+                    seen.add(item)
+                    result.append(item)
+            return result
+
+        def ensure_list(val):
+            """Преобразует значение в список, если это не список"""
+            return val if isinstance(val, list) else [val]
+
+        for key, value in dict2.items():
+            if key not in dict1:
+                # Ключа нет — просто копируем
+                dict1[key] = value
+            else:
+                # Получаем текущее значение
+                current = dict1[key]
+
+                # Случай 1: оба значения — словари → рекурсивное слияние
+                if isinstance(current, dict) and isinstance(value, dict):
+                    self.smart_merge_dicts(current, value)
+
+                # Случай 2: хотя бы одно значение — список или строка → объединяем как список
+                else:
+                    # Преобразуем оба значения в списки
+                    list_current = ensure_list(current)
+                    list_value = ensure_list(value)
+
+                    # Объединяем и дедублицируем
+                    merged = dedup_list(list_current + list_value)
+
+                    # Если все элементы одинаковые — оставляем строкой
+                    if len(set(merged)) == 1:
+                        dict1[key] = merged[0]
+                    else:
+                        dict1[key] = merged
+
+        return dict1
 
     def get_data_from_diagram(self, file_name):
         """
@@ -407,7 +473,7 @@ class SeafDrawio:
 
         # Формируем dict из объектов диаграмм
         for i, (key, value) in enumerate(diagram.nodes_ids.items()):
-            value = value if i > 0 else list(set(value) - {"0101", "0103", "991", "981"})
+            value = value if i > 0 else list(set(value) - {"0101", "0103", '991', '981'})
             diagram.go_to_diagram(diagram_index=i)
             for object_id in value:
                 # Изменяем id объекта если оно не равно OID
@@ -416,6 +482,10 @@ class SeafDrawio:
                     root.attrib['id'] = root.attrib['OID']
 
                 objects_data = self.merge_dicts(objects_data, self._get_tag_attr(root))
+            # Добавляем в общий словарь данные по логическим линкам
+            for object_id in self.get_logical_links(diagram.current_root):
+                root = diagram.current_root.find("./*[@id='{}']".format(object_id))
+                objects_data = self.smart_merge_dicts(objects_data, self._get_tag_attr(root))
 
         diagram.dump_file(filename=os.path.basename(file_name), folder=os.path.dirname(file_name))
         return objects_data
@@ -439,6 +509,33 @@ class SeafDrawio:
         # Рекурсивно обрабатываем дочерние элементы
         for child in element:
             self._process_element(child, connections, layer)
+
+    @staticmethod
+    def get_logical_links(root):
+        """
+            Ищет в XML-структуре все логические связи (logical links) на основе определённых критериев.
+
+            Функция просматривает каждый элемент <object> и проверяет:
+            1. Существует ли внутри него дочерний элемент <mxCell>.
+            2. Имеет ли этот элемент атрибут 'edge' со значением '1'.
+            3. Имеет ли объект атрибут 'OID' (указывает на тип связи).
+
+            Если все условия выполнены, добавляет значение атрибута 'id' этого объекта в результирующий список.
+
+            Parameters:
+                root (xml.etree.ElementTree.Element): Корневой элемент XML-документа,
+                                                     полученный после парсинга файла или строки.
+
+            Returns:
+                List[str]: Список идентификаторов ('id') всех подходящих элементов <object>,
+                           представляющих собой логические связи.
+        """
+        result = []
+        for obj in root.findall('object'):
+            elem = obj.find('mxCell')
+            if elem is not None and elem.get('edge') == '1' and obj.get('OID'):
+                result.append(obj.get('id'))
+        return result
 
     def get_network_connections(self, file_name, layer):
         """
@@ -653,7 +750,10 @@ class SeafDrawio:
 
                 else:
                     if isinstance(json_obj[key], list):
-                        json_obj[key] = ast.literal_eval(value)
+                        try:
+                            json_obj[key] = ast.literal_eval(value)
+                        except (SyntaxError, ValueError):
+                            json_obj[key] = value
                     else:
                         # Assign values directly
                         json_obj[key] = self.is_dict_like_string(value)

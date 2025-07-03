@@ -1658,7 +1658,7 @@ seaf.ta.components.user_device:
     device_type: 'ARM'
     description: Клиентский ноутбук сотрудника
     network_connection:
-      - flix.lan.office.wired.ARM
+      - flix.lan.dc.inet_edge
 
   flix.user_device.external_clients:
     title: Внешние клиенты
@@ -1689,3 +1689,14 @@ seaf.ta.components.user_device:
     description: Терминалы сбора данных
     network_connection:
       - flix.lan.office.wired.ARM
+
+#### Создаем логический линк ####################################################
+
+seaf.ta.services.logical_link:
+  flix.link.vdi:
+    title: Подключение к VDI
+    from:  flix.user_device.laptop
+    type: single
+    to:
+      - flix.cluster_virtualization.vmware.01
+      - flix.compute_service.as8.app

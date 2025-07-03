@@ -89,6 +89,7 @@ office:
           <mxCell id="101" value="Сервисы KБ" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="102" value="Tех. сервисы" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="103" value="Прикладные компоненты" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="104" value="Links" parent="0" style="group;fontColor=none;noLabel=1;" visible="0"/>
           <object label="Экосистема Сбер" schema="seaf.ta.services.network_segment" id="981">
             <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#dae8fc;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontStyle=1;strokeColor=#6c8ebf;" vertex="1" parent="98">
               <mxGeometry x="-200" y="690" width="215" height="450" as="geometry" />
@@ -144,6 +145,7 @@ dc:
           <mxCell id="101" value="Сервисы KБ" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="102" value="Tех. сервисы" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="103" value="Прикладные компоненты" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="104" value="Links" parent="0" style="group;fontColor=none;noLabel=1;" visible="0"/>
           <object label="Экосистема Сбер" schema="seaf.ta.services.network_segment" id="981">
             <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#dae8fc;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontStyle=1;strokeColor=#6c8ebf;" vertex="1" parent="98">
               <mxGeometry x="-200" y="980" width="215" height="450" as="geometry" />

@@ -68,7 +68,7 @@ office:
           <mxCell id="0"/>   
           <mxCell id="1" parent="0"/>
           <mxCell value="Office" id="001" style="group;strokeColor=default;rounded=0;strokeWidth=1;perimeterSpacing=1;fontColor=none;noLabel=1;" parent="0" vertex="1">
-            <mxGeometry x="615" y="60" width="1385" height="1060" as="geometry" />
+            <mxGeometry x="615" y="60" width="1385" height="1120" as="geometry" />
           </mxCell>
           <mxCell value="External Net" id="002" style="group;fontColor=none;noLabel=1;" parent="0" vertex="1">
             <mxGeometry x="20" y="60" width="200" height="1060"  as="geometry" />
@@ -79,15 +79,30 @@ office:
           <mxCell id="004" value="WAN" style="group;fontColor=none;noLabel=1;" parent="0" vertex="1">
             <mxGeometry x="420" y="60" width="160" height="1060"  as="geometry" />
           </mxCell>
-          <mxCell id="100" value="Links" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="98" value="Экосистема Сбер" parent="0" style="group;fontColor=none;noLabel=1;" visible="0">
+              <mxGeometry x="0" y="60" width="200" height="1060"  as="geometry" />
+          </mxCell>
+          <mxCell id="99" value="Сбербанк" parent="0" style="group;fontColor=none;noLabel=1;" visible="0">
+              <mxGeometry x="0" y="60" width="200" height="1060"  as="geometry" />
+          </mxCell>
+          <mxCell id="100" value="Connections" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="101" value="Сервисы KБ" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="102" value="Tех. сервисы" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="103" value="Прикладные компоненты" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="104" value="Links" parent="0" style="group;fontColor=none;noLabel=1;" visible="0"/>
+          <object label="Экосистема Сбер" schema="seaf.ta.services.network_segment" id="981">
+            <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#dae8fc;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontStyle=1;strokeColor=#6c8ebf;" vertex="1" parent="98">
+              <mxGeometry x="-200" y="690" width="215" height="450" as="geometry" />
+            </mxCell>
+          </object>
+          <object label="Сбербанк" schema="seaf.ta.services.network_segment" id="991">
+            <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#d5e8d4;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontStyle=1;strokeColor=#82b366;" vertex="1" parent="99">
+              <mxGeometry x="-200" y="30" width="215" height="640" as="geometry" />
+            </mxCell>
+          </object>
         </root>
       </mxGraphModel>
     </diagram>
-    
-
 
 
 dc:
@@ -113,7 +128,7 @@ dc:
           <mxCell id="0"/>   
           <mxCell id="1" parent="0"/>
           <mxCell id="001" value="DC" style="group;strokeColor=default;rounded=0;strokeWidth=1;perimeterSpacing=1;fontColor=none;noLabel=1;" parent="0" vertex="1">
-            <mxGeometry  x="615" y="60" width="1821" height="1400" as="geometry" />            
+            <mxGeometry  x="615" y="60" width="1825" height="1390" as="geometry" />            
           </mxCell>
           <mxCell value="External Net" id="002" style="group;fontColor=none;noLabel=1;" parent="0" vertex="1">
               <mxGeometry x="20" y="60" width="200" height="1400"  as="geometry" />
@@ -124,13 +139,27 @@ dc:
           <mxCell id="004" value="WAN" style="group;fontColor=none;noLabel=1;" parent="0" vertex="1">
               <mxGeometry x="420" y="60" width="160" height="1400"  as="geometry" />
           </mxCell>
-          <mxCell id="100" value="Links" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="98" value="Экосистема Сбер" parent="0" style="group;fontColor=none;noLabel=1;" visible="0" />
+          <mxCell id="99" value="Сбербанк" parent="0" style="group;fontColor=none;noLabel=1;" visible="0" />
+          <mxCell id="100" value="Connections" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="101" value="Сервисы KБ" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="102" value="Tех. сервисы" style="group;fontColor=none;noLabel=1;" parent="0"/>
           <mxCell id="103" value="Прикладные компоненты" style="group;fontColor=none;noLabel=1;" parent="0"/>
+          <mxCell id="104" value="Links" parent="0" style="group;fontColor=none;noLabel=1;" visible="0"/>
+          <object label="Экосистема Сбер" schema="seaf.ta.services.network_segment" id="981">
+            <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#dae8fc;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontStyle=1;strokeColor=#6c8ebf;" vertex="1" parent="98">
+              <mxGeometry x="-200" y="980" width="215" height="450" as="geometry" />
+            </mxCell>
+          </object>
+          <object label="Сбербанк" schema="seaf.ta.services.network_segment" id="991">
+            <mxCell style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#d5e8d4;horizontal=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;fontStyle=1;strokeColor=#82b366;" vertex="1" parent="99">
+              <mxGeometry x="-200" y="110" width="215" height="810" as="geometry" />
+            </mxCell>
+          </object>
         </root>
       </mxGraphModel>
     </diagram>
+
 
 
 segment_internet:

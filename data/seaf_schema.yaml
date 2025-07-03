@@ -72,7 +72,6 @@
         "^[a-zA-Z0-9_\\.]*$":
           $ref: "#/$defs/seaf.ta.services.base.entity"
 
-
 #### Описания зоны доступности.
   seaf.ta.services.dc_az:
     title: Availability Zone
@@ -129,10 +128,8 @@
               title: Уровень сертификации ЦОД
               type: string
             availabilityzone:
-              title: В какие зоны доступности входит DC
-              type: string
-              items:
-                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+              title: В какую зону доступности входит DC
+              $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
           required:
             - ownership
             - type
@@ -179,9 +176,6 @@
         "^[a-zA-Z0-9_\\.]*$":
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            network_segment_id:
-              title: Network Segment ID
-              type: string
             sber:
               location:
                 title: ID ЦОД или Офиса
@@ -202,7 +196,6 @@
                     - DMZ
                     - INT-NET
                     - INT-SECURITY-NET
-
 ################ Сети WAN/LAN ################################################################
 
   seaf.ta.services.network:
@@ -212,104 +205,54 @@
         route: "/"
         title: Компьютерная сеть
     schema: # JSON Schema контролирующая описание объекта сущности
-      $defs:
-        seaf.ta.services.network:
-          $ref: "#/$defs/seaf.ta.services.base.entity"
-          oneOf:
-            - type: object
-              properties:
-                type:
-                  type: string
-                  enum: [WAN]
-                dc:
-                  title: Имя ЦОД/Серверной комнаты
-                  type: array
-                  items:
-                    $ref: "#/$rels/seaf.ta.services.dc.dc"
-                office:
-                  title: Офис
-                  $ref: "#/$rels/seaf.ta.services.office.office"
-                az:
-                  title: В какие зоны доступности входит
-                  type: array
-                  items:
-                    $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
-                ch_number:
-                  title: Номер канала
-                  type: string
-                wan_ip:
-                  title: Внешняя сеть\IP
-                  type: string
-                provider:
-                  title: Оператор связи
-                  type: string
-                bandwidth:
-                  title: Пропускная способность, Мб\с
-                  type: integer
-                description:
-                  title: Описание канала связи
-                  type: string
-                network_appliance:
-                  title: ID оборудования коммутации сети
-                  type: array
-                  items:
-                    $ref: "#/$rels/seaf.ta.components.network.network"
-              required:
-                - wan_ip
-                - type
-                - provider
-                - bandwidth
-                - network_appliance
-              additionalProperties: false
-            - type: object
-              properties:
-                type:
-                  type: string
-                  enum: [LAN]
-                dc:
-                  title: Имя ЦОД/Серверной комнаты
-                  type: array
-                  items:
-                    $ref: "#/$rels/seaf.ta.services.dc.dc"
-                office:
-                  title: Офис
-                  $ref: "#/$rels/seaf.ta.services.office.office"
-                az:
-                  title: В какие зоны доступности входит
-                  type: array
-                  items:
-                    $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
-                lan_type:
-                  title: Тип LAN
-                  type: string
-                  enum: [Проводная, Беспроводная]
-                segment:
-                  title: Вхождение в сетевые сегменты сети
-                  $ref: "#/$rels/seaf.ta.components.network_segment.network_segment"
-                vlan:
-                  title: Имя виртуальной сети (VLAN)
-                  type: integer
-                ipnetwork:
-                  title: IP-сеть и маска
-                  type: string
-                purpose:
-                  title: Назначение
-                  type: string
-                network_appliance:
-                  title: ID оборудования коммутации сети
-                  type: array
-                  items:
-                    $ref: "#/$rels/seaf.ta.components.network.network"
-              required:
-                - type
-                - lan_type
-                - ipnetwork
-                - network_appliance
-              additionalProperties: false
       type: object
       patternProperties:
-        "^[a-zA-Z0-9_-]*(\\.[a-zA-Z0-9_-]*)*$":
-          $ref: "#/$defs/seaf.ta.services.network"
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            type:
+              type: string
+              enum: [ WAN, LAN ]
+            location:
+              title: ID ЦОД или Офиса
+              type: string
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
+            ch_number:
+              title: Номер канала
+              type: string
+            wan_ip:
+              title: Внешняя сеть\IP
+              type: string
+            provider:
+              title: Оператор связи
+              type: string
+            bandwidth:
+              title: Пропускная способность, Мб\с
+              type: integer
+            network_appliance:
+              title: ID оборудования коммутации сети
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.components.network.network"
+            lan_type:
+              title: Тип LAN
+              type: string
+              enum: [ Проводная, Беспроводная ]
+            segment:
+              title: Вхождение в сетевые сегменты сети
+              $ref: "#/$rels/seaf.ta.components.network_segment.network_segment"
+            vlan:
+              title: Имя виртуальной сети (VLAN)
+              type: integer
+            ipnetwork:
+              title: IP-сеть и маска
+              type: string
+            purpose:
+              title: Назначение
+              type: string
 
 ################ Сетевое устройство ##########################################################
 
@@ -345,15 +288,16 @@
             purpose:
               title: Функциональное назначение сетевого аплаенса
               type: string
-            dc:
-              title: Имя ЦОД/Серверной комнаты
-              $ref: "#/$rels/seaf.ta.services.dc.dc"
             address:
               title: IP адрес устройства
               type: string
-            office:
-              title: Офис
-              $ref: "#/$rels/seaf.ta.services.office.office"
+            location:
+              title: ID ЦОД или Офиса
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
             type:
                 title: Сетевая зона
                 enum:
@@ -364,13 +308,14 @@
                     - VPN
                     - NAT
                     - Коммутатор
-            placement_segment:
-                title: ID ЦОД или Офиса
-                type: string
-                items:
-                    anyOf:
-                    - $ref: "#/$rels/seaf.ta.services.dc.dc"
-                    - $ref: "#/$rels/seaf.ta.services.office.office"
+            segment:
+              title: Вхождение в сетевые сегменты сети
+              $ref: "#/$rels/seaf.ta.services.network_segment.network_segment"
+            is_part_of_IS_service:
+              title: Перечисление связанных КБ сервисов
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.kb.kb"
           required:
             - model
             - realization_type
@@ -387,13 +332,13 @@
       service:
         route: "/"
         title: Сервисы КБ
-    schema:
+    schema: # JSON Schema контролирующая описание объекта сущности
       $defs:
         seaf.ta.services.kb:
           type: object
+          $ref: "#/$defs/seaf.ta.components.base.entity"
           properties:
-            class:
-              title: Класс сервиса
+            technology:
               type: string
               enum:
                 - Механизмы ААА
@@ -413,60 +358,32 @@
                 - Инструментальный контроль защищенности
                 - Безопасность конфигураций
                 - Аудит событий КБ
-            ka_dzo:
-              title: Классификатор сервисов в КАДЗО (* Определиться с классификатором *)
+            software_name:
+              type: string
+
+              network_connection:
+                title: Перечисление связанных сетей
+                type: array
+                items:
+                  $ref: "#/$rels/seaf.ta.services.network.network"
+            label:
+              type: string
+              enum: [ AV,UAM,Sandbox, SCAN, FW, IDFW, NAC, Proxy, IDS, IPS, NBA, DDoS, WAF, ALG,  DLP, Log, CS, CMS, AntiFraud ]
+            status:
+              title: Статус
               type: string
               enum:
-                - ИБ-Антивирусное ПО
-                - ИБ-Аутентификация пользователей
-                - ИБ-Аудит действий персонала
-                - ИБ-Биометрия
-                - ИБ-Защита от киберугроз
-                - ИБ-Защита от сетевых атак
-                - ИБ-Защита трафика
-                - ИБ-Защита от утечек информации
-                - ИБ-Криптография и шифрование
-                - ИБ-Предотвращение мошенничества
-                - ИБ-Управление доступом
-                - ИБ-Управление сертификатами
-                - ИБ-Управление событиями инф. безопасности
-          oneOf:
-            - type: object
-              properties:
-                usage:
-                  type: string
-                  enum:
-                    - Shared
-                network_connection:
-                  title: Перечисление сетей к которым подключен сервис
-                  type: array
-                  items:
-                    $ref: "#/$rels/seaf.ta.services.network.network"
-                segment_id:
-                  title: Вхождение в сетевые сегменты сети
-                  $ref: "#/$rels/seaf.ta.services.network_segment.network_segment"
-              required:
-                - usage
-                - network_connection
-                - segment_id
-              additionalProperties: false
-            - type: object
-              properties:
-                usage:
-                  type: string
-                  enum:
-                    - Dedicated
-                service_id:
-                  title: Прикладные сервисы которые используют данный сервис
-                  type: array
-                  items:
-                    - $ref: "#/$rels/seaf.ta.app.service.service"
-              required:
-                - usage
-                - service_id
-              additionalProperties: false
+                - Создается
+                - Используется
+                - Выводится
+                - В архиве
+            network_connection:
+              title: Перечисление связанных сетей
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network.network"
           required:
-            - class
+            - technology
       type: object
       patternProperties:
         "[a-zA-Z0-9_]*(\\.[a-zA-Z0-9_]*)*$":
@@ -743,7 +660,7 @@
         "^[a-zA-Z0-9_\\.]*$":
           $ref: "#/$defs/seaf.ta.services.k8s"
 
-############### Кластер виртуализации #######################################
+############### Кластер виртуализации ######################################
   seaf.ta.services.cluster_virtualization:
     title: Описание кластера виртуализации
     objects:
@@ -787,3 +704,74 @@
                 $ref: "#/$rels/seaf.ta.services.network.network"
           required:
             - availabilityzone
+
+############### User Devices ###############################################
+
+  seaf.ta.components.user_device:
+    title: Пользовательское устройство
+    objects:
+      user_device:
+        route: "/"
+        title: Пользовательское устройство
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          type: object
+          $ref: "#/$defs/seaf.ta.components.base.entity"
+          properties:
+            device_type:
+              title: Тип устройства
+              type: string
+              enum: [ АРМ, Терминалы сбора данных (ТСД), Мобильные рабочие места (МРМ), IoT ]
+            network_connection:
+              title: Перечисление связанных сетей
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network.network"
+            location:
+              title: ID ЦОД или Офиса
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/$rels/seaf.ta.services.dc.dc"
+                  - $ref: "#/$rels/seaf.ta.services.office.office"
+            segment:
+              title: Вхождение в сетевые сегменты сети
+              $ref: "#/$rels/seaf.ta.services.network_segment.network_segment"
+            network_connection_devices:
+              title: Перечисление связанных сетевых линков
+              type: array
+              items:
+                $ref: "#/$rels/seaf.ta.services.network_links.network_links"
+          required:
+            - device_type
+
+############### Logical Links ###############################################
+
+  seaf.ta.services.logical_link:
+    title: Логическая связь
+    objects:
+      logical_link:
+        route: "/"
+        title: Логическая связь
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            source:
+              title: Источник связи
+              type: string
+            target:
+              title: Приемник связи
+              type: array
+            direction:
+              title: Направление связи
+              type: string
+              enum: [ "==>", "<==", "<==>" ]
+          required:
+            - source
+            - target
+            - direction

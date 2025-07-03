@@ -9,6 +9,7 @@ from copy import deepcopy
 from N2G import drawio_diagram
 import xml.etree.ElementTree as ET
 import xml.sax.saxutils as saxutils
+from deepmerge import Merger
 
 class SeafDrawio:
 
@@ -44,6 +45,7 @@ class SeafDrawio:
                 dict1[key] = value
         return dict1
 
+
     def _merge_configs(self, default, user):
         """
         Рекурсивно объединяет две конфигурации.
@@ -75,6 +77,51 @@ class SeafDrawio:
         else:
             # Возвращаем как есть, если это не строка, словарь или список
             return data
+
+    @staticmethod
+    def read_and_merge_yaml(files, **kwargs):
+        """
+        Читает и объединяет один или несколько YAML-файлов по ключам.
+
+        :param files: Путь к одному файлу (str) или список путей (list)
+        :return: dict - объединённый YAML-документ
+        """
+
+        # Поддержка одного файла как строки
+        if isinstance(files, str):
+            files = [files]
+
+        # Настройка слияния: работает с dict и списками
+        merger = Merger(
+            [(dict, ["merge"]), (list, ["prepend"])],  # Например, можно использовать extend, prepend, append
+            ["override"],
+            []
+        )
+
+        merged_data = {}
+
+        for filename in files:
+            try:
+                with open(filename, 'r', encoding='utf-8') as f:
+                    try:
+                        data = yaml.safe_load(f)
+                        if data is None:
+                            print(f"Файл {filename} пустой.")
+                            continue
+                        if not isinstance(data, dict):
+                            print(f"Файл {filename} содержит не словарь. Пропускаем.")
+                            continue
+
+                        # Выполняем глубокое слияние
+                        merger.merge(merged_data, data)
+
+                    except yaml.YAMLError as e:
+                        print(f"Ошибка YAML в файле {filename}: {e}")
+            except IOError as e:
+                print(f"I/O ошибка({e.errno}): {e.strerror} : {filename}")
+                sys.exit(1)
+
+        return merged_data
 
     @staticmethod
     def read_yaml_file(file, **kwargs):
@@ -111,15 +158,15 @@ class SeafDrawio:
         :return: A list of values associated with the target key.
         """
         results = []
-
         # If the current data is a dictionary
         if isinstance(data, dict):
             for key, value in data.items():
                 if key == target_key:
                     if isinstance(value, list) and len(value) > 0:  # Если в качестве parent_id указан список выбираем 1 элемент
-                        value = value[0]
-                    results.append(value)  # Add the value if the key matches
-                if isinstance(value, (dict, list)):
+                        return value
+                    else:
+                        results.append(value)  # Add the value if the key matches
+                if isinstance(value, dict):
                     results.extend(self.find_key_value(value, target_key))  # Recurse into nested structures
 
         # If the current data is a list
@@ -212,6 +259,46 @@ class SeafDrawio:
             return True if len(l) > 0 and l[0] in s else False
         return False
 
+
+    @staticmethod
+    def find_common_element(l1, l2):
+        """
+        Returns the first element from l1 (string or list) that is present in l2.
+
+        If there are no common elements, returns False.
+
+        Args:
+            l1 (list or str): The input to check elements from.
+                              If string, treated as a sequence of characters.
+            l2 (list): The list in which to look for elements from l1.
+
+        Returns:
+            any: The first element from l1 found in l2.
+            bool: False if no common elements are found.
+
+        Examples:
+            >>> find_common_element("hello", ['e', 'l', 'o'])
+            'e'
+            >>> find_common_element(["apple", "banana"], ["cherry", "banana"])
+            'banana'
+            >>> find_common_element("abc", ["x", "y"])
+            False
+        """
+        # Приводим l1 к итерируемому виду (список символов для строки)
+        if isinstance(l1, str):
+            iterable = list(l1)
+        elif isinstance(l1, list):
+            iterable = l1
+        else:
+            raise TypeError("l1 must be of type 'str' or 'list'")
+
+        # Поиск первого совпадения
+        for item in iterable:
+            if item in l2:
+                return item
+        return False
+
+
     def get_object(self, file, key, **kwargs):
         """
             Get JSON leave from file by key
@@ -222,7 +309,7 @@ class SeafDrawio:
             :return: json object.
         """
         try:
-            x = json.loads(json.dumps(self.read_yaml_file(file)[key]))
+            x = json.loads(json.dumps(self.read_and_merge_yaml(file)[key]))
             if kwargs.get('type'):
 
                 if kwargs['type'].find(":") != -1:
@@ -289,6 +376,71 @@ class SeafDrawio:
             attributes.get('schema'): {attributes.get('OID'): {key: value for key, value in attributes.items()
                                                        if key not in [ 'id', 'label', 'OID', 'schema']}}}
 
+    def smart_merge_dicts(self, dict1, dict2):
+        """
+        Рекурсивно объединяет два словаря по следующим правилам:
+
+        Если значение ключа:
+            - одинаковые строки → остаётся строкой.
+            - разные строки → объединяются в список и дедублицируются.
+            - список и строка → строка добавляется в список, затем дедублицируется.
+            - список и список → списки объединяются и дедублицируются.
+            - словарь и словарь → рекурсивно объединяются по тем же правилам.
+
+        Ключ становится списком только если есть 2 и более разных значений.
+
+        Порядок элементов сохраняется при дедубликации.
+
+        Parameters:
+            dict1 (dict): целевой словарь, в который происходит объединение (изменяется на месте).
+            dict2 (dict): исходный словарь, данные из которого добавляются в dict1.
+
+        Returns:
+            dict: изменённый dict1 с объединёнными данными.
+        """
+
+        def dedup_list(lst):
+            """Удаляет дубликаты из списка, сохраняя порядок"""
+            seen = set()
+            result = []
+            for item in lst:
+                if item not in seen:
+                    seen.add(item)
+                    result.append(item)
+            return result
+
+        def ensure_list(val):
+            """Преобразует значение в список, если это не список"""
+            return val if isinstance(val, list) else [val]
+
+        for key, value in dict2.items():
+            if key not in dict1:
+                # Ключа нет — просто копируем
+                dict1[key] = value
+            else:
+                # Получаем текущее значение
+                current = dict1[key]
+
+                # Случай 1: оба значения — словари → рекурсивное слияние
+                if isinstance(current, dict) and isinstance(value, dict):
+                    self.smart_merge_dicts(current, value)
+
+                # Случай 2: хотя бы одно значение — список или строка → объединяем как список
+                else:
+                    # Преобразуем оба значения в списки
+                    list_current = ensure_list(current)
+                    list_value = ensure_list(value)
+
+                    # Объединяем и дедублицируем
+                    merged = dedup_list(list_current + list_value)
+
+                    # Если все элементы одинаковые — оставляем строкой
+                    if len(set(merged)) == 1:
+                        dict1[key] = merged[0]
+                    else:
+                        dict1[key] = merged
+
+        return dict1
 
     def get_data_from_diagram(self, file_name):
         """
@@ -321,7 +473,7 @@ class SeafDrawio:
 
         # Формируем dict из объектов диаграмм
         for i, (key, value) in enumerate(diagram.nodes_ids.items()):
-            value = value if i > 0 else list(set(value) - {"0101", "0103"})
+            value = value if i > 0 else list(set(value) - {"0101", "0103", '991', '981'})
             diagram.go_to_diagram(diagram_index=i)
             for object_id in value:
                 # Изменяем id объекта если оно не равно OID
@@ -330,18 +482,22 @@ class SeafDrawio:
                     root.attrib['id'] = root.attrib['OID']
 
                 objects_data = self.merge_dicts(objects_data, self._get_tag_attr(root))
+            # Добавляем в общий словарь данные по логическим линкам
+            for object_id in self.get_logical_links(diagram.current_root):
+                root = diagram.current_root.find("./*[@id='{}']".format(object_id))
+                objects_data = self.smart_merge_dicts(objects_data, self._get_tag_attr(root))
 
         diagram.dump_file(filename=os.path.basename(file_name), folder=os.path.dirname(file_name))
         return objects_data
 
-    def _process_element(self, element, connections):
+    def _process_element(self, element, connections, layer):
         """Рекурсивно обрабатывает элементы, ищет соединения (mxCell edge="1")."""
         # Если элемент — mxCell и это соединение (edge="1")
         if element.tag == "mxCell" and element.get("edge") == "1":
             source = element.get("source")
             target = element.get("target")
 
-            if source and target:  # Добавляем связь, только если есть оба узла
+            if source and target and element.get("parent") == layer:  # Добавляем связь, только если есть оба узла и connections (Layer 100)
                 connections.setdefault(source, [])
                 if target not in connections[source]:
                     connections[source].append(target)
@@ -352,9 +508,36 @@ class SeafDrawio:
 
         # Рекурсивно обрабатываем дочерние элементы
         for child in element:
-            self._process_element(child, connections)
+            self._process_element(child, connections, layer)
 
-    def get_network_connections(self, file_name):
+    @staticmethod
+    def get_logical_links(root):
+        """
+            Ищет в XML-структуре все логические связи (logical links) на основе определённых критериев.
+
+            Функция просматривает каждый элемент <object> и проверяет:
+            1. Существует ли внутри него дочерний элемент <mxCell>.
+            2. Имеет ли этот элемент атрибут 'edge' со значением '1'.
+            3. Имеет ли объект атрибут 'OID' (указывает на тип связи).
+
+            Если все условия выполнены, добавляет значение атрибута 'id' этого объекта в результирующий список.
+
+            Parameters:
+                root (xml.etree.ElementTree.Element): Корневой элемент XML-документа,
+                                                     полученный после парсинга файла или строки.
+
+            Returns:
+                List[str]: Список идентификаторов ('id') всех подходящих элементов <object>,
+                           представляющих собой логические связи.
+        """
+        result = []
+        for obj in root.findall('object'):
+            elem = obj.find('mxCell')
+            if elem is not None and elem.get('edge') == '1' and obj.get('OID'):
+                result.append(obj.get('id'))
+        return result
+
+    def get_network_connections(self, file_name, layer):
         """
             Извлекает сетевые соединения из файла диаграммы .drawio (в формате XML),
             исключая диаграмму с именем "Main Schema". Возвращает связи в виде словаря,
@@ -392,7 +575,7 @@ class SeafDrawio:
         for diagram in root.findall(".//diagram"):
             if diagram.get("name") == "Main Schema":
                 continue
-            self._process_element(diagram, connections)  # Запускаем рекурсивный обход
+            self._process_element(diagram, connections, layer)  # Запускаем рекурсивный обход
 
         return connections
 
@@ -567,7 +750,10 @@ class SeafDrawio:
 
                 else:
                     if isinstance(json_obj[key], list):
-                        json_obj[key] = ast.literal_eval(value)
+                        try:
+                            json_obj[key] = ast.literal_eval(value)
+                        except (SyntaxError, ValueError):
+                            json_obj[key] = value
                     else:
                         # Assign values directly
                         json_obj[key] = self.is_dict_like_string(value)
@@ -600,6 +786,28 @@ class SeafDrawio:
         # save file to disk
         with open(os.path.join(folder, filename), "w", encoding="utf-8") as outfile:
             outfile.write(ET.tostring(content, encoding="unicode"))
+
+
+    def delete_key(self, d, key_to_delete):
+        """
+        Рекурсивно удаляет все вхождения ключа key_to_delete из словаря d.
+
+        :param d: Словарь (или список/структура, внутри которой нужно искать)
+        :param key_to_delete: Ключ, который нужно удалить
+        """
+        if isinstance(d, dict):
+            # Если это словарь — итерируемся по его ключам
+            keys = list(d.keys())  # Чтобы избежать изменения размера словаря во время итерации
+            for key in keys:
+                if key == key_to_delete:
+                    del d[key]
+                else:
+                    self.delete_key(d[key], key_to_delete)
+        elif isinstance(d, list):
+            # Если это список — итерируемся по элементам
+            for item in d:
+                self.delete_key(item, key_to_delete)
+        # Игнорируем другие типы (int, str, etc.)
 
 
 class ValidateFile(argparse.Action):

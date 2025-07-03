@@ -49,12 +49,13 @@ if __name__ == '__main__':
         sys.exit(1)
 
     conf = __cli_vars(d.load_config("config.yaml")['drawio2seaf'])
-    network_connections = d.get_network_connections(conf['drawio_file'])
+    network_connections = d.get_network_connections(conf['drawio_file'], '100')
     objects_data = d.get_data_from_diagram(conf['drawio_file'])
     json_schemas = d.get_json_schemas(conf['schema_file'])
 
     yaml_dict = {}
     for schema_key, schema in json_schemas.items():
+
         for d_key, d_val in objects_data.get(schema_key, {}).items():
             # Добавляем в объект фактические связи между объектами
             if d_val.get('network_connection'):

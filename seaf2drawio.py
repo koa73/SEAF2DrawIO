@@ -14,12 +14,13 @@ node_xml_default = diagram.drawio_node_object_xml
 root_object = 'seaf.ta.services.dc_region'
 diagram_pages = {'main': ['Main Schema'], 'office': [], 'dc': []}
 diagram_ids = {'Main Schema': []}
+object_area = {}
 conf = {}
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
     "seaf2drawio": {
-        "data_yaml_file": "data/example/test_seaf_ta_P41_v0.5.yaml",
+        "data_yaml_file": "data/example/test_seaf_ta_P41_v0.9.yaml",
         "drawio_pattern": "data/base.drawio",
         "output_file": "result/Sample_graph.drawio"
     }
@@ -82,7 +83,6 @@ def position_offset(pattern):
                 pattern['x'] = pattern['x'] - (pattern['w'] + pattern['offset']) * pattern['deep']
             pattern['x'] = pattern['x'] + pattern['w'] + pattern['offset']
 
-
 def return_ready(pattern):
     pattern['count']+=1
     if pattern['count'] == pattern['deep']:
@@ -90,14 +90,12 @@ def return_ready(pattern):
 
     return not bool(pattern['count'])
 
-
 def get_parent_value(pattern, current_parent):
     r = ''
     if pattern.get('parent_key'):
-        r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_yaml_file(conf['data_yaml_file']))),
+        r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_and_merge_yaml(conf['data_yaml_file']))),
                                                     current_parent), pattern['parent_key'])
     return r
-
 
 def add_pages(pattern):
 
@@ -120,6 +118,16 @@ def add_pages(pattern):
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
 
+def update_object_area(area,  key, algo, offset, **kwargs ):
+    try:
+        if key not in area:
+            area[key] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none':0}
+        if kwargs.get('parent'):
+            area[kwargs['parent']][algo] += offset
+            #print(f">>>>{page_name}::  {key} --> {kwargs['parent']} :: {area[kwargs['parent']][algo]}")
+    except KeyError as e:
+        area[kwargs.get('parent')] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none': 0}
+        update_object_area(area,  key, algo, offset, **kwargs )
 
 def add_object(pattern, data, key_id):
 
@@ -130,10 +138,11 @@ def add_object(pattern, data, key_id):
 
         # Если у элемента есть родитель, получаем ID родителя и проверяем связан ли родитель с текущей диаграммой (страницей)
         # добавляем в справочник ID элемента
-        if pattern.get('parent_id') and d.list_contain(d.find_key_value(data, pattern['parent_id']),
+        if pattern.get('parent_id') and d.find_common_element(d.find_key_value(data, pattern['parent_id']),
                                                      diagram_ids[page_name]) and pattern_count == 0:
+
             d.append_to_dict(diagram_ids, page_name, key_id)
-            current_parent = d.find_value_by_key(data, pattern['parent_id'])
+            current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),diagram_ids[page_name])
 
             if current_parent != pattern['last_parent']:   # reset to default pattern
                 default_pattern['parent'] = get_parent_value(pattern, current_parent)
@@ -155,6 +164,8 @@ def add_object(pattern, data, key_id):
 
         if key_id in diagram_ids[page_name]:
 
+            #if pattern.get('parent_id') == 'dc':
+            #    print(f'==={i} == {current_parent} === {key_id}_{pattern_count}')
             """
                 Заменяет ключ 'id' на 'sid' в словаре, если он существует.
             """
@@ -162,6 +173,11 @@ def add_object(pattern, data, key_id):
                 data['sid'] = data.pop('id')
 
             data['schema'] = pattern['schema']
+
+            # Удаляем техническое поле если оно присутствует в данных
+            if 'parent_tmp' in data:
+                del data['parent_tmp']
+
             # Если не содержит конструкции <object></object>, то изменять ID добавляя порядковый номер
             diagram.add_node(
                 id=f"{key_id}_{pattern_count}" if not d.contains_object_tag(xml_pattern, 'object') else key_id,
@@ -175,15 +191,16 @@ def add_object(pattern, data, key_id):
             )
             d.append_to_dict(diagram_ids, page_name, key_id)  # Добавляет ID root элементов
 
+            #if d.contains_object_tag(xml_pattern, 'object'): ## ---- ToDo ----
+            #    update_object_area(object_area[page_name], key_id, pattern.get('algo'), 1, parent=current_parent)
+
             if pattern_count == 0:  # Change position of element
                 position_offset(object_pattern)
-
             pattern_count += 1
 
         diagram.drawio_node_object_xml = node_xml_default
 
-
-def add_links(pattern):
+def add_links(pattern,  **kwargs):
 
     diagram.drawio_link_object_xml = pattern['xml']
     source_id = 'Unknown'
@@ -191,14 +208,22 @@ def add_links(pattern):
     for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'],
                                            type=object_pattern.get('type')).items():  # source_id - ID объекта
 
+        if kwargs.get('logical_link'):
+            targets['OID'] = source_id
+            source_id = targets['source']
+            targets['schema'] = pattern['schema']
+
         try:
             if source_id in diagram_ids[page_name]:  # Объект присутствует на текущей диаграмме
                 if pattern.get('parent_id'):
                     targets = {pattern['targets']: [get_parent_value(pattern, targets[pattern['parent_id']])]}
                 for target_id in targets[pattern['targets']]:
                     if target_id in diagram_ids[page_name]:  # Объект для связи присутствует на диаграмме
-                        diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
-
+                        if kwargs.get('logical_link'):
+                            style = 'style'+ str(targets['direction']) # Выбор стиля стрелки
+                            diagram.add_link(source=source_id, target=target_id, style=pattern[style], data=targets)
+                        else:
+                            diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
                     else:
                         print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
                               f'{page_name}')
@@ -211,6 +236,7 @@ def add_links(pattern):
                 f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
 
 
+
 if __name__ == '__main__':
 
     if sys.version_info < (3, 9):
@@ -221,10 +247,11 @@ if __name__ == '__main__':
 
     diagram.from_xml(d.read_file_with_utf8(conf['drawio_pattern']))
     diagram_ids['Main Schema'] = list(d.get_object(conf['data_yaml_file'], root_object).keys())
-
     for file_name, pages in diagram_pages.items():
 
         for page_name in pages:
+
+            object_area[page_name] = {} # Создаем поле объектов страницы
 
             diagram.go_to_diagram(page_name)
             for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():
@@ -232,6 +259,7 @@ if __name__ == '__main__':
                 try:
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),
                         sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
+
                     add_pages(object_pattern)
                     object_pattern.update({
                                 'count': 0,               # Счетчик объектов
@@ -252,6 +280,12 @@ if __name__ == '__main__':
                     print(f' INFO : В файле данных отсутствуют объекты {object_pattern["schema"]} для добавления на диаграмму {page_name}')
 
                 if bool(re.match(r'^network_links(_\d+)*',k)):
-                    add_links(object_pattern)  # Связывание объектов на текущей диаграмме
+                    add_links(object_pattern, pattern_name=k)  # Связывание объектов на текущей диаграмме
+
+                if bool(re.match(r'^logical_links(_\d+)*', k)):
+                    add_links(object_pattern, logical_link=True)  # Связывание объектов на текущей диаграмме
+
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')
+
+    #print(object_area)

@@ -1674,11 +1674,18 @@ seaf.ta.components.user_device:
     device_type: 'IoT'
     description: IoT
     network_connection:
-      - flix.lan.office.mgmt
+      - flix.lan.dc.int.mgmt
+
+  flix.user_device.iot1:
+    title: IoT
+    device_type: 'IoT'
+    description: IoT
+    network_connection:
+      - flix.lan.dc.int.mgmt
 
   flix.user_device.tcd:
     title: Терминалы сбора данных
     device_type: 'Терминалы сбора данных (ТСД)'
     description: Терминалы сбора данных
     network_connection:
-      - flix.lan.office.mgmt
+      - flix.lan.office.wired.ARM

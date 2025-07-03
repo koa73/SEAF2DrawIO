@@ -1604,6 +1604,54 @@ user_mobile:
   deep: 3
   algo: 'Y+'
 
+user_terminal:
+  xml : >
+    <object label="{{label}}" OID="" id="{{id}}">
+      <mxCell style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/tablet_pc.svg;" vertex="1" parent="002">
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+  schema: 'seaf.ta.components.user_device'
+  parent_id: 'network_connection'
+  type: "device_type:Терминалы сбора данных (ТСД)"
+  x: 80
+  y: 10
+  w: 37
+  h: 40
+  offset: 50
+  deep: 3
+  algo: 'Y+'
+
+user_IoT:
+  xml : >
+    <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="002">
+      <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="group;container=0;" vertex="1" connectable="0" parent="{Group_ID}">
+      <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+    </mxCell>
+    <object label="&lt;div style=&quot;line-height: 100%; padding-top: 30px;&quot;&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;{{label}}&lt;/font&gt;&lt;/div&gt;"  id="{{id}}">
+      <mxCell style="whiteSpace=wrap;html=1;aspect=fixed;pointerEvents=0;align=center;verticalAlign=top;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=light-dark(#C4D6A0,#EDEDED);gradientColor=none;container=0;" vertex="1" parent="{Group_ID}">
+        <mxGeometry width="{{width}}" height="{{height}}" as="geometry" />
+      </mxCell>
+    </object>
+    <mxCell id="{{id}}" style="vsdxID=14544;fillColor=#789440;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=#000000;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry y="10" width="{{width}}" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="{{id}}" value="" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/media_converters/Media_Converter_Modular.svg;container=0;" vertex="1" parent="{Group_ID}">
+      <mxGeometry x="7.0400000000000205" y="10" width="25.93" height="20" as="geometry" />
+    </mxCell>
+  schema: 'seaf.ta.components.user_device'
+  parent_id: 'network_connection'
+  type: "device_type:IoT"
+  x: 40
+  y: 80
+  w: 37
+  h: 40
+  offset: 30
+  deep: 3
+  algo: 'Y+'
+
 #-------------------------------------- Network Links -----------------------------------------------------------------
 
 network_links:
@@ -1705,4 +1753,15 @@ network_links_8:
     </object>
   style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
   schema: 'seaf.ta.services.cluster_virtualization'
+  targets: 'network_connection'
+
+network_links_9:
+  xml: >
+    <object id="{id}" label="{label}">
+        <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+            <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+    </object>
+  style: "endArrow=none;edgeStyle=orthogonalEdgeStyle;rounded=0;curved=0;strokeColor=#0000FF;jumpStyle=arc;"
+  schema: 'seaf.ta.components.user_device'
   targets: 'network_connection'

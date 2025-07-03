@@ -2,8 +2,9 @@
 #
 seaf2drawio:
   data_yaml_file:
-  - data/example/test_seaf_ta_P41_v0.11.yaml
-  - data/example/systems.yaml
+  - data/example/test_seaf_ta_P41_v0.12.yaml
+  #- data/example/systems.yaml
+  #- data/example/enablers.yaml
   drawio_pattern: data/base.drawio
   output_file: result/Sample_graph.drawio
 

@@ -746,3 +746,32 @@
                 $ref: "#/$rels/seaf.ta.services.network_links.network_links"
           required:
             - device_type
+
+############### Logical Links ###############################################
+
+  seaf.ta.services.logical_link:
+    title: Логическая связь
+    objects:
+      logical_link:
+        route: "/"
+        title: Логическая связь
+    schema: # JSON Schema контролирующая описание объекта сущности
+      type: object
+      patternProperties:
+        "^[a-zA-Z0-9_\\.]*$":
+          $ref: "#/$defs/seaf.ta.services.base.entity"
+          properties:
+            source:
+              title: Источник связи
+              type: string
+            target:
+              title: Приемник связи
+              type: array
+            direction:
+              title: Направление связи
+              type: string
+              enum: [ "==>", "<==", "<==>" ]
+          required:
+            - source
+            - target
+            - direction

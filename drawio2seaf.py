@@ -55,8 +55,12 @@ if __name__ == '__main__':
 
     yaml_dict = {}
     for schema_key, schema in json_schemas.items():
+
         for d_key, d_val in objects_data.get(schema_key, {}).items():
+            print(f'{schema_key} : {d_key}')
             # Добавляем в объект фактические связи между объектами
+            if schema_key == 'seaf.ta.services.logical_link':
+                print(d_key)
             if d_val.get('network_connection'):
                 d_val['network_connection'] = str(network_connections[d_key])
 

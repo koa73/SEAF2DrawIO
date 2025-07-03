@@ -200,7 +200,7 @@ def add_object(pattern, data, key_id):
 
         diagram.drawio_node_object_xml = node_xml_default
 
-def add_links(pattern):
+def add_links(pattern,  **kwargs):
 
     diagram.drawio_link_object_xml = pattern['xml']
     source_id = 'Unknown'
@@ -208,19 +208,20 @@ def add_links(pattern):
     for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'],
                                            type=object_pattern.get('type')).items():  # source_id - ID объекта
 
-        if k == 'logical_links_1':
+        if kwargs.get('logical_link'):
             targets['OID'] = source_id
             source_id = targets['source']
             targets['schema'] = pattern['schema']
-            print(pattern)
+
         try:
             if source_id in diagram_ids[page_name]:  # Объект присутствует на текущей диаграмме
                 if pattern.get('parent_id'):
                     targets = {pattern['targets']: [get_parent_value(pattern, targets[pattern['parent_id']])]}
                 for target_id in targets[pattern['targets']]:
                     if target_id in diagram_ids[page_name]:  # Объект для связи присутствует на диаграмме
-                        if k == 'logical_links_1':
-                            diagram.add_link(source=source_id, target=target_id, style=pattern['style'], data=targets)
+                        if kwargs.get('logical_link'):
+                            style = 'style'+ str(targets['direction']) # Выбор стиля стрелки
+                            diagram.add_link(source=source_id, target=target_id, style=pattern[style], data=targets)
                         else:
                             diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
                     else:
@@ -278,8 +279,11 @@ if __name__ == '__main__':
                     pass
                     print(f' INFO : В файле данных отсутствуют объекты {object_pattern["schema"]} для добавления на диаграмму {page_name}')
 
-                if bool(re.match(r'^(network|logical)_links(_\d+)*',k)):
-                    add_links(object_pattern)  # Связывание объектов на текущей диаграмме
+                if bool(re.match(r'^network_links(_\d+)*',k)):
+                    add_links(object_pattern, pattern_name=k)  # Связывание объектов на текущей диаграмме
+
+                if bool(re.match(r'^logical_links(_\d+)*', k)):
+                    add_links(object_pattern, logical_link=True)  # Связывание объектов на текущей диаграмме
 
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')

@@ -427,7 +427,7 @@ class SeafDrawio:
             source = element.get("source")
             target = element.get("target")
 
-            if source and target:  # Добавляем связь, только если есть оба узла
+            if source and target and element.get("parent") == "100":  # Добавляем связь, только если есть оба узла
                 connections.setdefault(source, [])
                 if target not in connections[source]:
                     connections[source].append(target)

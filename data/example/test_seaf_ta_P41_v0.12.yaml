@@ -1554,9 +1554,6 @@ seaf.ta.services.compute_service:
     ha: false
     availabilityzone_id:
       - flix.dc_az.moscow
-# что это?    app_components:
-#      - flix.cluster_virtualization.vmware.01
-#      - flix.cluster_virtualization.vmware.02
     role:
       - Инфраструктурный
       - Журналирование
@@ -1588,9 +1585,6 @@ seaf.ta.services.backup:
     replication: false
     network_connection:
       - flix.lan.dc.int.it.services
-      # что это?    app_components:
- #     - flix.cluster_virtualization.vmware.01
- #     - flix.cluster_virtualization.vmware.02
     stand:
       - flix.stand.prod
     availabilityzone:
@@ -1676,13 +1670,6 @@ seaf.ta.components.user_device:
     network_connection:
       - flix.lan.dc.int.mgmt
 
-  flix.user_device.iot1:
-    title: IoT
-    device_type: 'IoT'
-    description: IoT
-    network_connection:
-      - flix.lan.dc.int.mgmt
-
   flix.user_device.tcd:
     title: Терминалы сбора данных
     device_type: 'Терминалы сбора данных (ТСД)'
@@ -1694,9 +1681,9 @@ seaf.ta.components.user_device:
 
 seaf.ta.services.logical_link:
   flix.link.vdi:
-    title: Подключение к VDI
-    from:  flix.user_device.laptop
-    type: single
-    to:
+    title: "Подключение к VDI"
+    source: flix.user_device.laptop
+    target:
       - flix.cluster_virtualization.vmware.01
-      - flix.compute_service.as8.app
+      - flix.cluster_virtualization.vmware.02
+    direction: "==>"

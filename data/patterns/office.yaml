@@ -1727,12 +1727,12 @@ network_links_9:
 logical_links_1:
   xml: >
     <object id="{id}" label="{label}">
-      <mxCell id="{id}" style="{style}" edge="1" parent="104" source="{source_id}" target="{target_id}>
-            <mxGeometry relative="1" as="geometry" />
+      <mxCell style="{style}" edge="1" parent="100" source="{source_id}" target="{target_id}">
+          <mxGeometry relative="1" as="geometry"/>
       </mxCell>
     </object>
   style: "edgeStyle=orthogonalEdgeStyle;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;strokeColor=#66B2FF;dashed=1;"
-  schema: 'seaf.ta.services.logical_link1'
-  targets: 'to'
+  schema: 'seaf.ta.services.logical_link'
+  targets: 'target'
 
 

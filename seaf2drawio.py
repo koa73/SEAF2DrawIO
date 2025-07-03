@@ -208,14 +208,21 @@ def add_links(pattern):
     for source_id, targets in d.get_object(conf['data_yaml_file'], pattern['schema'],
                                            type=object_pattern.get('type')).items():  # source_id - ID объекта
 
+        if k == 'logical_links_1':
+            targets['OID'] = source_id
+            source_id = targets['source']
+            targets['schema'] = pattern['schema']
+            print(pattern)
         try:
             if source_id in diagram_ids[page_name]:  # Объект присутствует на текущей диаграмме
                 if pattern.get('parent_id'):
                     targets = {pattern['targets']: [get_parent_value(pattern, targets[pattern['parent_id']])]}
                 for target_id in targets[pattern['targets']]:
                     if target_id in diagram_ids[page_name]:  # Объект для связи присутствует на диаграмме
-                        diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
-
+                        if k == 'logical_links_1':
+                            diagram.add_link(source=source_id, target=target_id, style=pattern['style'], data=targets)
+                        else:
+                            diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
                     else:
                         print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
                               f'{page_name}')
@@ -271,7 +278,7 @@ if __name__ == '__main__':
                     pass
                     print(f' INFO : В файле данных отсутствуют объекты {object_pattern["schema"]} для добавления на диаграмму {page_name}')
 
-                if bool(re.match(r'^network_links(_\d+)*',k)):
+                if bool(re.match(r'^(network|logical)_links(_\d+)*',k)):
                     add_links(object_pattern)  # Связывание объектов на текущей диаграмме
 
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),

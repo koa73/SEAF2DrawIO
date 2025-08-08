@@ -1164,6 +1164,7 @@ seaf.ta.services.kb:
     technology: Динамический анализ угроз Sandbox
     network_connection:
       - flix.lan.dc.dmz.security
+    label: Sandbox
     software_name: Sandbox
     status: Используется
 

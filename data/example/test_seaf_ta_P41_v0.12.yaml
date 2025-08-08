@@ -1165,7 +1165,6 @@ seaf.ta.services.kb:
     network_connection:
       - flix.lan.dc.dmz.security
     software_name: Sandbox
-    label: Sandbox
     status: Используется
 
   flix.kb.11:

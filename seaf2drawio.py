@@ -6,6 +6,7 @@ import os
 import argparse
 from copy import deepcopy
 from lib import seaf_drawio
+from lib.link_manager import remove_obsolete_links
 import xml.etree.ElementTree as ET
 
 patterns_dir = 'data/patterns/'
@@ -246,6 +247,10 @@ if __name__ == '__main__':
     conf = cli_vars(d.load_config("config.yaml")['seaf2drawio'])
 
     diagram.from_xml(d.read_file_with_utf8(conf['drawio_pattern']))
+    
+    # Удаляем устаревшие связи перед добавлением новых
+    remove_obsolete_links(diagram, conf['data_yaml_file'], 'seaf.ta.components.network')
+    
     diagram_ids['Main Schema'] = list(d.get_object(conf['data_yaml_file'], root_object).keys())
     for file_name, pages in diagram_pages.items():
 

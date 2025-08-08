@@ -1,6 +1,13 @@
 seaf.ta.services.k8s:
   flix.k8s.01:
     auth: Keycloack
+    app_components:
+    - flix.home_cinema.auth.app
+    - flix.home_cinema.catalog.app
+    - flix.home_cinema.canals.app
+    - flix.home_cinema.payments.app
+    - flix.home_cinema.recomendation.app
+    - flix.home_cinema.auth.token_manager
     availabilityzone:
     - flix.dc_az.moscow
     cluster_autoscaler: true
@@ -25,6 +32,13 @@ seaf.ta.services.k8s:
     worker_qty: 2
   flix.k8s.02:
     auth: Keycloack
+    app_components:
+    - flix.home_cinema.auth.app
+    - flix.home_cinema.catalog.app
+    - flix.home_cinema.canals.app
+    - flix.home_cinema.payments.app
+    - flix.home_cinema.recomendation.app
+    - flix.home_cinema.auth.token_manager
     availabilityzone:
     - flix.dc_az.moscow
     cluster_autoscaler: true

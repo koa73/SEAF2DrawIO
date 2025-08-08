@@ -3,8 +3,8 @@ seaf.ta.services.kb:
     description: Сервис кибер безопасности
     tag: SCAN
     network_connection:
-    - flix.lan.dc01.dmz.prod
-    - flix.lan.dc02.dmz.prod
+      - flix.lan.dc01.dmz.prod
+      - flix.lan.dc02.dmz.prod
     software_name: Sonarqube
     status: Используется
     technology: Инструментальный контроль защищенности

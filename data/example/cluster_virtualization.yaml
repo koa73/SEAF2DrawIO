@@ -7,10 +7,8 @@ seaf.ta.services.cluster_virtualization:
     hypervisor: ESX
     location:
     - flix.dc.01
-    - flix.dc.02
     network_connection:
     - flix.lan.192.168.101.0
-    - flix.lan.192.168.2.0
     oversubscription_rate: 1
     sdrs_support: true
     stand:
@@ -23,30 +21,11 @@ seaf.ta.services.cluster_virtualization:
     drs_support: false
     hypervisor: Proxmox VE
     location:
-    - flix.dc.01
     - flix.dc.02
     network_connection:
-    - flix.lan.192.168.101.0
     - flix.lan.192.168.2.0
     oversubscription_rate: 1
     sdrs_support: false
     stand:
     - flix.stand.prod
     title: Кластер виртуализации Proxmox в VK Cloud
-  flix.cluster_virtualization.vmware.sber:
-    availabilityzone:
-    - flix.dc_az.moscow
-    description: Кластер виртуализации VMware в ЦОД Sber Cloud
-    drs_support: true
-    hypervisor: VMware ESXi
-    location:
-    - flix.dc.01
-    - flix.dc.02
-    network_connection:
-    - flix.lan.dc01.int.it.services
-    - flix.lan.dc02.int.it.services
-    oversubscription_rate: 2
-    sdrs_support: false
-    stand:
-    - flix.stand.prod
-    title: Кластер виртуализации VMware в Sber Cloud

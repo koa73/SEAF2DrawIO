@@ -7,6 +7,7 @@ seaf.ta.components.network:
     network_connection:
     - flix.lan.dc02.dmz.vpn
     - flix.wan.dc02.isp.01
+    - flix.lan.dc02.dmz.vdi
     realization_type: Физический
     segment: flix.network_segment.dc02.dmz
     title: FPSU-1 DC02

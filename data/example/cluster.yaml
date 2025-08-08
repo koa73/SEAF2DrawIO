@@ -9,8 +9,7 @@ seaf.ta.services.cluster:
     network_connection:
     - flix.lan.dc01.int.it.services
     - flix.lan.dc02.int.it.services
-    service_type: Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM
-      и т.д.)
+    service_type: Управление ИТ-службой, ИТ-инфраструктурой и ИТ-активами (CMDB, ITSM и т.д.)
     stand:
     - flix.stand.prod
     title: Кластер AD
@@ -45,7 +44,7 @@ seaf.ta.services.cluster:
   flix.cluster.db_ac1:
     availabilityzone:
     - flix.dc_az.moscow
-    description: Кластер СУБД AC1
+    description: Кластер СУБД рекомендаций
     location:
     - flix.dc.01
     - flix.dc.02
@@ -55,11 +54,13 @@ seaf.ta.services.cluster:
     service_type: СУБД
     stand:
     - flix.stand.prod
-    title: Кластер СУБД AC1
+    title: Кластер СУБД рекомендаций
+    app_components:
+    - flix.home_cinema.recomendation.app
   flix.cluster.db_ac2:
     availabilityzone:
     - flix.dc_az.moscow
-    description: Кластер СУБД AC2
+    description: Кластер СУБД токенов
     location:
     - flix.dc.01
     - flix.dc.02
@@ -69,11 +70,13 @@ seaf.ta.services.cluster:
     service_type: СУБД
     stand:
     - flix.stand.prod
-    title: Кластер СУБД AC2
+    title: Кластер СУБД токенов
+    app_components:
+    - flix.home_cinema.auth.token_manager
   flix.cluster.db_ac3:
     availabilityzone:
     - flix.dc_az.moscow
-    description: Кластер базы данных Модуль бронирования
+    description: Кластер базы данных 1С
     location:
     - flix.dc.01
     - flix.dc.02
@@ -83,7 +86,9 @@ seaf.ta.services.cluster:
     service_type: СУБД
     stand:
     - flix.stand.prod
-    title: Кластер СУБД AC3
+    title: Кластер базы данных 1С
+    app_components:
+    - flix.1c.db
   flix.cluster.mail:
     availabilityzone:
     - flix.dc_az.moscow
@@ -112,20 +117,6 @@ seaf.ta.services.cluster:
     stand:
     - flix.stand.prod
     title: Кластер vdi
-  flix.cluster.web_ac3:
-    availabilityzone:
-    - flix.dc_az.moscow
-    description: Фронт (web-приложение) Модуль бронирования
-    location:
-    - flix.dc.01
-    - flix.dc.02
-    network_connection:
-    - flix.lan.dc01.int.prod
-    - flix.lan.dc02.int.prod
-    service_type: Cерверы приложений и т.д.
-    stand:
-    - flix.stand.prod
-    title: Фронт (web-приложение) AC3
   flix.cluster.wildfly:
     availabilityzone:
     - flix.dc_az.moscow
@@ -143,3 +134,23 @@ seaf.ta.services.cluster:
     stand:
     - flix.stand.prod
     title: Кластер приложений Wildfly
+    app_components:
+      - flix.home_cinema.auth
+  flix.cluster.1c:
+    network_connection:
+      - flix.lan.192.168.2.0
+      - flix.lan.192.168.101.0
+    availabilityzone:
+      - flix.dc_az.moscow
+    location:
+      - flix.dc.01
+      - flix.dc.02
+    external_id: cluster.1c
+    service_type: Cерверы приложений и т.д.
+    title: Кластер приложений 1С
+    description: flix.cluster.wildfly
+    reservation_type: Active-Active
+    stand:
+      - flix.stand.prod
+    app_components:
+      - flix.1c

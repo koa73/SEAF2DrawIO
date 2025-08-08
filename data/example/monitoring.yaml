@@ -7,6 +7,10 @@ seaf.ta.services.monitoring:
     location:
     - flix.dc.01
     - flix.dc.02
+    app_components:
+      - flix.1c.db
+      - flix.1c
+      - flix.home_cinema.payments
     network_connection:
     - flix.lan.dc01.int.it.services
     - flix.lan.dc02.int.it.services
@@ -30,6 +34,10 @@ seaf.ta.services.monitoring:
     role:
     - Инфраструктурный
     - Журналирование
+    app_components:
+      - flix.1c.db
+      - flix.1c
+      - flix.home_cinema.payments
     sber:
       alarm_transport:
       - mail

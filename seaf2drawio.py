@@ -17,6 +17,7 @@ diagram_pages = {'main': ['Main Schema'], 'office': [], 'dc': []}
 diagram_ids = {'Main Schema': []}
 object_area = {}
 conf = {}
+pending_missing_links = set()
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
@@ -145,6 +146,14 @@ def add_object(pattern, data, key_id):
             d.append_to_dict(diagram_ids, page_name, key_id)
             current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),diagram_ids[page_name])
 
+            # If parent_id field is a list (e.g., WAN.segment), normalize it to the selected current_parent
+            try:
+                if isinstance(data.get(pattern['parent_id']), list):
+                    data['parent_tmp'] = data.get(pattern['parent_id'])
+                    data[pattern['parent_id']] = current_parent
+            except Exception:
+                pass
+
             if current_parent != pattern['last_parent']:   # reset to default pattern
                 default_pattern['parent'] = get_parent_value(pattern, current_parent)
                 pattern.update(default_pattern)
@@ -217,7 +226,17 @@ def add_links(pattern,  **kwargs):
         try:
             if source_id in diagram_ids[page_name]:  # Объект присутствует на текущей диаграмме
                 if pattern.get('parent_id'):
-                    targets = {pattern['targets']: [get_parent_value(pattern, targets[pattern['parent_id']])]}
+                    # parent_id may be a list (e.g., WAN.segment). Derive targets for each parent entry.
+                    parent_val = targets.get(pattern['parent_id'])
+                    parent_ids = parent_val if isinstance(parent_val, list) else ([parent_val] if parent_val else [])
+                    derived_targets = []
+                    for pid in parent_ids:
+                        val = get_parent_value(pattern, pid)
+                        if isinstance(val, list):
+                            derived_targets.extend(val)
+                        elif val is not None:
+                            derived_targets.append(val)
+                    targets = {pattern['targets']: derived_targets}
                 for target_id in targets[pattern['targets']]:
                     if target_id in diagram_ids[page_name]:  # Объект для связи присутствует на диаграмме
                         if kwargs.get('logical_link'):
@@ -226,8 +245,8 @@ def add_links(pattern,  **kwargs):
                         else:
                             diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
                     else:
-                        print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
-                              f'{page_name}')
+                        # Defer logging: cross-page targets are expected; warn later only if missing everywhere
+                        pending_missing_links.add((page_name, source_id, target_id))
         except KeyError as e:
             pass
             print(f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
@@ -289,6 +308,19 @@ if __name__ == '__main__':
 
                 if bool(re.match(r'^logical_links(_\d+)*', k)):
                     add_links(object_pattern, logical_link=True)  # Связывание объектов на текущей диаграмме
+
+    # After constructing all pages, log only truly missing targets (not present on any page)
+    try:
+        present_ids = set()
+        for ids in diagram_ids.values():
+            present_ids.update(ids)
+        real_missing = sorted({(p, s, t) for (p, s, t) in pending_missing_links if t not in present_ids})
+        if real_missing:
+            print(f"INFO: skipped {len(real_missing)} links due to targets missing on all pages:")
+            for page_name, source_id, target_id in real_missing:
+                print(f"  {page_name}: {source_id} -> {target_id}")
+    except Exception:
+        pass
 
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')

@@ -18,6 +18,7 @@ diagram_ids = {'Main Schema': []}
 object_area = {}
 conf = {}
 pending_missing_links = set()
+layout_counters = {}
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
@@ -319,6 +320,38 @@ if __name__ == '__main__':
             print(f"INFO: skipped {len(real_missing)} links due to targets missing on all pages:")
             for page_name, source_id, target_id in real_missing:
                 print(f"  {page_name}: {source_id} -> {target_id}")
+    except Exception:
+        pass
+
+    # Post-process: distribute KB services vertically per x column (parent=101) to avoid overlaps
+    try:
+        root_xml = diagram.drawing
+        for diag in root_xml.findall('.//diagram'):
+            kb_cells = []
+            for cell in diag.iter('mxCell'):
+                if cell.get('vertex') == '1' and cell.get('parent') == '101':
+                    geo = cell.find('mxGeometry')
+                    if geo is not None and geo.get('x') is not None and geo.get('y') is not None:
+                        try:
+                            x = int(float(geo.get('x')))
+                            y = int(float(geo.get('y')))
+                        except ValueError:
+                            continue
+                        kb_cells.append((cell, x, y))
+            from collections import defaultdict
+            groups = defaultdict(list)
+            for cell, x, y in kb_cells:
+                groups[x].append((cell, y))
+            for x, items in groups.items():
+                items.sort(key=lambda t: (t[1], t[0].get('id')))
+                if not items:
+                    continue
+                y0 = min(y for _, y in items)
+                step = 70  # height 40 + offset 30 from KB patterns
+                for idx, (cell, _) in enumerate(items):
+                    geo = cell.find('mxGeometry')
+                    if geo is not None:
+                        geo.set('y', str(y0 + idx * step))
     except Exception:
         pass
 

@@ -19,13 +19,18 @@ object_area = {}
 conf = {}
 pending_missing_links = set()
 layout_counters = {}
+expected_counts = {}
+expected_data = {}
+pattern_specs = {}
+IGNORE_OBJECT_IDS = {"981", "991"}
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
     "seaf2drawio": {
         "data_yaml_file": "data/example/test_seaf_ta_P41_v0.9.yaml",
         "drawio_pattern": "data/base.drawio",
-        "output_file": "result/Sample_graph.drawio"
+        "output_file": "result/Sample_graph.drawio",
+        "verify_generation": False
     }
 }
 
@@ -305,6 +310,27 @@ if __name__ == '__main__':
                     })
                     default_pattern = deepcopy(object_pattern)
 
+                    # Collect expected IDs and data per schema (for verification)
+                    try:
+                        schema_key = object_pattern['schema']
+                        expected_counts.setdefault(schema_key, set()).update(list(object_data.keys()))
+                        expected_data.setdefault(schema_key, {}).update(object_data)
+                        # Record pattern spec for diagnostics
+                        type_key, type_val = None, None
+                        if object_pattern.get('type'):
+                            if ':' in object_pattern['type']:
+                                type_key, type_val = object_pattern['type'].split(':', 1)
+                            else:
+                                type_key, type_val = 'type', object_pattern['type']
+                        pattern_specs.setdefault(schema_key, []).append({
+                            'pattern_name': k,
+                            'parent_id': object_pattern.get('parent_id'),
+                            'type_key': type_key,
+                            'type_val': type_val,
+                        })
+                    except Exception:
+                        pass
+
                     for i in list(object_data.keys()):
                         if i in diagram.nodes_ids[diagram.current_diagram_id]:
                             diagram.update_node(id=i, data=object_data[i])
@@ -371,3 +397,145 @@ if __name__ == '__main__':
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')
 
     #print(object_area)
+
+    # Optional verification summary against final generated file
+    try:
+        if conf.get('verify_generation'):
+            final_path = conf['output_file']
+            tree = ET.parse(final_path)
+            root_xml = tree.getroot()
+
+            # Gather drawn counts per schema (global and per page)
+            drawn_unique = {}
+            drawn_total = {}
+            per_page_unique = {}
+            per_page_total = {}
+            # per-page (iterate diagrams)
+            for diag in root_xml.findall('.//diagram'):
+                page = diag.get('name') or 'Unknown'
+                per_page_unique.setdefault(page, {})
+                per_page_total.setdefault(page, {})
+                for obj in diag.iter('object'):
+                    schema = obj.get('schema')
+                    oid = obj.get('id')
+                    if not schema or not oid:
+                        continue
+                    if oid in IGNORE_OBJECT_IDS:
+                        continue
+                    # Logical links: use OID (semantic id) if available, skip non-edge objects
+                    if schema == 'seaf.ta.services.logical_link':
+                        cell = obj.find('mxCell')
+                        if cell is None or cell.get('edge') != '1':
+                            continue
+                        oid = obj.get('OID') or oid
+                    per_page_total[page][schema] = per_page_total[page].get(schema, 0) + 1
+                    per_page_unique[page].setdefault(schema, set()).add(oid)
+            for obj in root_xml.findall('.//object'):
+                schema = obj.get('schema')
+                oid = obj.get('id')
+                if not schema or not oid:
+                    continue
+                if oid in IGNORE_OBJECT_IDS:
+                    continue
+                if schema == 'seaf.ta.services.logical_link':
+                    cell = obj.find('mxCell')
+                    if cell is None or cell.get('edge') != '1':
+                        continue
+                    oid = obj.get('OID') or oid
+                drawn_total[schema] = drawn_total.get(schema, 0) + 1
+                drawn_unique.setdefault(schema, set()).add(oid)
+
+            # Print summary per schema based on expected_counts gathered from patterns
+            schemas = sorted(set(list(expected_counts.keys()) + list(drawn_unique.keys())))
+            all_match = True
+            print("Verification summary (by schema):")
+            for schema in schemas:
+                exp = len(expected_counts.get(schema, set()))
+                drw_u = len(drawn_unique.get(schema, set()))
+                drw_t = drawn_total.get(schema, 0)
+                match = (exp == drw_u)
+                all_match = all_match and match
+                print(f"  - {schema}: expected={exp}, drawn_unique={drw_u}, drawn_total={drw_t} -> {'OK' if match else 'MISMATCH'}")
+
+            if not all_match:
+                # Show a small diff preview
+                for schema in schemas:
+                    exp_set = expected_counts.get(schema, set())
+                    drw_set = drawn_unique.get(schema, set())
+                    missing = list(exp_set - drw_set)[:5]
+                    extra = list(drw_set - exp_set)[:5]
+                    if missing or extra:
+                        if missing:
+                            print(f"    missing in diagram ({schema}): {missing}...")
+                        if extra:
+                            print(f"    extra in diagram ({schema}): {extra}...")
+
+                # Detailed diagnostics for missing items
+                all_oids = set()
+                for obj in root_xml.findall('.//object'):
+                    if obj.get('id'):
+                        all_oids.add(obj.get('id'))
+                print("Diagnostics for missing items:")
+                # Pre-compute expected values per schema/type_key for concise messages
+                schema_expected = {}
+                for schema in schemas:
+                    specs = pattern_specs.get(schema, [])
+                    if not specs:
+                        continue
+                    # choose most common type_key, collect all its expected values
+                    key_counts = {}
+                    values_by_key = {}
+                    for spec in specs:
+                        tk, tv = spec.get('type_key'), spec.get('type_val')
+                        if not tk or not tv:
+                            continue
+                        key_counts[tk] = key_counts.get(tk, 0) + 1
+                        values_by_key.setdefault(tk, set()).add(tv)
+                    if values_by_key:
+                        best_key = max(key_counts.items(), key=lambda x: x[1])[0]
+                        schema_expected[schema] = (best_key, values_by_key.get(best_key, set()))
+
+                for schema in schemas:
+                    exp_set = expected_counts.get(schema, set())
+                    drw_set = drawn_unique.get(schema, set())
+                    missing_ids = list(exp_set - drw_set)
+                    if not missing_ids:
+                        continue
+                    print(f"  {schema}:")
+                    tkey, tvals = schema_expected.get(schema, (None, set()))
+                    for mid in missing_ids[:10]:
+                        data = expected_data.get(schema, {}).get(mid, {})
+                        msg_parts = []
+                        if tkey:
+                            vals = d.find_key_value(data, tkey)
+                            actual = vals[0] if isinstance(vals, list) and vals else None
+                            # Prepare expected list (limited)
+                            ev = sorted(v for v in tvals)
+                            ev_out = ", ".join(ev[:6]) + (" ..." if len(ev) > 6 else "")
+                            msg_parts.append(f"{tkey}='{actual}' | expected: {ev_out}")
+                        # parent_id hint (first parent spec)
+                        pid = None
+                        for spec in pattern_specs.get(schema, []):
+                            if spec.get('parent_id'):
+                                pid = spec.get('parent_id')
+                                break
+                        if pid:
+                            parents = d.find_key_value(data, pid)
+                            present = any(p in all_oids for p in (parents if isinstance(parents, list) else [parents]))
+                            if not present:
+                                msg_parts.append(f"parent '{pid}' not present on pages")
+                        print(f"    - {mid}: " + ("; ".join(msg_parts) if msg_parts else "no rule matched"))
+
+            # Per-page breakdown (drawn counts)
+            print("Per-page summary (drawn, by schema):")
+            for page in sorted(per_page_total.keys()):
+                print(f"  Page: {page}")
+                schemas_p = sorted(set(list(per_page_total[page].keys()) + list(per_page_unique[page].keys())))
+                for schema in schemas_p:
+                    du = len(per_page_unique[page].get(schema, set()))
+                    dt = per_page_total[page].get(schema, 0)
+                    print(f"    - {schema}: drawn_unique={du}, drawn_total={dt}")
+
+            print("Result:", "GENERATION MATCHES YAML (by schema)" if all_match else "GENERATION DIFFERS FROM YAML (by schema)")
+    except Exception as e:
+        print(f"Verification step failed: {e}")

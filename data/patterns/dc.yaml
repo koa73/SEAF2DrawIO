@@ -264,18 +264,18 @@ lan:
   xml : >
     <object label="&lt;div style=&quot;font-size: 1px&quot;&gt;&lt;p style=&quot;align:center;margin-left:0;margin-right:0;margin-top:0px;margin-bottom:0px;text-indent:0;valign:middle;direction:ltr;&quot;&gt;&lt;font style=&quot;font-size:9.88px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;&lt;b&gt;{title}&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size:9.88px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;  &lt;/font&gt;&lt;font style=&quot;font-size:8.47px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;{ipnetwork}&lt;/font&gt;&lt;font style=&quot;font-size:11.29px;font-family:Calibri;color:#000000;direction:ltr;letter-spacing:0px;line-height:90%;opacity:1&quot;&gt;&lt;b&gt;&lt;br/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;" id="{{id}}">
       <mxCell style="verticalAlign=middle;align=center;vsdxID=35397;rotation=270;fillColor=#c0cfe2;gradientColor=none;shape=stencil(nZFLDsIwDERP4y0KyQKxLuUCnCAihliEpEpL+ZyetANS6YJFs7JnXmxpTKZqvW2YtGq7nC58F9d5MjvSWqLnLF2pyNRkqlPKfM7pFh36xhZSq1Fhhz/rgdbK5uNBXgxts9r+PjAYck39sPwBVMF6foYp9HugQeIE/ZqL4D/oQnC2vhRjPAhOQkC6U38eZ5FwClO/AQ==);strokeColor=#000000;labelBackgroundColor=none;rounded=1;html=1;whiteSpace=wrap;" vertex="1" parent="{parent_id}">
-        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{width}}" height="{{height}}" as="geometry" />
+        <mxGeometry x="{{x_pos}}" y="{{y_pos}}" width="{{height}}" height="{{width}}" as="geometry" />
       </mxCell>
     </object>
   schema: 'seaf.ta.services.network'
   parent_id: 'segment'
   type: "type:LAN"
   deep: 4
-  offset: 220
+  offset: 100
   x: -10
   y: 140
-  w: 200
-  h: 20
+  w: 20
+  h: 200
   algo: 'Y+'
 
 #----------------------------------- Сетевые устройства ---------------------------------------------------------------

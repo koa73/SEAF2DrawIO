@@ -15,7 +15,6 @@ node_xml_default = diagram.drawio_node_object_xml
 root_object = 'seaf.ta.services.dc_region'
 diagram_pages = {'main': ['Main Schema'], 'office': [], 'dc': []}
 diagram_ids = {'Main Schema': []}
-object_area = {}
 conf = {}
 
 # Переменные по умолчанию
@@ -119,17 +118,6 @@ def add_pages(pattern):
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
 
-def update_object_area(area,  key, algo, offset, **kwargs ):
-    try:
-        if key not in area:
-            area[key] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none':0}
-        if kwargs.get('parent'):
-            area[kwargs['parent']][algo] += offset
-            #print(f">>>>{page_name}::  {key} --> {kwargs['parent']} :: {area[kwargs['parent']][algo]}")
-    except KeyError as e:
-        area[kwargs.get('parent')] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none': 0}
-        update_object_area(area,  key, algo, offset, **kwargs )
-
 def add_object(pattern, data, key_id):
 
     pattern_count, current_parent = 0, ''
@@ -144,11 +132,11 @@ def add_object(pattern, data, key_id):
 
             d.append_to_dict(diagram_ids, page_name, key_id)
             current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),diagram_ids[page_name])
-
-            if current_parent != pattern['last_parent']:   # reset to default pattern
+            if current_parent != pattern['last_parent'] and pattern['parent_id'] !='network_connection':   # reset to default pattern
                 default_pattern['parent'] = get_parent_value(pattern, current_parent)
                 pattern.update(default_pattern)
                 pattern['last_parent'] = current_parent
+
 
         try:
             diagram.drawio_node_object_xml = diagram.drawio_node_object_xml.format_map(
@@ -192,9 +180,6 @@ def add_object(pattern, data, key_id):
             )
             d.append_to_dict(diagram_ids, page_name, key_id)  # Добавляет ID root элементов
 
-            #if d.contains_object_tag(xml_pattern, 'object'): ## ---- ToDo ----
-            #    update_object_area(object_area[page_name], key_id, pattern.get('algo'), 1, parent=current_parent)
-
             if pattern_count == 0:  # Change position of element
                 position_offset(object_pattern)
             pattern_count += 1
@@ -225,9 +210,9 @@ def add_links(pattern,  **kwargs):
                             diagram.add_link(source=source_id, target=target_id, style=pattern[style], data=targets)
                         else:
                             diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
-                    else:
-                        print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
-                              f'{page_name}')
+                    #else:
+                        #print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
+                        #      f'{page_name}')
         except KeyError as e:
             pass
             print(f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
@@ -255,8 +240,6 @@ if __name__ == '__main__':
     for file_name, pages in diagram_pages.items():
 
         for page_name in pages:
-
-            object_area[page_name] = {} # Создаем поле объектов страницы
 
             diagram.go_to_diagram(page_name)
             for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():

@@ -6,7 +6,7 @@ import os
 import argparse
 from copy import deepcopy
 from lib import seaf_drawio
-from lib.link_manager import remove_obsolete_links
+from lib.link_manager import remove_obsolete_links, draw_verify, advanced_analysis
 import xml.etree.ElementTree as ET
 
 patterns_dir = 'data/patterns/'
@@ -21,7 +21,6 @@ layout_counters = {}
 expected_counts = {}
 expected_data = {}
 pattern_specs = {}
-IGNORE_OBJECT_IDS = {"981", "991"}
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
@@ -249,6 +248,26 @@ def add_links(pattern,  **kwargs):
             print(
                 f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
 
+def collect_ids():
+    try:
+        schema_key = object_pattern['schema']
+        expected_counts.setdefault(schema_key, set()).update(list(object_data.keys()))
+        expected_data.setdefault(schema_key, {}).update(object_data)
+        # Record pattern spec for diagnostics
+        type_key, type_val = None, None
+        if object_pattern.get('type'):
+            if ':' in object_pattern['type']:
+                type_key, type_val = object_pattern['type'].split(':', 1)
+            else:
+                type_key, type_val = 'type', object_pattern['type']
+        pattern_specs.setdefault(schema_key, []).append({
+            'pattern_name': k,
+            'parent_id': object_pattern.get('parent_id'),
+            'type_key': type_key,
+            'type_val': type_val,
+        })
+    except Exception as Ex:
+        print(f"Exception Collect ID : {Ex}")
 
 
 if __name__ == '__main__':
@@ -270,8 +289,9 @@ if __name__ == '__main__':
         for page_name in pages:
 
             diagram.go_to_diagram(page_name)
+            print(f"\n> Формирую диаграмму страницы \033[32m{page_name}\033[0m ", end='')
             for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():
-
+                print('.', end='')
                 try:
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),
                         sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
@@ -285,25 +305,7 @@ if __name__ == '__main__':
                     default_pattern = deepcopy(object_pattern)
 
                     # Collect expected IDs and data per schema (for verification)
-                    try:
-                        schema_key = object_pattern['schema']
-                        expected_counts.setdefault(schema_key, set()).update(list(object_data.keys()))
-                        expected_data.setdefault(schema_key, {}).update(object_data)
-                        # Record pattern spec for diagnostics
-                        type_key, type_val = None, None
-                        if object_pattern.get('type'):
-                            if ':' in object_pattern['type']:
-                                type_key, type_val = object_pattern['type'].split(':', 1)
-                            else:
-                                type_key, type_val = 'type', object_pattern['type']
-                        pattern_specs.setdefault(schema_key, []).append({
-                            'pattern_name': k,
-                            'parent_id': object_pattern.get('parent_id'),
-                            'type_key': type_key,
-                            'type_val': type_val,
-                        })
-                    except Exception:
-                        pass
+                    collect_ids()
 
                     for i in list(object_data.keys()):
                         if i in diagram.nodes_ids[diagram.current_diagram_id]:
@@ -321,195 +323,12 @@ if __name__ == '__main__':
 
                 if bool(re.match(r'^logical_links(_\d+)*', k)):
                     add_links(object_pattern, logical_link=True)  # Связывание объектов на текущей диаграмме
-
-    # After constructing all pages, log only truly missing targets (not present on any page)
-    try:
-        present_ids = set()
-        for ids in diagram_ids.values():
-            present_ids.update(ids)
-        real_missing = sorted({(p, s, t) for (p, s, t) in pending_missing_links if t not in present_ids})
-        if real_missing:
-            print(f"INFO: skipped {len(real_missing)} links due to targets missing on all pages:")
-            for page_name, source_id, target_id in real_missing:
-                print(f"  {page_name}: {source_id} -> {target_id}")
-    except Exception:
-        pass
-
-    # Post-process: distribute KB services vertically per x column (parent=101) to avoid overlaps
-    try:
-        root_xml = diagram.drawing
-        for diag in root_xml.findall('.//diagram'):
-            kb_cells = []
-            for cell in diag.iter('mxCell'):
-                if cell.get('vertex') == '1' and cell.get('parent') == '101':
-                    geo = cell.find('mxGeometry')
-                    if geo is not None and geo.get('x') is not None and geo.get('y') is not None:
-                        try:
-                            x = int(float(geo.get('x')))
-                            y = int(float(geo.get('y')))
-                        except ValueError:
-                            continue
-                        kb_cells.append((cell, x, y))
-            from collections import defaultdict
-            groups = defaultdict(list)
-            for cell, x, y in kb_cells:
-                groups[x].append((cell, y))
-            for x, items in groups.items():
-                items.sort(key=lambda t: (t[1], t[0].get('id')))
-                if not items:
-                    continue
-                y0 = min(y for _, y in items)
-                step = 70  # height 40 + offset 30 from KB patterns
-                for idx, (cell, _) in enumerate(items):
-                    geo = cell.find('mxGeometry')
-                    if geo is not None:
-                        geo.set('y', str(y0 + idx * step))
-    except Exception:
-        pass
+    print('\n')
+    # Verifying drawn links & objects ...
+    draw_verify(diagram_ids, diagram, pending_missing_links)
 
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')
 
-    #print(object_area)
-
-    # Optional verification summary against final generated file
-    try:
-        if conf.get('verify_generation'):
-            final_path = conf['output_file']
-            tree = ET.parse(final_path)
-            root_xml = tree.getroot()
-
-            # Gather drawn counts per schema (global and per page)
-            drawn_unique = {}
-            drawn_total = {}
-            per_page_unique = {}
-            per_page_total = {}
-            # per-page (iterate diagrams)
-            for diag in root_xml.findall('.//diagram'):
-                page = diag.get('name') or 'Unknown'
-                per_page_unique.setdefault(page, {})
-                per_page_total.setdefault(page, {})
-                for obj in diag.iter('object'):
-                    schema = obj.get('schema')
-                    oid = obj.get('id')
-                    if not schema or not oid:
-                        continue
-                    if oid in IGNORE_OBJECT_IDS:
-                        continue
-                    # Logical links: use OID (semantic id) if available, skip non-edge objects
-                    if schema == 'seaf.ta.services.logical_link':
-                        cell = obj.find('mxCell')
-                        if cell is None or cell.get('edge') != '1':
-                            continue
-                        oid = obj.get('OID') or oid
-                    per_page_total[page][schema] = per_page_total[page].get(schema, 0) + 1
-                    per_page_unique[page].setdefault(schema, set()).add(oid)
-            for obj in root_xml.findall('.//object'):
-                schema = obj.get('schema')
-                oid = obj.get('id')
-                if not schema or not oid:
-                    continue
-                if oid in IGNORE_OBJECT_IDS:
-                    continue
-                if schema == 'seaf.ta.services.logical_link':
-                    cell = obj.find('mxCell')
-                    if cell is None or cell.get('edge') != '1':
-                        continue
-                    oid = obj.get('OID') or oid
-                drawn_total[schema] = drawn_total.get(schema, 0) + 1
-                drawn_unique.setdefault(schema, set()).add(oid)
-
-            # Print summary per schema based on expected_counts gathered from patterns
-            schemas = sorted(set(list(expected_counts.keys()) + list(drawn_unique.keys())))
-            all_match = True
-            print("Verification summary (by schema):")
-            for schema in schemas:
-                exp = len(expected_counts.get(schema, set()))
-                drw_u = len(drawn_unique.get(schema, set()))
-                drw_t = drawn_total.get(schema, 0)
-                match = (exp == drw_u)
-                all_match = all_match and match
-                print(f"  - {schema}: expected={exp}, drawn_unique={drw_u}, drawn_total={drw_t} -> {'OK' if match else 'MISMATCH'}")
-
-            if not all_match:
-                # Show a small diff preview
-                for schema in schemas:
-                    exp_set = expected_counts.get(schema, set())
-                    drw_set = drawn_unique.get(schema, set())
-                    missing = list(exp_set - drw_set)[:5]
-                    extra = list(drw_set - exp_set)[:5]
-                    if missing or extra:
-                        if missing:
-                            print(f"    missing in diagram ({schema}): {missing}...")
-                        if extra:
-                            print(f"    extra in diagram ({schema}): {extra}...")
-
-                # Detailed diagnostics for missing items
-                all_oids = set()
-                for obj in root_xml.findall('.//object'):
-                    if obj.get('id'):
-                        all_oids.add(obj.get('id'))
-                print("Diagnostics for missing items:")
-                # Pre-compute expected values per schema/type_key for concise messages
-                schema_expected = {}
-                for schema in schemas:
-                    specs = pattern_specs.get(schema, [])
-                    if not specs:
-                        continue
-                    # choose most common type_key, collect all its expected values
-                    key_counts = {}
-                    values_by_key = {}
-                    for spec in specs:
-                        tk, tv = spec.get('type_key'), spec.get('type_val')
-                        if not tk or not tv:
-                            continue
-                        key_counts[tk] = key_counts.get(tk, 0) + 1
-                        values_by_key.setdefault(tk, set()).add(tv)
-                    if values_by_key:
-                        best_key = max(key_counts.items(), key=lambda x: x[1])[0]
-                        schema_expected[schema] = (best_key, values_by_key.get(best_key, set()))
-
-                for schema in schemas:
-                    exp_set = expected_counts.get(schema, set())
-                    drw_set = drawn_unique.get(schema, set())
-                    missing_ids = list(exp_set - drw_set)
-                    if not missing_ids:
-                        continue
-                    print(f"  {schema}:")
-                    tkey, tvals = schema_expected.get(schema, (None, set()))
-                    for mid in missing_ids[:10]:
-                        data = expected_data.get(schema, {}).get(mid, {})
-                        msg_parts = []
-                        if tkey:
-                            vals = d.find_key_value(data, tkey)
-                            actual = vals[0] if isinstance(vals, list) and vals else None
-                            # Prepare expected list (limited)
-                            ev = sorted(v for v in tvals)
-                            ev_out = ", ".join(ev[:6]) + (" ..." if len(ev) > 6 else "")
-                            msg_parts.append(f"{tkey}='{actual}' | expected: {ev_out}")
-                        # parent_id hint (first parent spec)
-                        pid = None
-                        for spec in pattern_specs.get(schema, []):
-                            if spec.get('parent_id'):
-                                pid = spec.get('parent_id')
-                                break
-                        if pid:
-                            parents = d.find_key_value(data, pid)
-                            present = any(p in all_oids for p in (parents if isinstance(parents, list) else [parents]))
-                            if not present:
-                                msg_parts.append(f"parent '{pid}' not present on pages")
-                        print(f"    - {mid}: " + ("; ".join(msg_parts) if msg_parts else "no rule matched"))
-
-            # Per-page breakdown (drawn counts)
-            print("Per-page summary (drawn, by schema):")
-            for page in sorted(per_page_total.keys()):
-                print(f"  Page: {page}")
-                schemas_p = sorted(set(list(per_page_total[page].keys()) + list(per_page_unique[page].keys())))
-                for schema in schemas_p:
-                    du = len(per_page_unique[page].get(schema, set()))
-                    dt = per_page_total[page].get(schema, 0)
-                    print(f"    - {schema}: drawn_unique={du}, drawn_total={dt}")
-
-            print("Result:", "GENERATION MATCHES YAML (by schema)" if all_match else "GENERATION DIFFERS FROM YAML (by schema)")
-    except Exception as e:
-        print(f"Verification step failed: {e}")
+    # Check additional result info ...
+    advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d)

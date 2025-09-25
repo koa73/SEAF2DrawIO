@@ -67,40 +67,28 @@ def position_offset(pattern):
         # По оси Y cверху вниз относительно родительского объекта
         case 'Y+':
             if return_ready(pattern):
-                x_off = pattern.get('x_offset', pattern['offset'])
-                y_off = pattern.get('y_offset', pattern['offset'])
-                pattern['x'] = pattern['x'] + pattern['w'] + x_off
-                pattern['y'] = pattern['y'] - (pattern['h'] + y_off) * pattern['deep']
-            y_off = pattern.get('y_offset', pattern['offset'])
-            pattern['y'] = pattern['y'] + pattern['h'] + y_off
+                pattern['x'] = pattern['x'] + pattern['w'] + pattern['offset']
+                pattern['y'] = pattern['y'] - (pattern['h'] + pattern['offset']) * pattern['deep']
+            pattern['y'] = pattern['y'] + pattern['h'] + pattern['offset']
 
         case 'Y-':
             if return_ready(pattern):
-                x_off = pattern.get('x_offset', pattern['offset'])
-                y_off = pattern.get('y_offset', pattern['offset'])
-                pattern['x'] = pattern['x'] + pattern['w'] + x_off
-                pattern['y'] = pattern['y'] + (pattern['h'] + y_off) * pattern['deep']
-            y_off = pattern.get('y_offset', pattern['offset'])
-            pattern['y'] = pattern['y'] - pattern['h'] - y_off
+                pattern['x'] = pattern['x'] + pattern['w'] + pattern['offset']
+                pattern['y'] = pattern['y'] + (pattern['h'] + pattern['offset']) * pattern['deep']
+            pattern['y'] = pattern['y'] - pattern['h'] - pattern['offset']
 
         case 'X-':
 
             if return_ready(pattern):
-                y_off = pattern.get('y_offset', pattern['offset'])
-                x_off = pattern.get('x_offset', pattern['offset'])
-                pattern['y'] = pattern['y'] +  pattern['h'] + y_off
-                pattern['x'] = pattern['x'] + (pattern['w'] + x_off) * pattern['deep']
-            x_off = pattern.get('x_offset', pattern['offset'])
-            pattern['x'] = pattern['x'] - pattern['w'] - x_off
+                pattern['y'] = pattern['y'] +  pattern['h'] + pattern['offset']
+                pattern['x'] = pattern['x'] + (pattern['w'] + pattern['offset']) * pattern['deep']
+            pattern['x'] = pattern['x'] - pattern['w'] - pattern['offset']
         # По оси X слева направо
         case 'X+':
             if return_ready(pattern):
-                y_off = pattern.get('y_offset', pattern['offset'])
-                x_off = pattern.get('x_offset', pattern['offset'])
-                pattern['y'] = pattern['y'] +  pattern['h'] + y_off
-                pattern['x'] = pattern['x'] - (pattern['w'] + x_off) * pattern['deep']
-            x_off = pattern.get('x_offset', pattern['offset'])
-            pattern['x'] = pattern['x'] + pattern['w'] + x_off
+                pattern['y'] = pattern['y'] +  pattern['h'] + pattern['offset']
+                pattern['x'] = pattern['x'] - (pattern['w'] + pattern['offset']) * pattern['deep']
+            pattern['x'] = pattern['x'] + pattern['w'] + pattern['offset']
 
 def return_ready(pattern):
     pattern['count']+=1

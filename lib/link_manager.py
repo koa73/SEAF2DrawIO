@@ -204,7 +204,7 @@ def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
             # Print summary per schema based on expected_counts gathered from patterns
             schemas = sorted(set(list(expected_counts.keys()) + list(drawn_unique.keys())))
             all_match = True
-            print("Verification summary (by schema):")
+            print("--- Verification summary (by schema):\n")
             for schema in schemas:
                 exp = len(expected_counts.get(schema, set()))
                 drw_u = len(drawn_unique.get(schema, set()))
@@ -240,7 +240,7 @@ def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
                 for obj in root_xml.findall('.//object'):
                     if obj.get('id'):
                         all_oids.add(obj.get('id'))
-                print("Diagnostics for missing items:")
+                print("\n--- Diagnostics for missing items:\n")
                 # Pre-compute expected values per schema/type_key for concise messages
                 schema_expected = {}
                 for schema in schemas:

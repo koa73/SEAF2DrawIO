@@ -121,7 +121,7 @@ seaf.ta.services.kb:
       - flix.wan.dc02.isp.01
     software_name: DDOS
     status: Создается
-    technology: Защита от атак типа "Отказ от обслуживания"
+    technology: Защита от атак типа "Отказ в обслуживании"
     title: DDOS
   flix.kb.sandbox:
     description: Сервис кибер безопасности

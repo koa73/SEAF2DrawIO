@@ -219,6 +219,10 @@ isp:
   algo: 'Y+'
 
 # Fallback placement for compute_service: Proxy/Balancer (end of file)
+# Зачем нужен: элементы seaf.ta.services.compute_service с
+# parent_id='network_connection' добавляются только если родитель уже нарисован.
+# Этот блок расположен после сетевых секций, чтобы гарантированно обеспечить
+# наличие parent и не пропускать объекты категории «Шлюз, Балансировщик, прокси».
 ta_services_proxy_compute_fallback:
   xml: >
     <mxCell id="{{id}}" value="" style="group" vertex="1" connectable="0" parent="102">

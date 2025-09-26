@@ -116,7 +116,7 @@ def draw_verify(diagram_ids, diagram, pending_missing_links):
             for p_name, source_id, target_id in real_missing:
                 print(f"  {p_name}: {source_id} -> {target_id}")
     except Exception as Ex:
-        print(f"Links Verify Exception :\n {Ex}")
+        print(f"\033[91mLinks Verify Exception \033[0m:\n {Ex}")
 
     # Post-process: distribute KB services vertically per x column (parent=101) to avoid overlaps
     try:
@@ -292,7 +292,7 @@ def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
                         print(f"    - {mid}: " + ("; ".join(msg_parts) if msg_parts else "no rule matched"))
 
             # Per-page breakdown (drawn counts)
-            print("Per-page summary (drawn, by schema):")
+            print("\nPer-page summary (drawn, by schema):")
             for page in sorted(per_page_total.keys()):
                 print(f"  Page: {page}")
                 schemas_p = sorted(set(list(per_page_total[page].keys()) + list(per_page_unique[page].keys())))
@@ -304,4 +304,4 @@ def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
             print("Result:",
                   "GENERATION MATCHES YAML (by schema)" if all_match else "GENERATION DIFFERS FROM YAML (by schema)")
     except Exception as e:
-        print(f"Verification step failed: {e}")
+        print(f"\n\033[91mVerification step failed:\033[0m {e}")

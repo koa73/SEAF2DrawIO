@@ -323,6 +323,7 @@ if __name__ == '__main__':
 
                 if bool(re.match(r'^logical_links(_\d+)*', k)):
                     add_links(object_pattern, logical_link=True)  # Связывание объектов на текущей диаграмме
+
     print('\n')
     # Verifying drawn links & objects ...
     draw_verify(diagram_ids, diagram, pending_missing_links)

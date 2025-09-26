@@ -6,6 +6,7 @@ import os
 import argparse
 from copy import deepcopy
 from lib import seaf_drawio
+from lib.link_manager import remove_obsolete_links, draw_verify, advanced_analysis
 import xml.etree.ElementTree as ET
 
 patterns_dir = 'data/patterns/'
@@ -14,15 +15,20 @@ node_xml_default = diagram.drawio_node_object_xml
 root_object = 'seaf.ta.services.dc_region'
 diagram_pages = {'main': ['Main Schema'], 'office': [], 'dc': []}
 diagram_ids = {'Main Schema': []}
-object_area = {}
 conf = {}
+pending_missing_links = set()
+layout_counters = {}
+expected_counts = {}
+expected_data = {}
+pattern_specs = {}
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
     "seaf2drawio": {
         "data_yaml_file": "data/example/test_seaf_ta_P41_v0.9.yaml",
         "drawio_pattern": "data/base.drawio",
-        "output_file": "result/Sample_graph.drawio"
+        "output_file": "result/Sample_graph.drawio",
+        "verify_generation": False
     }
 }
 
@@ -118,17 +124,6 @@ def add_pages(pattern):
         diagram.drawio_diagram_xml = diagram_xml_default
         diagram.go_to_diagram(page_name)
 
-def update_object_area(area,  key, algo, offset, **kwargs ):
-    try:
-        if key not in area:
-            area[key] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none':0}
-        if kwargs.get('parent'):
-            area[kwargs['parent']][algo] += offset
-            #print(f">>>>{page_name}::  {key} --> {kwargs['parent']} :: {area[kwargs['parent']][algo]}")
-    except KeyError as e:
-        area[kwargs.get('parent')] = {'X+': 0, 'Y+': 0, 'X-': 0, 'Y-': 0, 'none': 0}
-        update_object_area(area,  key, algo, offset, **kwargs )
-
 def add_object(pattern, data, key_id):
 
     pattern_count, current_parent = 0, ''
@@ -144,10 +139,19 @@ def add_object(pattern, data, key_id):
             d.append_to_dict(diagram_ids, page_name, key_id)
             current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),diagram_ids[page_name])
 
-            if current_parent != pattern['last_parent']:   # reset to default pattern
+            # If parent_id field is a list (e.g., WAN.segment), normalize it to the selected current_parent
+            try:
+                if isinstance(data.get(pattern['parent_id']), list):
+                    data['parent_tmp'] = data.get(pattern['parent_id'])
+                    data[pattern['parent_id']] = current_parent
+            except Exception:
+                pass
+
+            if current_parent != pattern['last_parent'] and pattern['parent_id'] !='network_connection':   # reset to default pattern
                 default_pattern['parent'] = get_parent_value(pattern, current_parent)
                 pattern.update(default_pattern)
                 pattern['last_parent'] = current_parent
+
 
         try:
             diagram.drawio_node_object_xml = diagram.drawio_node_object_xml.format_map(
@@ -191,9 +195,6 @@ def add_object(pattern, data, key_id):
             )
             d.append_to_dict(diagram_ids, page_name, key_id)  # Добавляет ID root элементов
 
-            #if d.contains_object_tag(xml_pattern, 'object'): ## ---- ToDo ----
-            #    update_object_area(object_area[page_name], key_id, pattern.get('algo'), 1, parent=current_parent)
-
             if pattern_count == 0:  # Change position of element
                 position_offset(object_pattern)
             pattern_count += 1
@@ -216,7 +217,17 @@ def add_links(pattern,  **kwargs):
         try:
             if source_id in diagram_ids[page_name]:  # Объект присутствует на текущей диаграмме
                 if pattern.get('parent_id'):
-                    targets = {pattern['targets']: [get_parent_value(pattern, targets[pattern['parent_id']])]}
+                    # parent_id may be a list (e.g., WAN.segment). Derive targets for each parent entry.
+                    parent_val = targets.get(pattern['parent_id'])
+                    parent_ids = parent_val if isinstance(parent_val, list) else ([parent_val] if parent_val else [])
+                    derived_targets = []
+                    for pid in parent_ids:
+                        val = get_parent_value(pattern, pid)
+                        if isinstance(val, list):
+                            derived_targets.extend(val)
+                        elif val is not None:
+                            derived_targets.append(val)
+                    targets = {pattern['targets']: derived_targets}
                 for target_id in targets[pattern['targets']]:
                     if target_id in diagram_ids[page_name]:  # Объект для связи присутствует на диаграмме
                         if kwargs.get('logical_link'):
@@ -225,8 +236,10 @@ def add_links(pattern,  **kwargs):
                         else:
                             diagram.add_link(source=source_id, target=target_id, style=pattern['style'])
                     else:
-                        print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
-                              f'{page_name}')
+                        # Defer logging: cross-page targets are expected; warn later only if missing everywhere
+                        pending_missing_links.add((page_name, source_id, target_id))
+                        #print(f' Can\'t link  {source_id} <---> {target_id}, object {target_id} not found at the page '
+                        #      f'{page_name}')
         except KeyError as e:
             pass
             print(f" INFO : Не найден параметр {e} для объекта '{pattern['schema']}/{source_id}' при добавлении связей на диаграмму '{page_name}'.")
@@ -235,6 +248,26 @@ def add_links(pattern,  **kwargs):
             print(
                 f"Error: у объекта '{source_id}' отсутствует данные для создания линка в параметре {pattern['targets']} ")
 
+def collect_ids():
+    try:
+        schema_key = object_pattern['schema']
+        expected_counts.setdefault(schema_key, set()).update(list(object_data.keys()))
+        expected_data.setdefault(schema_key, {}).update(object_data)
+        # Record pattern spec for diagnostics
+        type_key, type_val = None, None
+        if object_pattern.get('type'):
+            if ':' in object_pattern['type']:
+                type_key, type_val = object_pattern['type'].split(':', 1)
+            else:
+                type_key, type_val = 'type', object_pattern['type']
+        pattern_specs.setdefault(schema_key, []).append({
+            'pattern_name': k,
+            'parent_id': object_pattern.get('parent_id'),
+            'type_key': type_key,
+            'type_val': type_val,
+        })
+    except Exception as Ex:
+        print(f"Exception Collect ID : {Ex}")
 
 
 if __name__ == '__main__':
@@ -246,16 +279,19 @@ if __name__ == '__main__':
     conf = cli_vars(d.load_config("config.yaml")['seaf2drawio'])
 
     diagram.from_xml(d.read_file_with_utf8(conf['drawio_pattern']))
+    
+    # Удаляем устаревшие связи перед добавлением новых
+    remove_obsolete_links(diagram, conf['data_yaml_file'], 'seaf.ta.components.network')
+    
     diagram_ids['Main Schema'] = list(d.get_object(conf['data_yaml_file'], root_object).keys())
     for file_name, pages in diagram_pages.items():
 
         for page_name in pages:
 
-            object_area[page_name] = {} # Создаем поле объектов страницы
-
             diagram.go_to_diagram(page_name)
+            print(f"\n> Формирую диаграмму страницы \033[32m{page_name}\033[0m ", end='')
             for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():
-
+                print('.', end='')
                 try:
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),
                         sort=object_pattern['parent_id'] if object_pattern.get('parent_id') else None)
@@ -267,6 +303,9 @@ if __name__ == '__main__':
                                 'parent': ''              # Родительский объект
                     })
                     default_pattern = deepcopy(object_pattern)
+
+                    # Collect expected IDs and data per schema (for verification)
+                    collect_ids()
 
                     for i in list(object_data.keys()):
                         if i in diagram.nodes_ids[diagram.current_diagram_id]:
@@ -284,8 +323,12 @@ if __name__ == '__main__':
 
                 if bool(re.match(r'^logical_links(_\d+)*', k)):
                     add_links(object_pattern, logical_link=True)  # Связывание объектов на текущей диаграмме
+    print('\n')
+    # Verifying drawn links & objects ...
+    draw_verify(diagram_ids, diagram, pending_missing_links)
 
     d.dump_file(filename=os.path.basename(conf['output_file']), folder=os.path.dirname(conf['output_file']),
                 content=diagram.drawing if os.path.dirname(conf['output_file']) else './')
 
-    #print(object_area)
+    # Check additional result info ...
+    advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d)

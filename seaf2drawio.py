@@ -1,6 +1,5 @@
 from N2G import drawio_diagram
 import sys
-import json
 import re
 import os
 import argparse
@@ -138,10 +137,10 @@ def add_object(pattern, data, key_id):
         # Если у элемента есть родитель, получаем ID родителя и проверяем связан ли родитель с текущей диаграммой (страницей)
         # добавляем в справочник ID элемента
         if pattern.get('parent_id') and d.find_common_element(d.find_key_value(data, pattern['parent_id']),
-                                                     diagram_ids[page_name]) and pattern_count == 0:
+                                                     list(diagram_ids[page_name])) and pattern_count == 0:
 
             diagram_ids.setdefault(page_name, set()).add(key_id)
-            current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),diagram_ids[page_name])
+            current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),list(diagram_ids[page_name]))
 
             # If parent_id field is a list (e.g., WAN.segment), normalize it to the selected current_parent
             try:

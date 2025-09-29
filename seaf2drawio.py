@@ -14,13 +14,14 @@ diagram = drawio_diagram()
 node_xml_default = diagram.drawio_node_object_xml
 root_object = 'seaf.ta.services.dc_region'
 diagram_pages = {'main': ['Main Schema'], 'office': [], 'dc': []}
-diagram_ids = {'Main Schema': []}
+diagram_ids = {'Main Schema': set()}
 conf = {}
 pending_missing_links = set()
 layout_counters = {}
 expected_counts = {}
 expected_data = {}
 pattern_specs = {}
+data_store = None
 
 # Переменные по умолчанию
 DEFAULT_CONFIG = {
@@ -97,11 +98,14 @@ def return_ready(pattern):
     return not bool(pattern['count'])
 
 def get_parent_value(pattern, current_parent):
-    r = ''
-    if pattern.get('parent_key'):
-        r = d.find_value_by_key(d.find_value_by_key(json.loads(json.dumps(d.read_and_merge_yaml(conf['data_yaml_file']))),
-                                                    current_parent), pattern['parent_key'])
-    return r
+    if not (pattern.get('parent_key') and current_parent):
+        return ''
+
+    parent_data = d.find_value_by_key(data_store, current_parent) if data_store else None
+    if parent_data is None:
+        return ''
+    parent_value = d.find_value_by_key(parent_data, pattern['parent_key'])
+    return parent_value if parent_value is not None else ''
 
 def add_pages(pattern):
 
@@ -115,7 +119,7 @@ def add_pages(pattern):
             try:
                 diagram.add_diagram(key_id + '_page', page_data[key_id]['title'])
                 diagram_pages[k].append(page_data[key_id]['title'])
-                d.append_to_dict(diagram_ids, page_data[key_id]['title'], key_id)
+                diagram_ids.setdefault(page_data[key_id]['title'], set()).add(key_id)
             except ET.ParseError:
                 print(f'WARNING ! Не используйте XML зарезервированные символы <>&\'\" в поле title для объектов dc/office')
                 pass
@@ -136,7 +140,7 @@ def add_object(pattern, data, key_id):
         if pattern.get('parent_id') and d.find_common_element(d.find_key_value(data, pattern['parent_id']),
                                                      diagram_ids[page_name]) and pattern_count == 0:
 
-            d.append_to_dict(diagram_ids, page_name, key_id)
+            diagram_ids.setdefault(page_name, set()).add(key_id)
             current_parent = d.find_common_element(d.find_key_value(data, pattern['parent_id']),diagram_ids[page_name])
 
             # If parent_id field is a list (e.g., WAN.segment), normalize it to the selected current_parent
@@ -193,7 +197,7 @@ def add_object(pattern, data, key_id):
                 data=data if d.contains_object_tag(xml_pattern, 'object') else {},
                 url=pattern.get('ext_page') and data['title']
             )
-            d.append_to_dict(diagram_ids, page_name, key_id)  # Добавляет ID root элементов
+            diagram_ids.setdefault(page_name, set()).add(key_id)  # Добавляет ID root элементов
 
             if pattern_count == 0:  # Change position of element
                 position_offset(object_pattern)
@@ -278,19 +282,22 @@ if __name__ == '__main__':
 
     conf = cli_vars(d.load_config("config.yaml")['seaf2drawio'])
 
+    data_store = d.get_merged_yaml(conf['data_yaml_file'])
+
     diagram.from_xml(d.read_file_with_utf8(conf['drawio_pattern']))
     
     # Удаляем устаревшие связи перед добавлением новых
     remove_obsolete_links(diagram, conf['data_yaml_file'], 'seaf.ta.components.network')
     
-    diagram_ids['Main Schema'] = list(d.get_object(conf['data_yaml_file'], root_object).keys())
+    diagram_ids['Main Schema'] = set(d.get_object(conf['data_yaml_file'], root_object).keys())
     for file_name, pages in diagram_pages.items():
 
         for page_name in pages:
 
             diagram.go_to_diagram(page_name)
             print(f"\n> Формирую диаграмму страницы \033[32m{page_name}\033[0m ", end='')
-            for k, object_pattern in d.read_yaml_file(patterns_dir + file_name + '.yaml').items():
+            pattern_definitions = d.get_pattern(patterns_dir + file_name + '.yaml')
+            for k, object_pattern in pattern_definitions.items():
                 print('.', end='')
                 try:
                     object_data = d.get_object(conf['data_yaml_file'], object_pattern['schema'], type=object_pattern.get('type'),
@@ -310,7 +317,7 @@ if __name__ == '__main__':
                     for i in list(object_data.keys()):
                         if i in diagram.nodes_ids[diagram.current_diagram_id]:
                             diagram.update_node(id=i, data=object_data[i])
-                            d.append_to_dict(diagram_ids, page_name, i)
+                            diagram_ids.setdefault(page_name, set()).add(i)
                         else:
                             add_object(object_pattern, object_data[i], i)
 

@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 
+
 def find_parent(root, target):
     """Находит родительский элемент для target в дереве root"""
     for elem in root.iter():
@@ -153,10 +154,11 @@ def draw_verify(diagram_ids, diagram, pending_missing_links):
 def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
 
     ignore_object_ids = {"981", "991"}
+    is_debug = conf.get('debug', False)
 
     # Optional verification summary against final generated file
     try:
-        if conf.get('verify_generation'):
+        if conf.get('verify_generation') or is_debug:
             final_path = conf['output_file']
             tree = ET.parse(final_path)
             root_xml = tree.getroot()
@@ -178,11 +180,9 @@ def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
                         continue
                     if oid in ignore_object_ids:
                         continue
-                    # Logical links: use OID (semantic id) if available, skip non-edge objects
-                    if schema == 'seaf.ta.services.logical_link':
-                        cell = obj.find('mxCell')
-                        if cell is None or cell.get('edge') != '1':
-                            continue
+                    # Edges may be duplicated visually; compare them by semantic OID.
+                    cell = obj.find('mxCell')
+                    if cell is not None and cell.get('edge') == '1' and obj.get('OID'):
                         oid = obj.get('OID') or oid
                     per_page_total[page][schema] = per_page_total[page].get(schema, 0) + 1
                     per_page_unique[page].setdefault(schema, set()).add(oid)
@@ -193,10 +193,8 @@ def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
                     continue
                 if oid in ignore_object_ids:
                     continue
-                if schema == 'seaf.ta.services.logical_link':
-                    cell = obj.find('mxCell')
-                    if cell is None or cell.get('edge') != '1':
-                        continue
+                cell = obj.find('mxCell')
+                if cell is not None and cell.get('edge') == '1' and obj.get('OID'):
                     oid = obj.get('OID') or oid
                 drawn_total[schema] = drawn_total.get(schema, 0) + 1
                 drawn_unique.setdefault(schema, set()).add(oid)
@@ -223,17 +221,17 @@ def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
                 )
 
             if not all_match:
-                # Show a small diff preview
+                # Show full diff without truncation
                 for schema in schemas:
                     exp_set = expected_counts.get(schema, set())
                     drw_set = drawn_unique.get(schema, set())
-                    missing = list(exp_set - drw_set)[:5]
-                    extra = list(drw_set - exp_set)[:5]
+                    missing = sorted(exp_set - drw_set)
+                    extra = sorted(drw_set - exp_set)
                     if missing or extra:
                         if missing:
-                            print(f"    missing in diagram ({schema}): {missing}...")
+                            print(f"    missing in diagram ({schema}): {missing}")
                         if extra:
-                            print(f"    extra in diagram ({schema}): {extra}...")
+                            print(f"    extra in diagram ({schema}): {extra}")
 
                 # Detailed diagnostics for missing items
                 all_oids = set()
@@ -268,15 +266,15 @@ def advanced_analysis(conf, expected_counts, expected_data, pattern_specs, d):
                         continue
                     print(f"  {schema}:")
                     tkey, tvals = schema_expected.get(schema, (None, set()))
-                    for mid in missing_ids[:10]:
+                    for mid in sorted(missing_ids):
                         data = expected_data.get(schema, {}).get(mid, {})
                         msg_parts = []
                         if tkey:
                             vals = d.find_key_value(data, tkey)
                             actual = vals[0] if isinstance(vals, list) and vals else None
-                            # Prepare expected list (limited)
+                            # Prepare full expected list for diagnostics
                             ev = sorted(v for v in tvals)
-                            ev_out = ", ".join(ev[:6]) + (" ..." if len(ev) > 6 else "")
+                            ev_out = ", ".join(ev)
                             msg_parts.append(f"{tkey}='{actual}' | expected: {ev_out}")
                         # parent_id hint (first parent spec)
                         pid = None
